@@ -1,4 +1,4 @@
-# FitSehat
+# Health - AR Gorsi
 
 Private Next.js 16 health tracker. Built for Vercel + Neon Postgres + Neon Auth.
 

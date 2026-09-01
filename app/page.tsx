@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { Button } from "@/components/ui/button";
+import { APP_NAME } from "@/lib/constants";
 import { getAuthUser } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -17,6 +18,7 @@ export default async function HomePage() {
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 pb-16 text-center">
         <BrandLogo size="hero" priority />
         <p className="font-note mt-1">Made with care</p>
+        <p className="font-heading mt-3 text-lg font-semibold tracking-tight">{APP_NAME}</p>
         <h1 className="font-heading mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
           A quiet place for your glow.
         </h1>

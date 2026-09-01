@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Allura, Geist, Geist_Mono } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
+import { APP_NAME } from "@/lib/constants";
 
 import "./globals.css";
 
@@ -22,7 +23,7 @@ const allura = Allura({
 });
 
 export const metadata: Metadata = {
-  title: "FitSehat",
+  title: APP_NAME,
   description: "A quiet health tracker made with care — calories, macros, measurements, meals, and walking.",
   robots: {
     index: false,
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "FitSehat",
+    title: APP_NAME,
   },
 };
 

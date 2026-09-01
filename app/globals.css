@@ -229,10 +229,6 @@
     line-height: 1.4;
     color: var(--rose);
   }
-
-  .brand-logo-art {
-    filter: drop-shadow(0 16px 32px color-mix(in oklch, var(--rose) 32%, transparent));
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 
+import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 export const BRAND_LOGO_SRC = "/logo.png";
@@ -43,17 +44,9 @@ export function BrandLogo({
           : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
       }
     >
-      {reduced || size === "mark" ? null : (
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-[16%] rounded-full bg-rose/20 blur-3xl"
-          animate={{ opacity: [0.4, 0.75, 0.4], scale: [0.96, 1.06, 0.96] }}
-          transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}
-        />
-      )}
       <Image
         src={BRAND_LOGO_SRC}
-        alt="FitSehat"
+        alt={APP_NAME}
         width={BRAND_LOGO_SIZE}
         height={BRAND_LOGO_SIZE}
         priority={priority}
@@ -65,7 +58,7 @@ export function BrandLogo({
               ? "13rem"
               : "4rem"
         }
-        className="brand-logo-art relative h-auto w-full select-none"
+        className="relative h-auto w-full bg-transparent select-none mix-blend-lighten [filter:none]"
       />
     </motion.div>
   );

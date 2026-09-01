@@ -10,3 +10,4 @@ export const MEAL_OPTION_TYPES = [
 export type TMealOptionType = (typeof MEAL_OPTION_TYPES)[number];
 
 export const APP_TIME_ZONE = "Asia/Karachi";
+export const APP_NAME = "Health - AR Gorsi";
