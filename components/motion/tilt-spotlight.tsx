@@ -48,7 +48,7 @@ export function TiltSpotlight({
       ref={ref}
       onPointerMove={onMove}
       onPointerLeave={onLeave}
-      className="glass-panel relative flex h-full min-h-0 flex-col overflow-hidden rounded-[inherit] border border-border/35"
+      className="glass-panel relative flex h-full min-h-0 flex-col overflow-hidden rounded-[inherit] border border-border/35 bg-transparent shadow-none"
     >
       {showSpot ? (
         <motion.div

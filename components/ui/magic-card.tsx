@@ -112,7 +112,7 @@ export function MagicCard({
         `,
       }}
     >
-      <div className="absolute inset-px z-20 rounded-[inherit] bg-card/95" />
+      <div className="absolute inset-px z-20 rounded-[inherit] bg-card" />
       <motion.div
         suppressHydrationWarning
         className="pointer-events-none absolute inset-px z-30 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
