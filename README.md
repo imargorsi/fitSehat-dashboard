@@ -34,7 +34,7 @@ The app is a standard Next.js project (`vercel.json` sets `framework: nextjs`). 
 
 1. Push this folder as the Git root (or set **Root Directory** to `fitSehat-dashboard` if the repo is the parent folder).
 2. Import the project in Vercel. Leave Build Command and Output empty — Vercel will use Next.js defaults (`npm run build`).
-3. **Before the first deploy**, add these Environment Variables for Production (and Preview if you will sign in there):
+3. **Before the first deploy**, add these Environment Variables for **Production and Preview**:
 
    - `DATABASE_URL`
    - `NEON_AUTH_BASE_URL`
