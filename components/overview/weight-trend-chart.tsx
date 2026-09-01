@@ -24,10 +24,10 @@ export function WeightTrendChart({ points }: { points: TWeightPoint[] }) {
       <GlassCard className="flex h-full flex-col gap-4 p-5 sm:p-6 lg:p-7">
         <div>
           <p className="text-xs tracking-[0.18em] text-muted-foreground uppercase">Trend</p>
-          <p className="font-heading mt-2 text-lg font-semibold tracking-tight">Weight trend</p>
-          <p className="text-sm text-muted-foreground">Last check-ins</p>
+          <p className="font-heading mt-2 text-lg font-semibold tracking-tight">Your curve, Jaan</p>
+          <p className="text-sm text-muted-foreground">Last check-ins, Love</p>
         </div>
-        <EmptyNote title={EMPTY.weight.title} body={EMPTY.weight.body} />
+        <EmptyNote title={EMPTY.weight.title} body={EMPTY.weight.body} icon="trend" tone="neon" />
       </GlassCard>
     );
   }
@@ -54,8 +54,8 @@ export function WeightTrendChart({ points }: { points: TWeightPoint[] }) {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
         <div>
           <p className="text-xs tracking-[0.18em] text-muted-foreground uppercase">Trend</p>
-          <p className="font-heading mt-2 text-lg font-semibold tracking-tight">Weight trend</p>
-          <p className="text-sm leading-6 text-muted-foreground">Numbers move. You are still on your way.</p>
+          <p className="font-heading mt-2 text-lg font-semibold tracking-tight">Your curve, Jaan</p>
+          <p className="text-sm leading-6 text-muted-foreground">Numbers move, Precious. You are still on your way.</p>
         </div>
         {last ? (
           <p className="text-sm font-medium text-violet">{formatNumber(last.value)} kg</p>

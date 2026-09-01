@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { Button } from "@/components/ui/button";
+import { ACTIONS } from "@/lib/care-copy";
 import { APP_NAME } from "@/lib/constants";
 import { getAuthUser } from "@/lib/session";
 
@@ -17,26 +18,26 @@ export default async function HomePage() {
       </header>
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 pb-16 text-center">
         <BrandLogo size="hero" priority />
-        <p className="font-note mt-1">Made with care</p>
+        <p className="mt-1 text-sm text-muted-foreground">Made with love, Guddi</p>
         <p className="font-heading mt-3 text-lg font-semibold tracking-tight">{APP_NAME}</p>
         <h1 className="font-heading mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-          A quiet place for your glow.
+          A quiet place for your glow, Precious.
         </h1>
         <p className="mt-4 max-w-sm text-base leading-7 text-muted-foreground">
-          Take care of yourself. I am proud of you. And I am always rooting for you.
+          Take care of yourself, Jaan. I am proud of you. And I am always rooting for you, Love.
         </p>
         <div className="mt-8 flex w-full max-w-sm flex-col gap-3">
           {user ? (
             <Button size="lg" className="w-full" render={<Link href="/overview" />}>
-              Open your tracker
+              {ACTIONS.openTracker}
             </Button>
           ) : (
             <>
               <Button size="lg" className="w-full" render={<Link href="/sign-up" />}>
-                Begin
+                {ACTIONS.begin}
               </Button>
               <Button size="lg" variant="ghost" className="w-full" render={<Link href="/sign-in" />}>
-                I already have a key
+                {ACTIONS.alreadyHaveKey}
               </Button>
             </>
           )}

@@ -1,5 +1,4 @@
-import { Beef, Flame, Hash, UtensilsCrossed } from "lucide-react";
-
+import { AnimateIcon } from "@/components/icons/animate-icon";
 import { deleteCalorieLog } from "@/app/(dashboard)/calories/actions";
 import { CalorieLogDialog } from "@/components/calories/calorie-log-dialog";
 import { DeleteRowButton } from "@/components/layout/delete-row-button";
@@ -49,7 +48,7 @@ export default async function CaloriesPage() {
     <PageShell>
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatCard
-          icon={<Flame className="size-4" />}
+          icon={<AnimateIcon name="flame" size={16} tone="neon" />}
           label="Today"
           countTo={todayTotals.calories}
           unit="kcal"
@@ -57,7 +56,7 @@ export default async function CaloriesPage() {
           meter={calorieGoal != null ? { value: todayTotals.calories, max: calorieGoal } : undefined}
         />
         <StatCard
-          icon={<Beef className="size-4" />}
+          icon={<AnimateIcon name="activity" size={16} tone="neon" />}
           label="Protein"
           countTo={Math.round(todayTotals.protein)}
           unit="g"
@@ -65,7 +64,7 @@ export default async function CaloriesPage() {
           meter={proteinGoal != null ? { value: todayTotals.protein, max: proteinGoal } : undefined}
         />
         <StatCard
-          icon={<UtensilsCrossed className="size-4" />}
+          icon={<AnimateIcon name="utensils" size={16} tone="neon" />}
           label="Meals"
           countTo={coreLogged.size}
           suffix=" / 4"
@@ -73,21 +72,21 @@ export default async function CaloriesPage() {
           footer={<MealDots logged={coreLogged} />}
         />
         <StatCard
-          icon={<Hash className="size-4" />}
-          label="Items today"
+          icon={<AnimateIcon name="list" size={16} tone="neon" />}
+          label="Plates today"
           countTo={todaysLogs.length}
-          hint={target ? `Attached to ${target.name}` : "Logs save even before a target. No rush."}
+          hint={target ? `Attached to ${target.name}` : "Logs save even before a target, Love. No rush."}
         />
       </div>
 
       <ModulePanel
         eyebrow="Journal"
-        title="History"
-        description="Newest days first. One kind entry is enough."
+        title="Your history, Precious"
+        description="Newest days first, Guddi. One kind plate is enough."
         action={<CalorieLogDialog today={today} />}
       >
         {grouped.length === 0 ? (
-          <EmptyNote title={EMPTY.calories.title} body={EMPTY.calories.body} />
+          <EmptyNote title={EMPTY.calories.title} body={EMPTY.calories.body} icon="book" tone="rose" />
         ) : (
           <div className="space-y-8">
             {grouped.map(([day, rows]) => {

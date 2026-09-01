@@ -3,9 +3,9 @@ import { z } from "zod";
 import { CALORIE_MEALS } from "@/lib/constants";
 
 export const mealOptionSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(200),
+  name: z.string().trim().min(1, "Give this meal a name, Love").max(200),
   mealType: z.enum(CALORIE_MEALS),
-  calories: z.coerce.number().int().nonnegative("Calories cannot be negative"),
+  calories: z.coerce.number().int().nonnegative("Energy cannot be negative, Guddi"),
   proteinG: z.coerce.number().nonnegative().optional(),
   carbsG: z.coerce.number().nonnegative().optional(),
   fatsG: z.coerce.number().nonnegative().optional(),

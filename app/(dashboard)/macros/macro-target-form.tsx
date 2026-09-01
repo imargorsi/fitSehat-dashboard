@@ -13,15 +13,15 @@ export function MacroTargetForm() {
   return (
     <form ref={formRef} action={formAction} className="grid gap-5">
       <div className="grid gap-2">
-        <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Name</p>
+        <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Name, Love</p>
         <Label htmlFor="name" className="sr-only">
           Name
         </Label>
-        <Input id="name" name="name" required defaultValue="Daily Calorie Goal" />
+        <Input id="name" name="name" required defaultValue="Daily Calorie Goal" placeholder="A gentle daily mark, Guddi" />
       </div>
       <div className="grid gap-2">
-        <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Energy</p>
-        <Label htmlFor="targetCalories">Target calories</Label>
+        <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Energy, Precious</p>
+        <Label htmlFor="targetCalories">Target calories, Jaan</Label>
         <Input
           id="targetCalories"
           name="targetCalories"
@@ -29,14 +29,14 @@ export function MacroTargetForm() {
           min={1}
           step={1}
           required
-          placeholder="2300"
+          placeholder="Energy for the day, Love"
         />
       </div>
       <div className="grid gap-3 rounded-[1.25rem] bg-muted/35 p-4">
-        <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Macros</p>
+        <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Macros, Guddi</p>
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="grid gap-2">
-            <Label htmlFor="proteinTargetG">Protein (g)</Label>
+            <Label htmlFor="proteinTargetG">Protein, Precious</Label>
             <Input
               id="proteinTargetG"
               name="proteinTargetG"
@@ -44,11 +44,11 @@ export function MacroTargetForm() {
               min={0}
               step={1}
               required
-              placeholder="170"
+              placeholder="Protein for you, Jaan"
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="fatsTargetG">Fats (g)</Label>
+            <Label htmlFor="fatsTargetG">Fats, Love</Label>
             <Input
               id="fatsTargetG"
               name="fatsTargetG"
@@ -56,11 +56,11 @@ export function MacroTargetForm() {
               min={0}
               step={1}
               required
-              placeholder="70"
+              placeholder="A little fat is okay, Guddi"
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="carbsTargetG">Carbs (g)</Label>
+            <Label htmlFor="carbsTargetG">Carbs, Precious</Label>
             <Input
               id="carbsTargetG"
               name="carbsTargetG"
@@ -68,13 +68,13 @@ export function MacroTargetForm() {
               min={0}
               step={1}
               required
-              placeholder="247"
+              placeholder="Carbs if you like, Love"
             />
           </div>
         </div>
       </div>
       <Button type="submit" size="lg" className="w-full rounded-full sm:w-auto" disabled={isPending}>
-        {isPending ? "Saving…" : "Save target"}
+        {isPending ? "Saving for you…" : "Keep this, Jaan"}
       </Button>
       <FormError error={state && "error" in state ? state.error : undefined} />
     </form>

@@ -60,13 +60,13 @@ export function todayGlow(input: TGlowInput): TGlow {
   }
   score = Math.min(100, score);
 
-  let label = "Quiet start";
+  let label = "Soft start, Love";
   if (score >= 75) {
-    label = "Radiant";
+    label = "Radiant, Jaan";
   } else if (score >= 50) {
-    label = "Glowing";
+    label = "Glowing, Precious";
   } else if (score >= 25) {
-    label = "Warming up";
+    label = "Warming up, Guddi";
   }
 
   return {
@@ -78,21 +78,21 @@ export function todayGlow(input: TGlowInput): TGlow {
 
 function glowCaption(score: number, input: TGlowInput): string {
   if (input.logCount === 0) {
-    return "Hey love, a little care today still counts.";
+    return "Hey Guddi, a little care today still counts.";
   }
   if (input.coreMeals >= 4) {
-    return "Goal board complete. I knew you could do it.";
+    return "Goal board complete, Precious. I knew you could do it.";
   }
   if (input.streak >= 7) {
     return streakCaption(input.streak);
   }
   if (score >= 75) {
-    return "Look at that glow. I am so proud of you.";
+    return "Look at that glow, Love. I am so proud of you.";
   }
   if (score >= 50) {
-    return "Your healthy glow is loading.";
+    return "Your healthy glow is loading, Jaan.";
   }
-  return "Showing up is enough. Keep going.";
+  return "Showing up is enough, Guddi. Keep going.";
 }
 
 export function meterPercent(value: number, max: number | null): number | null {

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { CELEBRATIONS, type TCelebrateKind } from "@/lib/care-copy";
 import { pickRandom } from "@/lib/care-notes";
 import type { TFormState } from "@/lib/form-state.types";
+import { dispatchLoveBurst } from "@/lib/love-motion.utils";
 
 export function useResettingForm(
   action: (prev: TFormState, data: FormData) => Promise<TFormState>,
@@ -22,6 +23,7 @@ export function useResettingForm(
       formRef.current?.reset();
       if (celebrate) {
         toast.success(pickRandom(CELEBRATIONS[celebrate]));
+        dispatchLoveBurst();
       }
       onSuccess?.();
     }

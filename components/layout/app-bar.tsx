@@ -2,17 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Flame,
-  Footprints,
-  LayoutDashboard,
-  LogOut,
-  Ruler,
-  UtensilsCrossed,
-} from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { signOut } from "@/app/(auth)/sign-out/actions";
+import { AnimateIcon } from "@/components/icons/animate-icon";
+import { navIconByHref } from "@/components/icons/care-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Tooltip,
@@ -24,14 +18,6 @@ import { dashboardNav } from "@/lib/navigation";
 import type { TAuthUser } from "@/lib/session";
 import { firstName, initials } from "@/lib/user.utils";
 import { cn } from "@/lib/utils";
-
-const navIcons = {
-  "/overview": LayoutDashboard,
-  "/calories": Flame,
-  "/meals": UtensilsCrossed,
-  "/workouts": Footprints,
-  "/measurements": Ruler,
-};
 
 export function AppBar({ user }: { user: TAuthUser }) {
   const pathname = usePathname();
@@ -51,7 +37,7 @@ export function AppBar({ user }: { user: TAuthUser }) {
         >
           <div className="flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {dashboardNav.map((item) => {
-              const Icon = navIcons[item.href as keyof typeof navIcons];
+              const icon = navIconByHref[item.href];
               const isActive = pathname === item.href;
 
               return (
@@ -71,7 +57,14 @@ export function AppBar({ user }: { user: TAuthUser }) {
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   ) : null}
-                  {Icon ? <Icon className="relative z-10 size-4" /> : null}
+                  {icon ? (
+                    <AnimateIcon
+                      name={icon}
+                      size={16}
+                      tone={isActive ? "foreground" : "muted"}
+                      className="relative z-10"
+                    />
+                  ) : null}
                   <span className="relative z-10 whitespace-nowrap">{item.shortLabel}</span>
                 </Link>
               );
@@ -96,13 +89,13 @@ export function AppBar({ user }: { user: TAuthUser }) {
             <Tooltip>
               <TooltipTrigger
                 type="submit"
-                aria-label="Sign out"
+                aria-label="See you soon, Jaan"
                 className="flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
               >
-                <LogOut className="size-4" />
+                <AnimateIcon name="logout" size={16} tone="muted" />
               </TooltipTrigger>
               <TooltipContent side="bottom" sideOffset={10}>
-                Sign out
+                See you soon, Jaan
               </TooltipContent>
             </Tooltip>
           </form>

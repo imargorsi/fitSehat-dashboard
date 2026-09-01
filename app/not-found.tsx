@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 export default function NotFound() {
   return (
     <QuietScreen
-      title="This page is resting"
-      body="That path is not part of the tracker. Head home when you like."
+      title="This page is resting, Precious"
+      body="That path is not part of the tracker, Love. Head home when you like."
       action={
         <Button className="rounded-full" nativeButton={false} render={<Link href="/" />}>
-          Home
+          Take me home, Guddi
         </Button>
       }
     />

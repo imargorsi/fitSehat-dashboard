@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Allura, Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
 import { APP_NAME } from "@/lib/constants";
@@ -16,15 +16,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const allura = Allura({
-  variable: "--font-allura",
-  subsets: ["latin"],
-  weight: "400",
-});
-
 export const metadata: Metadata = {
   title: APP_NAME,
-  description: "A quiet health tracker made with care — calories, macros, measurements, meals, and walking.",
+  description: "A private health tracker made with love for Guddi — calories, meals, walking, and check-ins.",
   robots: {
     index: false,
     follow: false,
@@ -65,7 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`dark ${geistSans.variable} ${geistMono.variable} ${allura.variable} h-full antialiased`}
+      className={`dark ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
         {children}

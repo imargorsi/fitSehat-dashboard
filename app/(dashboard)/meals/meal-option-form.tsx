@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { SelectField } from "@/components/ui/select-field";
 import { Textarea } from "@/components/ui/textarea";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
+import { ACTIONS, PLACE } from "@/lib/care-copy";
 import { CALORIE_MEALS } from "@/lib/constants";
 
 export function MealOptionForm() {
@@ -17,7 +18,7 @@ export function MealOptionForm() {
     <form ref={formRef} action={formAction} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <div className="grid gap-2">
         <Label htmlFor="name">Meal name</Label>
-        <Input id="name" name="name" required placeholder="Greek yogurt + berries" />
+        <Input id="name" name="name" required placeholder={PLACE.mealName} />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="mealType">Meal type</Label>
@@ -31,27 +32,27 @@ export function MealOptionForm() {
       </div>
       <div className="grid gap-2">
         <Label htmlFor="calories">Calories</Label>
-        <Input id="calories" name="calories" type="number" min={0} step={1} required placeholder="0" />
+        <Input id="calories" name="calories" type="number" min={0} step={1} required placeholder={PLACE.calories} />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="proteinG">Protein (g)</Label>
-        <Input id="proteinG" name="proteinG" type="number" min={0} step={0.1} placeholder="g" />
+        <Input id="proteinG" name="proteinG" type="number" min={0} step={0.1} placeholder={PLACE.protein} />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="carbsG">Carbs (g)</Label>
-        <Input id="carbsG" name="carbsG" type="number" min={0} step={0.1} placeholder="g" />
+        <Input id="carbsG" name="carbsG" type="number" min={0} step={0.1} placeholder={PLACE.carbs} />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="fatsG">Fats (g)</Label>
-        <Input id="fatsG" name="fatsG" type="number" min={0} step={0.1} placeholder="g" />
+        <Input id="fatsG" name="fatsG" type="number" min={0} step={0.1} placeholder={PLACE.fats} />
       </div>
       <div className="grid gap-2 sm:col-span-2">
         <Label htmlFor="notes">Note</Label>
-        <Textarea id="notes" name="notes" placeholder="A quiet detail, if you like" />
+        <Textarea id="notes" name="notes" placeholder={PLACE.notes} />
       </div>
       <div className="flex items-end sm:col-span-2 lg:col-span-4">
         <Button type="submit" size="lg" className="w-full min-w-36 rounded-full sm:w-auto" disabled={isPending}>
-          {isPending ? "Saving…" : "Add meal"}
+          {isPending ? "Saving…" : ACTIONS.addMeal}
         </Button>
       </div>
       <div className="sm:col-span-2 lg:col-span-4">

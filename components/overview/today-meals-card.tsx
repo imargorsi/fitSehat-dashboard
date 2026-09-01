@@ -1,23 +1,22 @@
 import Link from "next/link";
-import { ChevronRight, Moon, Sun, UtensilsCrossed } from "lucide-react";
 
+import { AppLinkButton } from "@/components/layout/app-link-button";
 import { EmptyNote } from "@/components/layout/empty-note";
 import { GlassCard } from "@/components/layout/glass-card";
 import { SoftRow } from "@/components/layout/soft-row";
-import { Button } from "@/components/ui/button";
-import { EMPTY } from "@/lib/care-copy";
+import { WidgetHeader } from "@/components/layout/widget-header";
+import { AnimateIcon } from "@/components/icons/animate-icon";import { EMPTY } from "@/lib/care-copy";
 import { formatClock } from "@/lib/date.utils";
 import { formatInt, formatNumber } from "@/lib/number.utils";
 import type { TCalorieLog } from "@/lib/db/schema";
 
 const mealIcon = {
-  Breakfast: Sun,
-  Lunch: UtensilsCrossed,
-  Dinner: Moon,
-  Snack: UtensilsCrossed,
-  Other: UtensilsCrossed,
+  Breakfast: "sun" as const,
+  Lunch: "utensils" as const,
+  Dinner: "utensils" as const,
+  Snack: "sparkles" as const,
+  Other: "utensils" as const,
 };
-
 export function TodayMealsCard({
   logs,
   totalCalories,
@@ -27,34 +26,29 @@ export function TodayMealsCard({
 }) {
   return (
     <GlassCard className="flex h-full flex-col">
-      <div className="flex flex-col gap-3 px-5 pt-5 pb-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:pt-6">
-        <div>
-          <p className="text-xs tracking-[0.18em] text-muted-foreground uppercase">Today</p>
-          <p className="font-heading mt-1 text-lg font-semibold tracking-tight">Today&apos;s meals</p>
-          <p className="text-sm text-muted-foreground">Fuel logged with care</p>
-        </div>
-        <Button size="sm" nativeButton={false} render={<Link href="/calories" />}>
-          Add
-        </Button>
-      </div>
+      <WidgetHeader
+        eyebrow="Today"
+        title="Today's meals, Love"
+        subtitle="Fuel logged with care, Guddi"
+        actions={<AppLinkButton href="/calories" label="Add more" icon="plus" />}
+      />
       <div className="flex flex-1 flex-col px-5 pb-5">
         {logs.length === 0 ? (
-          <EmptyNote title={EMPTY.mealsToday.title} body={EMPTY.mealsToday.body} />
+          <EmptyNote title={EMPTY.mealsToday.title} body={EMPTY.mealsToday.body} icon="sun" tone="gold" />
         ) : (
           <ul className="space-y-2">
             {logs.map((log) => {
-              const Icon = mealIcon[log.meal as keyof typeof mealIcon] ?? UtensilsCrossed;
+              const icon = mealIcon[log.meal as keyof typeof mealIcon] ?? "utensils";
               return (
                 <li key={log.id}>
                   <Link href="/calories" className="block">
                     <SoftRow
                       className="hover:bg-muted/55"
                       icon={
-                        <span className="flex size-10 items-center justify-center rounded-2xl bg-rose/15 text-rose">
-                          <Icon className="size-4" />
+                        <span className="flex size-10 items-center justify-center rounded-2xl border border-border/40 bg-rose/10">
+                          <AnimateIcon name={icon} size={18} tone="rose" />
                         </span>
-                      }
-                      title={log.item}
+                      }                      title={log.item}
                       subtitle={`${log.meal} · ${formatClock(log.createdAt)}${log.notes ? ` · ${log.notes}` : ""}`}
                       value={
                         <span>
@@ -64,8 +58,7 @@ export function TodayMealsCard({
                           </span>
                         </span>
                       }
-                      action={<ChevronRight className="size-4 text-muted-foreground" />}
-                    />
+                      action={<AnimateIcon name="chevron" size={16} tone="muted" />}                    />
                   </Link>
                 </li>
               );
@@ -74,7 +67,7 @@ export function TodayMealsCard({
         )}
       </div>
       <div className="flex items-center justify-between border-t border-border px-5 py-3 text-sm">
-        <span className="text-muted-foreground">Total</span>
+        <span className="text-muted-foreground">All of it, Love</span>
         <span className="font-medium text-neon">{formatInt(totalCalories)} kcal</span>
       </div>
     </GlassCard>

@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "motion/react";
 
-import { CareLottie } from "@/components/motion/care-lottie";
+import { AnimateIcon } from "@/components/icons/animate-icon";
 import { CareTicker } from "@/components/layout/care-ticker";
 import { revealItem, revealParent } from "@/lib/motion";
 
@@ -31,7 +31,7 @@ export function OverviewGreeting({
       variants={reduced ? undefined : revealParent}
     >
       <motion.div variants={reduced ? undefined : revealItem}>
-        <CareLottie name="letter" size={52} className="mt-0.5" />
+        <AnimateIcon name="heart" size={48} tone="rose" playOnMount className="mt-0.5" />
       </motion.div>
       <div className="min-w-0 space-y-2">
         <motion.p variants={reduced ? undefined : revealItem} className="text-sm tracking-widest text-muted-foreground uppercase">
@@ -46,7 +46,7 @@ export function OverviewGreeting({
         >
           {displayTitle}
         </motion.h1>
-        <motion.p variants={reduced ? undefined : revealItem} className="font-note">
+        <motion.p variants={reduced ? undefined : revealItem} className="text-sm text-rose">
           {accent}
         </motion.p>
         <motion.div variants={reduced ? undefined : revealItem}>

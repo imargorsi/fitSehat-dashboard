@@ -24,7 +24,7 @@ export async function signInWithEmail(
   const { error } = await auth.signIn.email(parsed.data);
 
   if (error) {
-    return { error: publicAuthError(error, "Could not sign in. Check your email and password.") };
+    return { error: publicAuthError(error, "Could not sign in, Love. Check your email and password.") };
   }
 
   redirect("/overview");

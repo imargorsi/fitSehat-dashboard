@@ -1,9 +1,8 @@
-import Link from "next/link";
-
 import { CalorieLogDialog } from "@/components/calories/calorie-log-dialog";
+import { AppLinkButton } from "@/components/layout/app-link-button";
 import { GlassCard } from "@/components/layout/glass-card";
 import { SoftRow } from "@/components/layout/soft-row";
-import { Button } from "@/components/ui/button";
+import { WidgetHeader } from "@/components/layout/widget-header";
 import type { TCalorieLog } from "@/lib/db/schema";
 import { formatInt } from "@/lib/number.utils";
 
@@ -22,19 +21,21 @@ export function FuelWidget({
 
   return (
     <GlassCard className="flex h-full flex-col">
-      <div className="flex flex-col gap-3 px-5 pt-5 pb-4 sm:flex-row sm:items-start sm:justify-between sm:px-6 sm:pt-6">
-        <div>
-          <p className="font-heading text-lg font-semibold tracking-tight">Fuel</p>
-          <p className="text-sm text-muted-foreground">
-            {formatInt(calories)} kcal today
-            {goal != null ? ` · ${formatInt(goal)} mark` : ""}
-          </p>
-        </div>
-        <CalorieLogDialog today={today} />
-      </div>
+      <WidgetHeader
+        title="Fuel, Love"
+        subtitle={`${formatInt(calories)} kcal today${goal != null ? ` · ${formatInt(goal)} mark` : ""}`}
+        actions={
+          <>
+            <AppLinkButton href="/calories" label="History" icon="history" />
+            <CalorieLogDialog today={today} />
+          </>
+        }
+      />
       <div className="flex flex-1 flex-col gap-2 px-4 pb-5 sm:px-5">
         {recent.length === 0 ? (
-          <p className="text-sm leading-6 text-muted-foreground">Nothing logged yet. One kind meal starts the day.</p>
+          <p className="px-1 text-sm leading-6 text-muted-foreground">
+            Nothing logged yet, Guddi. One kind meal starts the day.
+          </p>
         ) : (
           recent.map((log) => (
             <SoftRow
@@ -45,9 +46,6 @@ export function FuelWidget({
             />
           ))
         )}
-        <Button variant="ghost" size="sm" className="mt-auto self-start" nativeButton={false} render={<Link href="/calories" />}>
-          Open history
-        </Button>
       </div>
     </GlassCard>
   );

@@ -11,7 +11,7 @@ export function DeleteRowButton({
     <form action={action}>
       <input type="hidden" name="id" value={id} />
       <Button type="submit" variant="ghost" size="sm" className="text-muted-foreground hover:text-rose">
-        Remove
+        Let go
       </Button>
     </form>
   );

@@ -1,7 +1,8 @@
 "use client"
 
 import { Toaster as Sonner, type ToasterProps } from "sonner"
-import { CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "lucide-react"
+
+import { UiIcon } from "@/components/icons/ui-icon"
 
 const Toaster = ({ ...props }: ToasterProps) => {
   return (
@@ -10,21 +11,11 @@ const Toaster = ({ ...props }: ToasterProps) => {
       position="top-center"
       className="toaster group"
       icons={{
-        success: (
-          <CircleCheckIcon className="size-4" />
-        ),
-        info: (
-          <InfoIcon className="size-4" />
-        ),
-        warning: (
-          <TriangleAlertIcon className="size-4" />
-        ),
-        error: (
-          <OctagonXIcon className="size-4" />
-        ),
-        loading: (
-          <Loader2Icon className="size-4 animate-spin" />
-        ),
+        success: <UiIcon name="circleCheck" size={16} />,
+        info: <UiIcon name="info" size={16} />,
+        warning: <UiIcon name="alert" size={16} />,
+        error: <UiIcon name="close" size={16} />,
+        loading: <UiIcon name="loader" size={16} spin />,
       }}
       style={
         {

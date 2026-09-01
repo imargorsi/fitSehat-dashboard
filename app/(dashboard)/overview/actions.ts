@@ -18,12 +18,12 @@ export async function quickAddMealOption(
   const mealOptionId = String(formData.get("mealOptionId") ?? "");
   const option = await getMealOption(user.id, mealOptionId);
   if (!option) {
-    return { error: "That meal idea is gone. Pick another." };
+    return { error: "That meal idea is gone, Love. Pick another." };
   }
 
   const calories = caloriesFromOption(option);
   if (calories <= 0 && option.calories == null) {
-    return { error: "Add calories to that meal first." };
+    return { error: "Add energy to that meal first, Guddi." };
   }
 
   const activeTarget = await getActiveMacroTarget(user.id);

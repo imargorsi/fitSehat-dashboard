@@ -21,8 +21,8 @@ export default async function MealsPage() {
     <PageShell>
       <ModulePanel
         eyebrow="Board"
-        title="Add a meal you like"
-        description="Same fields as Fuel — name, type, energy, macros, and a note. Quick add copies them onto today."
+        title="Add a meal you like, Guddi"
+        description="Same fields as Fuel, Precious — name, type, energy, macros, and a note. Quick add copies them onto today."
       >
         <MealOptionForm />
       </ModulePanel>
@@ -31,9 +31,9 @@ export default async function MealsPage() {
         {CALORIE_MEALS.map((type) => {
           const items = rows.filter((row) => mealKindFromOption(row.mealType) === type);
           return (
-            <ModulePanel key={type} eyebrow="Saved" title={type} description="Tap-ready for Today">
+            <ModulePanel key={type} eyebrow="Saved for you" title={type} description="Tap-ready for Today, Jaan">
               {items.length === 0 ? (
-                <EmptyNote title={EMPTY.mealBand.title} body={EMPTY.mealBand.body} />
+                <EmptyNote title={EMPTY.mealBand.title} body={EMPTY.mealBand.body} icon="sparkles" tone="gold" />
               ) : (
                 <ul className="space-y-2.5">
                   {items.map((item) => {

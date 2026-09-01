@@ -7,9 +7,10 @@ import { toast } from "sonner";
 import { saveWalkDay } from "@/app/(dashboard)/workouts/actions";
 import { FormError } from "@/components/layout/form-error";
 import { Button } from "@/components/ui/button";
-import { CELEBRATIONS } from "@/lib/care-copy";
+import { ACTIONS, CELEBRATIONS } from "@/lib/care-copy";
 import { pickRandom } from "@/lib/care-notes";
 import type { TFormState } from "@/lib/form-state.types";
+import { dispatchLoveBurst } from "@/lib/love-motion.utils";
 import { formatInt } from "@/lib/number.utils";
 import { cn } from "@/lib/utils";
 import {
@@ -47,6 +48,7 @@ export function WalkSlider({
     if (state && "ok" in state && state.ok && toasted.current !== state) {
       toasted.current = state;
       toast.success(pickRandom(CELEBRATIONS.workout));
+      dispatchLoveBurst();
     }
   }, [state]);
 
@@ -70,7 +72,7 @@ export function WalkSlider({
           </p>
         </div>
         <div className="shrink-0 text-right">
-          {compact ? null : <p className="text-sm text-muted-foreground">About</p>}
+          {compact ? null : <p className="text-sm text-muted-foreground">About, Jaan</p>}
           <p className={cn("font-semibold tabular-nums text-rose", compact ? "text-lg sm:text-xl" : "text-xl sm:text-2xl")}>
             {formatInt(burned)}
             <span className="ml-1 text-xs font-normal text-muted-foreground sm:text-sm">kcal</span>
@@ -135,7 +137,7 @@ export function WalkSlider({
 
       {compact ? null : (
         <p className="text-sm text-muted-foreground">
-          Goal {formatInt(goal)}. {met ? "You met it. Beautiful consistency." : "Rest is allowed. Every step still counts."}
+          Goal {formatInt(goal)}. {met ? "You met it, Guddi. Beautiful consistency." : "Rest is allowed, Love. Every step still counts."}
         </p>
       )}
 
@@ -146,7 +148,7 @@ export function WalkSlider({
           className="w-full rounded-full sm:w-auto"
           disabled={isPending}
         >
-          {isPending ? "Saving…" : "Save walk"}
+          {isPending ? "Saving for you…" : compact ? ACTIONS.saveCompact : ACTIONS.saveWalk}
         </Button>
         <FormError error={state && "error" in state ? state.error : undefined} />
       </div>

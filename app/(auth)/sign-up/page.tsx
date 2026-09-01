@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import Link from "next/link";
 
 import { signUpWithEmail } from "@/app/(auth)/sign-up/actions";
+import { ACTIONS, PLACE } from "@/lib/care-copy";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,18 +16,18 @@ export default function SignUpPage() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="items-center text-center">
-        <CardTitle>A space of your own</CardTitle>
-        <CardDescription>A name and a key. Then the tracker is yours.</CardDescription>
+        <CardTitle>This is yours, Jaan</CardTitle>
+        <CardDescription>A name and a key, Love. Then the tracker waits for you.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" name="name" type="text" autoComplete="name" required />
+            <Label htmlFor="name">Name, Precious</Label>
+            <Input id="name" name="name" type="text" autoComplete="name" required placeholder={PLACE.signUpName} />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" autoComplete="email" required />
+            <Input id="email" name="email" type="email" autoComplete="email" required placeholder={PLACE.email} />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
@@ -36,6 +37,7 @@ export default function SignUpPage() {
               type="password"
               autoComplete="new-password"
               minLength={8}
+              placeholder={PLACE.password}
               required
             />
           </div>
@@ -45,12 +47,12 @@ export default function SignUpPage() {
             </p>
           ) : null}
           <Button type="submit" size="lg" className="w-full" disabled={isPending}>
-            {isPending ? "Creating account…" : "Begin"}
+            {isPending ? "Making your space…" : ACTIONS.begin}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
+            Already with me, Guddi?{" "}
             <Link href="/sign-in" className="text-foreground underline-offset-4 hover:underline">
-              Sign in
+              Come in
             </Link>
           </p>
         </form>

@@ -1,5 +1,4 @@
-import { Ruler, Scale, Target, TrendingDown } from "lucide-react";
-
+import { AnimateIcon } from "@/components/icons/animate-icon";
 import { deleteMeasurement } from "@/app/(dashboard)/measurements/actions";
 import {
   MeasurementForm,
@@ -28,15 +27,15 @@ function lostAmount(start: number | null, current: number | null): number | null
 
 function lostHint(lost: number | null, unit: string): string {
   if (lost == null) {
-    return "Set a start baseline when you are ready.";
+    return "Set a start when you are ready, Guddi.";
   }
   if (lost === 0) {
-    return "Steady versus start. Showing up is the glow.";
+    return "Steady versus start, Love. Showing up is the glow.";
   }
   if (lost > 0) {
-    return `↓ ${lost} ${unit} from start. Beautiful consistency.`;
+    return `↓ ${lost} ${unit} from start, Precious. Beautiful consistency.`;
   }
-  return `↑ ${Math.abs(lost)} ${unit} from start. Numbers move. You are still on your way.`;
+  return `↑ ${Math.abs(lost)} ${unit} from start, Jaan. Numbers move. You are still on your way.`;
 }
 
 export default async function MeasurementsPage() {
@@ -66,42 +65,42 @@ export default async function MeasurementsPage() {
     <PageShell>
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatCard
-          icon={<Scale className="size-4" />}
+          icon={<AnimateIcon name="trend" size={16} tone="violet" />}
           tone="violet"
-          label="Latest weight"
+          label="Latest"
           value={latestWeight != null ? formatNumber(latestWeight) : "—"}
           unit="kg"
-          hint={latest ? formatMediumDate(String(latest.measuredOn).slice(0, 10)) : "Tuesday is a check-in, not a verdict."}
+          hint={latest ? formatMediumDate(String(latest.measuredOn).slice(0, 10)) : "Tuesday is a hug on the scale, Guddi — never a verdict."}
         />
         <StatCard
-          icon={<TrendingDown className="size-4" />}
+          icon={<AnimateIcon name="trend" size={16} tone="violet" />}
           tone="violet"
-          label="Weight lost"
+          label="Lost"
           value={weightLost != null ? formatNumber(Math.abs(weightLost)) : "—"}
           unit="kg"
           hint={lostHint(weightLost, "kg")}
         />
         <StatCard
-          icon={<Ruler className="size-4" />}
-          label="Latest waist"
+          icon={<AnimateIcon name="activity" size={16} tone="neon" />}
+          label="Waist"
           value={latestWaist != null ? formatNumber(latestWaist) : "—"}
           unit="cm"
           hint={lostHint(waistLost, "cm")}
         />
         <StatCard
-          icon={<Target className="size-4" />}
-          label="Target weight"
+          icon={<AnimateIcon name="star" size={16} tone="neon" />}
+          label="North star"
           value={formatNumber(profile.targetWeightKg)}
           unit="kg"
-          hint="A north star. Rest days still count."
+          hint="A north star, Love. Rest days still count."
         />
       </div>
 
       <div className="grid gap-5 lg:grid-cols-2">
         <ModulePanel
           eyebrow="Start"
-          title="Baselines"
-          description="Loss is derived from these start values. Change them whenever the story starts over."
+          title="Where we began, Precious"
+          description="Loss is from these start values, Jaan. Change them whenever the story starts over."
         >
           <ProfileBaselinesForm
             key={String(profile.updatedAt)}
@@ -112,8 +111,8 @@ export default async function MeasurementsPage() {
         </ModulePanel>
         <ModulePanel
           eyebrow="Tuesday"
-          title="Weigh-in"
-          description="Saving the same date updates that day. The number is not a verdict."
+          title="Weigh-in, Guddi"
+          description="Saving the same date updates that day, Love. The number is never a verdict."
         >
           <MeasurementForm defaultDate={latestTuesdayOnOrBefore(today)} />
         </ModulePanel>
@@ -121,9 +120,9 @@ export default async function MeasurementsPage() {
 
       <div className="grid gap-5 lg:grid-cols-2">
         <WeightTrendChart points={trend} />
-        <ModulePanel eyebrow="Ledger" title="History" description="Newest first.">
+        <ModulePanel eyebrow="Ledger" title="History, Precious" description="Newest first, Jaan. I kept every check-in.">
           {rows.length === 0 ? (
-            <EmptyNote title={EMPTY.measurements.title} body={EMPTY.measurements.body} />
+            <EmptyNote title={EMPTY.measurements.title} body={EMPTY.measurements.body} icon="activity" tone="neon" />
           ) : (
             <ul className="space-y-2.5">
               {rows.map((row, index) => (

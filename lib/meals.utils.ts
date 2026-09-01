@@ -1,7 +1,7 @@
 import { CALORIE_MEALS, MEAL_OPTION_TYPES, type TCalorieMeal, type TMealOptionType } from "@/lib/constants";
 
-export const CORE_MEALS = ["Breakfast", "Lunch", "Dinner", "Snack"] as const;
-export type TCoreMeal = (typeof CORE_MEALS)[number];
+export const CORE_MEALS = CALORIE_MEALS;
+export type TCoreMeal = TCalorieMeal;
 
 const MEAL_BANDS: Record<TMealOptionType, { meal: TCalorieMeal; calories: number }> = {
   "Breakfast (500 C)": { meal: "Breakfast", calories: 500 },
@@ -29,7 +29,7 @@ export function mealKindFromOption(mealType: string): TCalorieMeal {
   if (isCalorieMeal(mealType)) {
     return mealType;
   }
-  return mealBandFromType(mealType)?.meal ?? "Other";
+  return mealBandFromType(mealType)?.meal ?? "Snack";
 }
 
 export function caloriesFromOption(option: { calories: number | null; mealType: string }): number {

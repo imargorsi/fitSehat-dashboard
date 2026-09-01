@@ -25,7 +25,7 @@ export async function signUpWithEmail(
   const { error } = await auth.signUp.email(parsed.data);
 
   if (error) {
-    return { error: publicAuthError(error, "Could not create account.") };
+    return { error: publicAuthError(error, "Could not create this space, Precious. Try again with me.") };
   }
 
   redirect("/overview");

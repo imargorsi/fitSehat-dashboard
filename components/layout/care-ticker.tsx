@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { CareLottie } from "@/components/motion/care-lottie";
+import { AnimateIcon } from "@/components/icons/animate-icon";
 
 import { CARE_NOTES, nextCareNoteIndex, personalizeNote } from "@/lib/care-notes";
 import { cn } from "@/lib/utils";
@@ -29,7 +29,7 @@ export function CareTicker({
 
   return (
     <div className={cn("flex min-w-0 items-center gap-2 overflow-hidden", className)}>
-      <CareLottie name="heart" size={28} />
+      <AnimateIcon name="heart" size={24} tone="rose" playOnMount />
       <div className="relative h-8 min-w-0 flex-1 overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.p
@@ -38,7 +38,7 @@ export function CareTicker({
             animate={{ y: 0, opacity: 1 }}
             exit={reduced ? undefined : { y: -10, opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="font-note truncate"
+            className="truncate text-sm text-muted-foreground"
           >
             {text}
           </motion.p>

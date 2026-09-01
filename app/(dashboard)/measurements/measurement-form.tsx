@@ -5,6 +5,7 @@ import { FormError } from "@/components/layout/form-error";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ACTIONS, PLACE } from "@/lib/care-copy";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
 
 export function MeasurementForm({
@@ -28,11 +29,26 @@ export function MeasurementForm({
       </div>
       <div className="grid gap-2">
         <Label htmlFor="weightKg">Weight (kg)</Label>
-        <Input id="weightKg" name="weightKg" type="number" min={0.1} step={0.1} required />
+        <Input
+          id="weightKg"
+          name="weightKg"
+          type="number"
+          min={0.1}
+          step={0.1}
+          required
+          placeholder={PLACE.weight}
+        />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="waistCm">Waist (cm)</Label>
-        <Input id="waistCm" name="waistCm" type="number" min={0.1} step={0.1} />
+        <Input
+          id="waistCm"
+          name="waistCm"
+          type="number"
+          min={0.1}
+          step={0.1}
+          placeholder={PLACE.waist}
+        />
       </div>
       <div className="flex items-end">
         <Button
@@ -41,7 +57,7 @@ export function MeasurementForm({
           className="w-full min-w-0 rounded-full"
           disabled={isPending}
         >
-          {isPending ? "Saving…" : compact ? "Save" : "Save weigh-in"}
+          {isPending ? "Saving…" : compact ? "Save" : ACTIONS.saveWeighIn}
         </Button>
       </div>
       <div className={compact ? "sm:col-span-2" : "sm:col-span-2 lg:col-span-4"}>
@@ -72,6 +88,7 @@ export function ProfileBaselinesForm({
           type="number"
           min={0.1}
           step={0.1}
+          placeholder={PLACE.startWeight}
           defaultValue={startWeightKg ?? undefined}
         />
       </div>
@@ -83,6 +100,7 @@ export function ProfileBaselinesForm({
           type="number"
           min={0.1}
           step={0.1}
+          placeholder={PLACE.targetWeight}
           defaultValue={targetWeightKg ?? undefined}
         />
       </div>
@@ -94,12 +112,13 @@ export function ProfileBaselinesForm({
           type="number"
           min={0.1}
           step={0.1}
+          placeholder={PLACE.startWaist}
           defaultValue={startWaistCm ?? undefined}
         />
       </div>
       <div className="flex items-end">
         <Button type="submit" size="lg" className="w-full min-w-36 rounded-full sm:w-auto" disabled={isPending}>
-          {isPending ? "Saving…" : "Save baselines"}
+          {isPending ? "Saving…" : ACTIONS.saveBaselines}
         </Button>
       </div>
       <div className="sm:col-span-2 lg:col-span-4">

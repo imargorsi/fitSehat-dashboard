@@ -3,18 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Flame,
-  Footprints,
-  LayoutDashboard,
-  MoreHorizontal,
-  Ruler,
-  UtensilsCrossed,
-} from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { signOut } from "@/app/(auth)/sign-out/actions";
-import { CareLottie } from "@/components/motion/care-lottie";
+import { AnimateIcon } from "@/components/icons/animate-icon";
+import { navIconByHref, type TCareIconName } from "@/components/icons/care-icons";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -25,17 +18,6 @@ import {
 } from "@/components/ui/sheet";
 import { dockNav, isMorePath, moreNav } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
-
-const dockIcons = {
-  "/overview": LayoutDashboard,
-  "/calories": Flame,
-  "/meals": UtensilsCrossed,
-  "/workouts": Footprints,
-};
-
-const moreIcons = {
-  "/measurements": Ruler,
-};
 
 export function AppDock() {
   const pathname = usePathname();
@@ -56,7 +38,7 @@ export function AppDock() {
           className="pointer-events-auto mx-auto flex max-w-md items-stretch gap-0.5 rounded-[1.75rem] p-1.5 ring-1 ring-border glass-panel shadow-glow isolate"
         >
           {dockNav.map((item) => {
-            const Icon = dockIcons[item.href as keyof typeof dockIcons];
+            const icon = navIconByHref[item.href];
             const isActive = pathname === item.href;
 
             return (
@@ -82,7 +64,13 @@ export function AppDock() {
                   />
                 ) : null}
                 <span className="relative z-10 flex flex-col items-center gap-0.5">
-                  {Icon ? <Icon className="size-5" /> : null}
+                  {icon ? (
+                    <AnimateIcon
+                      name={icon}
+                      size={20}
+                      tone={isActive ? "foreground" : "muted"}
+                    />
+                  ) : null}
                   <span className="max-w-full truncate">{item.shortLabel}</span>
                 </span>
               </Link>
@@ -109,7 +97,7 @@ export function AppDock() {
               />
             ) : null}
             <span className="relative z-10 flex flex-col items-center gap-0.5">
-              <MoreHorizontal className="size-5" />
+              <AnimateIcon name="ellipsis" size={20} tone={moreActive ? "foreground" : "muted"} />
               <span>More</span>
             </span>
           </motion.button>
@@ -125,16 +113,16 @@ export function AppDock() {
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-foreground/20" />
           <SheetHeader className="px-1 pb-4">
             <div className="flex min-w-0 items-center gap-3">
-              <CareLottie name="letter" size={48} className="shrink-0" />
+              <AnimateIcon name="heart" size={48} tone="rose" playOnMount className="shrink-0" />
               <div className="min-w-0">
-                <SheetTitle className="text-xl">Saved for quieter days</SheetTitle>
-                <SheetDescription>Check-in lives here, whenever Tuesday calls.</SheetDescription>
+                <SheetTitle className="text-xl">Saved for quieter days, Love</SheetTitle>
+                <SheetDescription>Check-in lives here, Guddi, whenever Tuesday calls.</SheetDescription>
               </div>
             </div>
           </SheetHeader>
           <div className="grid gap-2">
             {moreNav.map((item) => {
-              const Icon = moreIcons[item.href as keyof typeof moreIcons];
+              const icon: TCareIconName = navIconByHref[item.href] ?? "activity";
               const isActive = pathname === item.href;
 
               return (
@@ -155,7 +143,7 @@ export function AppDock() {
                       isActive ? "bg-neon-foreground/12" : "bg-muted text-rose"
                     )}
                   >
-                    {Icon ? <Icon className="size-4" /> : null}
+                    {icon ? <AnimateIcon name={icon} size={16} tone={isActive ? "foreground" : "rose"} /> : null}
                   </span>
                   <span className="min-w-0">
                     <span className="block font-heading text-base font-semibold">{item.shortLabel}</span>
@@ -169,7 +157,7 @@ export function AppDock() {
           </div>
           <form action={signOut} className="mt-4">
             <Button type="submit" variant="ghost" className="h-12 w-full rounded-2xl text-muted-foreground">
-              Sign out
+              I'll wait here, Precious
             </Button>
           </form>
         </SheetContent>

@@ -1,5 +1,4 @@
-import { CalendarCheck, Flame, Footprints } from "lucide-react";
-
+import { AnimateIcon } from "@/components/icons/animate-icon";
 import { ModulePanel } from "@/components/layout/module-panel";
 import { PageShell } from "@/components/layout/page-shell";
 import { StatCard } from "@/components/layout/stat-card";
@@ -32,36 +31,36 @@ export default async function WalkPage() {
     <PageShell>
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 [&>*:last-child]:col-span-2 lg:[&>*:last-child]:col-span-1">
         <StatCard
-          icon={<Footprints className="size-4" />}
+          icon={<AnimateIcon name="footprints" size={16} tone="neon" />}
           label="Today"
           countTo={steps}
           unit="steps"
           hint={
             walkAchieved(steps, goal)
-              ? "Goal met. Beautiful consistency."
-              : `A quiet ${formatInt(goal)}-step mark. Rest is allowed.`
+              ? "Goal met, Guddi. Beautiful consistency."
+              : `A gentle ${formatInt(goal)}-step mark, Love. Rest is allowed.`
           }
           meter={{ value: steps, max: goal }}
         />
         <StatCard
-          icon={<Flame className="size-4" />}
+          icon={<AnimateIcon name="flame" size={16} tone="neon" />}
           label="Burn"
           countTo={todayWalk?.caloriesBurned ?? caloriesFromSteps(steps)}
           unit="kcal"
-          hint="A gentle walking estimate. Not a verdict."
+          hint="A gentle walking estimate, Precious. Not a verdict."
         />
         <StatCard
-          icon={<CalendarCheck className="size-4" />}
+          icon={<AnimateIcon name="calendarCheck" size={16} tone="neon" />}
           label="Days met"
           countTo={metDays}
-          hint="Showing up is the glow. Missed days stay kind."
+          hint="Showing up is the glow, Jaan. Missed days stay kind."
         />
       </div>
 
       <ModulePanel
         eyebrow="Today"
-        title="Log today's walk"
-        description="Slide to the steps you took. We keep a soft calorie estimate beside it."
+        title="Log today's walk, Love"
+        description="Slide to the steps you took, Guddi. We keep a soft calorie estimate beside it."
       >
         <WalkSlider key={`${today}-${steps}-${goal}`} today={today} goal={goal} initialSteps={steps || goal} />
       </ModulePanel>
@@ -69,12 +68,12 @@ export default async function WalkPage() {
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
         <ModulePanel
           eyebrow="Rhythm"
-          title="Calendar"
-          description="Peach days met the goal. Gold days you walked. Empty days can be rest."
+          title="Your days, Precious"
+          description="Peach days met the goal. Gold days you walked. Empty days can be rest, Jaan."
         >
           <WalkCalendar today={today} monthStart={startOfMonth(today)} stamps={stamps} />
         </ModulePanel>
-        <ModulePanel eyebrow="Pace" title="Daily goal" description="Change this whenever you like.">
+        <ModulePanel eyebrow="Pace" title="Daily goal, Love" description="Change this whenever you like, Guddi.">
           <WalkGoalForm goal={goal} />
         </ModulePanel>
       </div>

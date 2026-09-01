@@ -1,9 +1,8 @@
 "use client";
 
 import { CountUp } from "@/components/motion/count-up";
-import { CareLottie } from "@/components/motion/care-lottie";
-import { ProgressRing } from "@/components/motion/progress-ring";
-import { GlassCard } from "@/components/layout/glass-card";
+import { AnimateIcon } from "@/components/icons/animate-icon";
+import { ProgressRing } from "@/components/motion/progress-ring";import { GlassCard } from "@/components/layout/glass-card";
 import type { TGlow } from "@/lib/glow.utils";
 
 export function GlowCard({
@@ -28,20 +27,18 @@ export function GlowCard({
           </div>
         </div>
         <div className="min-w-0 flex-1 space-y-1.5">
-          <p className="text-xs tracking-[0.18em] text-muted-foreground uppercase">Today&apos;s glow</p>
+          <p className="text-xs tracking-[0.18em] text-muted-foreground uppercase">Today&apos;s glow, Love</p>
           <h2 className="font-heading text-xl font-semibold tracking-tight sm:text-2xl">{glow.label}</h2>
           <p className="text-sm leading-6 text-muted-foreground">{glow.caption}</p>
           {streak > 0 ? (
             <div className="flex items-center gap-1.5 text-sm text-rose">
-              <CareLottie name="heart" size={26} />
-              {streak} day streak
-            </div>
-          ) : (
-            <p className="font-note">A quiet start still counts.</p>
+              <AnimateIcon name="heart" size={20} tone="rose" playOnMount />
+              {streak} day streak, Precious
+            </div>          ) : (
+            <p className="text-sm text-muted-foreground">A soft start still counts, Guddi.</p>
           )}
         </div>
-        <CareLottie name="watch" size={56} className="hidden shrink-0 2xl:block" />
-      </div>
+        <AnimateIcon name="watch" size={56} tone="rose" playOnMount className="hidden shrink-0 2xl:block" />      </div>
     </GlassCard>
   );
 }

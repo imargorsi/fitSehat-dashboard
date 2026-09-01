@@ -1,15 +1,15 @@
 "use client";
 
-import Link from "next/link";
-
 import { quickAddMealOption } from "@/app/(dashboard)/overview/actions";
+import { AppLinkButton } from "@/components/layout/app-link-button";
 import { EmptyNote } from "@/components/layout/empty-note";
 import { FormError } from "@/components/layout/form-error";
 import { GlassCard } from "@/components/layout/glass-card";
+import { WidgetHeader } from "@/components/layout/widget-header";
 import { Press } from "@/components/motion/press";
 import { Button } from "@/components/ui/button";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
-import { EMPTY } from "@/lib/care-copy";
+import { EMPTY, ACTIONS } from "@/lib/care-copy";
 import { caloriesFromOption, mealKindFromOption } from "@/lib/meals.utils";
 import type { TMealOption } from "@/lib/db/schema";
 import { formatInt } from "@/lib/number.utils";
@@ -19,17 +19,13 @@ export function QuickAddCard({ meals }: { meals: TMealOption[] }) {
 
   return (
     <GlassCard className="flex h-full flex-col">
-      <div className="flex flex-col gap-3 px-5 pt-5 pb-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:pt-6">
-        <div>
-          <p className="font-heading text-lg font-semibold tracking-tight">Quick add</p>
-          <p className="text-sm text-muted-foreground">From your meal options</p>
-        </div>
-        <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/meals" />}>
-          Edit
-        </Button>
-      </div>
+      <WidgetHeader
+        title="Quick add, Precious"
+        subtitle="Meals you already love"
+        actions={<AppLinkButton href="/meals" label="Edit meals" icon="settings" iconTone="muted" />}
+      />
       {items.length === 0 ? (
-        <EmptyNote title={EMPTY.quickAdd.title} body={EMPTY.quickAdd.body} />
+        <EmptyNote title={EMPTY.quickAdd.title} body={EMPTY.quickAdd.body} icon="utensils" tone="gold" />
       ) : (
         <div className="grid grid-cols-2 gap-2 px-4 pb-5 sm:gap-3 sm:px-5">
           {items.map((meal) => (
@@ -65,7 +61,7 @@ function QuickAddItem({ meal }: { meal: TMealOption }) {
           </p>
         </div>
         <Button type="submit" size="sm" className="w-full rounded-full" disabled={isPending}>
-          {isPending ? "Adding…" : "Add"}
+          {isPending ? "Adding…" : ACTIONS.addQuick}
         </Button>
         <FormError error={state && "error" in state ? state.error : undefined} />
       </form>

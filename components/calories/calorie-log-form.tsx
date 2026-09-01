@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { SelectField } from "@/components/ui/select-field";
 import { Textarea } from "@/components/ui/textarea";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
+import { ACTIONS, PLACE } from "@/lib/care-copy";
 import { CALORIE_MEALS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -33,8 +34,8 @@ export function CalorieLogForm({
     return (
       <form ref={formRef} action={formAction} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="grid gap-2">
-          <Label htmlFor="item">Item</Label>
-          <Input id="item" name="item" required placeholder="Chicken bowl" />
+          <Label htmlFor="item">What you ate</Label>
+          <Input id="item" name="item" required placeholder={PLACE.mealItem} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="loggedOn">Date</Label>
@@ -46,27 +47,27 @@ export function CalorieLogForm({
         </div>
         <div className="grid gap-2">
           <Label htmlFor="calories">Calories</Label>
-          <Input id="calories" name="calories" type="number" min={0} step={1} required />
+          <Input id="calories" name="calories" type="number" min={0} step={1} required placeholder={PLACE.calories} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="proteinG">Protein (g)</Label>
-          <Input id="proteinG" name="proteinG" type="number" min={0} step={0.1} />
+          <Input id="proteinG" name="proteinG" type="number" min={0} step={0.1} placeholder={PLACE.protein} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="carbsG">Carbs (g)</Label>
-          <Input id="carbsG" name="carbsG" type="number" min={0} step={0.1} />
+          <Input id="carbsG" name="carbsG" type="number" min={0} step={0.1} placeholder={PLACE.carbs} />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="fatsG">Fats (g)</Label>
-          <Input id="fatsG" name="fatsG" type="number" min={0} step={0.1} />
+          <Input id="fatsG" name="fatsG" type="number" min={0} step={0.1} placeholder={PLACE.fats} />
         </div>
         <div className="grid gap-2 sm:col-span-2 lg:col-span-4">
           <Label htmlFor="notes">Note</Label>
-          <Textarea id="notes" name="notes" placeholder="A quiet detail, if you like" />
+          <Textarea id="notes" name="notes" placeholder={PLACE.notes} />
         </div>
         <div className="flex items-end sm:col-span-2 lg:col-span-4">
           <Button type="submit" size="lg" className="w-full min-w-40 rounded-full sm:w-auto" disabled={isPending}>
-            {isPending ? "Saving…" : "Log meal"}
+            {isPending ? "Saving…" : ACTIONS.logMeal}
           </Button>
         </div>
         <div className="sm:col-span-2 lg:col-span-4">
@@ -82,9 +83,9 @@ export function CalorieLogForm({
       <section className="grid gap-2">
         <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">What</p>
         <Label htmlFor="item" className="sr-only">
-          Item
+          What you ate
         </Label>
-        <Input id="item" name="item" required placeholder="Chicken bowl" />
+        <Input id="item" name="item" required placeholder={PLACE.mealItem} />
       </section>
 
       <section className="grid gap-3">
@@ -127,7 +128,7 @@ export function CalorieLogForm({
             min={0}
             step={1}
             required
-            placeholder="0"
+            placeholder={PLACE.calories}
             className="pr-14"
           />
           <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm text-muted-foreground">
@@ -141,15 +142,15 @@ export function CalorieLogForm({
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <div className="grid gap-2">
             <Label htmlFor="proteinG">Protein</Label>
-            <Input id="proteinG" name="proteinG" type="number" min={0} step={0.1} placeholder="g" />
+            <Input id="proteinG" name="proteinG" type="number" min={0} step={0.1} placeholder={PLACE.protein} />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="carbsG">Carbs</Label>
-            <Input id="carbsG" name="carbsG" type="number" min={0} step={0.1} placeholder="g" />
+            <Input id="carbsG" name="carbsG" type="number" min={0} step={0.1} placeholder={PLACE.carbs} />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="fatsG">Fats</Label>
-            <Input id="fatsG" name="fatsG" type="number" min={0} step={0.1} placeholder="g" />
+            <Input id="fatsG" name="fatsG" type="number" min={0} step={0.1} placeholder={PLACE.fats} />
           </div>
         </div>
       </section>
@@ -159,11 +160,11 @@ export function CalorieLogForm({
         <Label htmlFor="notes" className="sr-only">
           Note
         </Label>
-        <Textarea id="notes" name="notes" placeholder="A quiet detail, if you like" />
+        <Textarea id="notes" name="notes" placeholder={PLACE.notes} />
       </section>
 
       <Button type="submit" size="lg" className="w-full rounded-full" disabled={isPending}>
-        {isPending ? "Saving…" : "Log meal"}
+        {isPending ? "Saving…" : ACTIONS.logMeal}
       </Button>
       <FormError error={state && "error" in state ? state.error : undefined} />
     </form>

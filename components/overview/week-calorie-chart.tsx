@@ -30,13 +30,13 @@ export function WeekCalorieChart({
     <GlassCard className="flex h-full flex-col gap-4 p-5 sm:p-6 lg:p-7">
       <div>
         <p className="text-xs tracking-[0.18em] text-muted-foreground uppercase">Week</p>
-        <p className="font-heading mt-2 text-lg font-semibold tracking-tight">Calories this week</p>
+        <p className="font-heading mt-2 text-lg font-semibold tracking-tight">Calories this week, Precious</p>
         <p className="text-sm leading-6 text-muted-foreground">
           {loggedDays > 0
-            ? `${loggedDays} days of showing up. Look at you moving.`
+            ? `${loggedDays} days of showing up, Guddi. Look at you moving.`
             : goal != null
-              ? `${formatInt(goal)} kcal daily goal · no rush`
-              : "A quiet week can still be a kind week."}
+              ? `${formatInt(goal)} kcal daily mark · no rush, Love`
+              : "A quiet week can still be a kind week, Jaan."}
         </p>
       </div>
       <div className="flex min-h-44 flex-1 flex-col gap-2">

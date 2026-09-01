@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { ChevronDown } from "lucide-react";
-
+import { UiIcon } from "@/components/icons/ui-icon";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -70,7 +69,7 @@ export function SelectField({
           )}
         >
           <span className="min-w-0 truncate">{selected?.label ?? "Choose"}</span>
-          <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
+          <UiIcon name="chevronDown" size={16} className="text-muted-foreground" />
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="start"

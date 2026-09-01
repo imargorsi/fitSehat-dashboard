@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import { AnimateIcon } from "@/components/icons/animate-icon";
 import { formatMonthTitle, monthCells, shiftMonth, startOfMonth } from "@/lib/date.utils";
 import { formatInt } from "@/lib/number.utils";
 import { cn } from "@/lib/utils";
@@ -38,7 +38,7 @@ export function WalkCalendar({
           className="flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Previous month"
         >
-          <ChevronLeft className="size-4" />
+          <AnimateIcon name="chevronLeft" size={18} tone="muted" />
         </button>
         <p className="font-heading min-w-0 truncate text-base font-semibold tracking-tight sm:text-lg">{formatMonthTitle(cursor)}</p>
         <button
@@ -47,7 +47,7 @@ export function WalkCalendar({
           className="flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           aria-label="Next month"
         >
-          <ChevronRight className="size-4" />
+          <AnimateIcon name="chevronRight" size={18} tone="muted" />
         </button>
       </div>
       <div className="grid grid-cols-7 gap-1 text-center text-[0.65rem] tracking-wide text-muted-foreground uppercase sm:gap-1.5 sm:text-xs">
@@ -86,13 +86,13 @@ export function WalkCalendar({
       </div>
       <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full bg-love" /> Met the goal
+          <span className="size-2.5 rounded-full bg-love" /> Met it, Guddi
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full bg-gold/70" /> Walked, still going
+          <span className="size-2.5 rounded-full bg-gold/70" /> Walked, still going, Love
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full bg-muted" /> Rest / not logged
+          <span className="size-2.5 rounded-full bg-muted" /> Rest / not logged, Jaan
         </span>
       </div>
     </div>

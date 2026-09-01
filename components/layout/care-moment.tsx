@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
-import { CareLottie } from "@/components/motion/care-lottie";
+import { AnimateIcon } from "@/components/icons/animate-icon";
 
 export function CareMoment() {
   const reduced = useReducedMotion();
@@ -39,7 +39,7 @@ export function CareMoment() {
             transition={{ duration: 2.6, ease: "easeOut" }}
             className="absolute right-[12%] bottom-28 lg:bottom-16"
           >
-            <CareLottie name="heart" size={40} />
+            <AnimateIcon name="heart" size={40} tone="rose" playOnMount />
           </motion.span>
         ) : null}
       </AnimatePresence>

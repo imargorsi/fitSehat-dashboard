@@ -1,5 +1,4 @@
-import { Beef, Flame, Scale, UtensilsCrossed } from "lucide-react";
-
+import { AnimateIcon } from "@/components/icons/animate-icon";
 import { GlowMilestones } from "@/components/layout/glow-milestones";
 import { MealDots, StatCard } from "@/components/layout/stat-card";
 import { CheckInWidget } from "@/components/overview/check-in-widget";
@@ -109,21 +108,21 @@ export default async function OverviewPage() {
       />
 
       <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(16rem,3fr)]">
-        <QuoteHero name={name} periodLabel={greetingPeriodLabel(period)} dateLabel={formatLongDate(today)} />
+        <QuoteHero name={name} periodLabel={greetingPeriodLabel(period, name)} dateLabel={formatLongDate(today).toUpperCase()} />
         <GlowCard glow={glow} streak={streak} />
       </div>
 
       <div className="grid min-w-0 grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatCard
-          icon={<Flame className="size-4" />}
-          label="Calories"
+          icon={<AnimateIcon name="flame" size={16} tone="neon" />}
+          label="Fuel"
           countTo={todayTotals.calories}
           unit="kcal"
           hint={calorieCaption(todayTotals.calories, calorieGoal, caloriesLeft)}
           meter={calorieGoal != null ? { value: todayTotals.calories, max: calorieGoal } : undefined}
         />
         <StatCard
-          icon={<Beef className="size-4" />}
+          icon={<AnimateIcon name="activity" size={16} tone="neon" />}
           label="Protein"
           countTo={Math.round(todayTotals.protein)}
           unit="g"
@@ -131,7 +130,7 @@ export default async function OverviewPage() {
           meter={proteinGoal != null ? { value: todayTotals.protein, max: proteinGoal } : undefined}
         />
         <StatCard
-          icon={<Scale className="size-4" />}
+          icon={<AnimateIcon name="trend" size={16} tone="violet" />}
           tone="violet"
           label="Weight"
           value={latestWeight != null ? formatNum(latestWeight) : "—"}
@@ -139,7 +138,7 @@ export default async function OverviewPage() {
           hint={weightCaption(latestWeight != null, weightDelta)}
         />
         <StatCard
-          icon={<UtensilsCrossed className="size-4" />}
+          icon={<AnimateIcon name="utensils" size={16} tone="neon" />}
           label="Meals"
           countTo={coreLogged.size}
           suffix=" / 4"
@@ -163,8 +162,8 @@ export default async function OverviewPage() {
         <WeekCalorieChart bars={bars} goal={calorieGoal} />
       </div>
 
-      <p className="font-note pb-4 text-center">
-        Take care of yourself. Keep going. Someone is always rooting for you.
+      <p className="pb-4 text-center text-sm leading-6 text-muted-foreground">
+        Take care of yourself, Guddi. Keep going. Someone is always rooting for you.
       </p>
     </div>
   );
