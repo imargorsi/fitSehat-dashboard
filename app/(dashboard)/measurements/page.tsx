@@ -1,0 +1,145 @@
+import { Ruler, Scale, Target, TrendingDown } from "lucide-react";
+
+import { deleteMeasurement } from "@/app/(dashboard)/measurements/actions";
+import {
+  MeasurementForm,
+  ProfileBaselinesForm,
+} from "@/app/(dashboard)/measurements/measurement-form";
+import { DeleteRowButton } from "@/components/layout/delete-row-button";
+import { EmptyNote } from "@/components/layout/empty-note";
+import { ModulePanel } from "@/components/layout/module-panel";
+import { PageShell } from "@/components/layout/page-shell";
+import { SoftRow } from "@/components/layout/soft-row";
+import { StatCard } from "@/components/layout/stat-card";
+import { WeightTrendChart } from "@/components/overview/weight-trend-chart";
+import { EMPTY } from "@/lib/care-copy";
+import { formatMediumDate, latestTuesdayOnOrBefore, todayDateString } from "@/lib/date.utils";
+import { listMeasurements } from "@/lib/db/measurements";
+import { ensureProfile } from "@/lib/db/profiles";
+import { formatNumber, toNumber } from "@/lib/number.utils";
+import { requireAuthUser } from "@/lib/session";
+
+function lostAmount(start: number | null, current: number | null): number | null {
+  if (start == null || current == null) {
+    return null;
+  }
+  return Math.round((start - current) * 10) / 10;
+}
+
+function lostHint(lost: number | null, unit: string): string {
+  if (lost == null) {
+    return "Set a start baseline when you are ready.";
+  }
+  if (lost === 0) {
+    return "Steady versus start. Showing up is the glow.";
+  }
+  if (lost > 0) {
+    return `↓ ${lost} ${unit} from start. Beautiful consistency.`;
+  }
+  return `↑ ${Math.abs(lost)} ${unit} from start. Numbers move. You are still on your way.`;
+}
+
+export default async function MeasurementsPage() {
+  const user = await requireAuthUser();
+  const today = todayDateString();
+  const profile = await ensureProfile(user.id);
+  const rows = await listMeasurements(user.id);
+  const latest = rows[0];
+  const startWeight = toNumber(profile.startWeightKg);
+  const startWaist = toNumber(profile.startWaistCm);
+  const latestWeight = latest ? toNumber(latest.weightKg) : null;
+  const latestWaist = latest ? toNumber(latest.waistCm) : null;
+  const weightLost = lostAmount(startWeight, latestWeight);
+  const waistLost = lostAmount(startWaist, latestWaist);
+  const trend = [...rows]
+    .reverse()
+    .slice(-8)
+    .flatMap((row) => {
+      const value = toNumber(row.weightKg);
+      if (value == null) {
+        return [];
+      }
+      return [{ label: String(row.measuredOn).slice(0, 10), value }];
+    });
+
+  return (
+    <PageShell>
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <StatCard
+          icon={<Scale className="size-4" />}
+          tone="violet"
+          label="Latest weight"
+          value={latestWeight != null ? formatNumber(latestWeight) : "—"}
+          unit="kg"
+          hint={latest ? formatMediumDate(String(latest.measuredOn).slice(0, 10)) : "Tuesday is a check-in, not a verdict."}
+        />
+        <StatCard
+          icon={<TrendingDown className="size-4" />}
+          tone="violet"
+          label="Weight lost"
+          value={weightLost != null ? formatNumber(Math.abs(weightLost)) : "—"}
+          unit="kg"
+          hint={lostHint(weightLost, "kg")}
+        />
+        <StatCard
+          icon={<Ruler className="size-4" />}
+          label="Latest waist"
+          value={latestWaist != null ? formatNumber(latestWaist) : "—"}
+          unit="cm"
+          hint={lostHint(waistLost, "cm")}
+        />
+        <StatCard
+          icon={<Target className="size-4" />}
+          label="Target weight"
+          value={formatNumber(profile.targetWeightKg)}
+          unit="kg"
+          hint="A north star. Rest days still count."
+        />
+      </div>
+
+      <div className="grid gap-5 lg:grid-cols-2">
+        <ModulePanel
+          eyebrow="Start"
+          title="Baselines"
+          description="Loss is derived from these start values. Change them whenever the story starts over."
+        >
+          <ProfileBaselinesForm
+            key={String(profile.updatedAt)}
+            startWeightKg={profile.startWeightKg}
+            targetWeightKg={profile.targetWeightKg}
+            startWaistCm={profile.startWaistCm}
+          />
+        </ModulePanel>
+        <ModulePanel
+          eyebrow="Tuesday"
+          title="Weigh-in"
+          description="Saving the same date updates that day. The number is not a verdict."
+        >
+          <MeasurementForm defaultDate={latestTuesdayOnOrBefore(today)} />
+        </ModulePanel>
+      </div>
+
+      <div className="grid gap-5 lg:grid-cols-2">
+        <WeightTrendChart points={trend} />
+        <ModulePanel eyebrow="Ledger" title="History" description="Newest first.">
+          {rows.length === 0 ? (
+            <EmptyNote title={EMPTY.measurements.title} body={EMPTY.measurements.body} />
+          ) : (
+            <ul className="space-y-2.5">
+              {rows.map((row, index) => (
+                <li key={row.id}>
+                  <SoftRow
+                    title={`${formatNumber(row.weightKg)} kg${row.waistCm ? ` · ${formatNumber(row.waistCm)} cm` : ""}`}
+                    subtitle={`${formatMediumDate(String(row.measuredOn).slice(0, 10))} · lost ${lostAmount(startWeight, toNumber(row.weightKg)) ?? "—"} kg`}
+                    value={<span className="text-xs tabular-nums text-muted-foreground">{rows.length - index}</span>}
+                    action={<DeleteRowButton action={deleteMeasurement} id={row.id} />}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </ModulePanel>
+      </div>
+    </PageShell>
+  );
+}
