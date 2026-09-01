@@ -1,6 +1,5 @@
 import { PET_NAMES } from "@/lib/constants";
 import { formatInt } from "@/lib/number.utils";
-import { pickStable } from "@/lib/care-notes";
 
 export { PET_NAMES };
 
@@ -36,62 +35,6 @@ export const CELEBRATIONS = {
 } as const;
 
 export type TCelebrateKind = keyof typeof CELEBRATIONS;
-
-const GREETING_SUBLINES = {
-  morning: [
-    "Ready to take care of yourself today, Guddi?",
-    "Here is how your healthy glow is doing, Love.",
-    "Slow, kind, and yours, Precious.",
-  ],
-  afternoon: [
-    "Here is how your healthy glow is doing, Jaan.",
-    "A little progress is still progress, Guddi.",
-    "I am rooting for you, always, Love.",
-  ],
-  evening: [
-    "Be proud of what you already did, Precious.",
-    "If today was quiet, tomorrow is another chance, Jaan.",
-    "Rest days matter too, Love. I have got you.",
-  ],
-} as const;
-
-export function greetingPeriodLabel(
-  period: "morning" | "afternoon" | "evening",
-  name?: string
-): string {
-  const nick = name?.trim() || "Guddi";
-  if (period === "morning") {
-    return `Good morning, ${nick}`;
-  }
-  if (period === "afternoon") {
-    return `Good afternoon, ${nick}`;
-  }
-  return `Good evening, ${nick}`;
-}
-const GLOW_TITLES = {
-  morning: "Your Healthy Glow, Love",
-  afternoon: "Today's Journey, Precious",
-  evening: "A little progress every day, Guddi",
-} as const;
-
-export function greetingDisplayTitle(period: "morning" | "afternoon" | "evening"): string {
-  return GLOW_TITLES[period];
-}
-
-export function greetingAccent(name?: string): string {
-  const safe = name?.trim();
-  if (safe) {
-    return `Proud of you, ${safe}`;
-  }
-  return `Proud of you, ${pickStable(PET_NAMES, "accent")}`;
-}
-
-export function greetingSubline(
-  period: "morning" | "afternoon" | "evening",
-  seed: string
-): string {
-  return pickStable(GREETING_SUBLINES[period], `${seed}-sub`);
-}
 
 export function calorieCaption(
   value: number,

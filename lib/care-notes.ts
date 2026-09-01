@@ -23,11 +23,6 @@ export const CARE_NOTES = [
   "Hey Jaan, a little care today still counts.",
 ] as const;
 
-export function personalizeNote(note: string, name: string): string {
-  const safe = name.trim() || pickStable(PET_NAMES, note);
-  return note.replaceAll("{name}", safe);
-}
-
 export function nextCareNoteIndex(current: number, length: number): number {
   if (length <= 1) {
     return 0;

@@ -5,18 +5,20 @@ import { EmptyNote } from "@/components/layout/empty-note";
 import { GlassCard } from "@/components/layout/glass-card";
 import { SoftRow } from "@/components/layout/soft-row";
 import { WidgetHeader } from "@/components/layout/widget-header";
-import { AnimateIcon } from "@/components/icons/animate-icon";import { EMPTY } from "@/lib/care-copy";
+import { AnimateIcon } from "@/components/icons/animate-icon";
+import { EMPTY } from "@/lib/care-copy";
 import { formatClock } from "@/lib/date.utils";
 import { formatInt, formatNumber } from "@/lib/number.utils";
 import type { TCalorieLog } from "@/lib/db/schema";
+import type { TCalorieMeal } from "@/lib/constants";
 
-const mealIcon = {
-  Breakfast: "sun" as const,
-  Lunch: "utensils" as const,
-  Dinner: "utensils" as const,
-  Snack: "sparkles" as const,
-  Other: "utensils" as const,
+const mealIcon: Record<TCalorieMeal, "sun" | "utensils" | "sparkles"> = {
+  Breakfast: "sun",
+  Lunch: "utensils",
+  Dinner: "utensils",
+  Snack: "sparkles",
 };
+
 export function TodayMealsCard({
   logs,
   totalCalories,
@@ -38,7 +40,7 @@ export function TodayMealsCard({
         ) : (
           <ul className="space-y-2">
             {logs.map((log) => {
-              const icon = mealIcon[log.meal as keyof typeof mealIcon] ?? "utensils";
+              const icon = mealIcon[log.meal as TCalorieMeal] ?? "utensils";
               return (
                 <li key={log.id}>
                   <Link href="/calories" className="block">
@@ -48,7 +50,8 @@ export function TodayMealsCard({
                         <span className="flex size-10 items-center justify-center rounded-2xl border border-border/40 bg-rose/10">
                           <AnimateIcon name={icon} size={18} tone="rose" />
                         </span>
-                      }                      title={log.item}
+                      }
+                      title={log.item}
                       subtitle={`${log.meal} · ${formatClock(log.createdAt)}${log.notes ? ` · ${log.notes}` : ""}`}
                       value={
                         <span>
@@ -58,7 +61,8 @@ export function TodayMealsCard({
                           </span>
                         </span>
                       }
-                      action={<AnimateIcon name="chevron" size={16} tone="muted" />}                    />
+                      action={<AnimateIcon name="chevron" size={16} tone="muted" />}
+                    />
                   </Link>
                 </li>
               );
