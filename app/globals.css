@@ -252,8 +252,9 @@
   .hero-quote-underline {
     display: block;
     margin-top: 0.85rem;
+    margin-inline: auto;
     height: 0.22rem;
-    max-width: 12rem;
+    width: min(12rem, 72%);
     border-radius: 999px;
     background: linear-gradient(90deg, color-mix(in oklch, var(--neon) 70%, transparent), transparent);
   }

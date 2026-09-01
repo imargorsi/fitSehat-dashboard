@@ -14,7 +14,7 @@ export function GlowCard({
   streak: number;
 }) {
   return (
-    <GlassCard className="relative flex h-full min-h-[24rem] flex-col justify-center overflow-hidden p-5 sm:p-7 lg:p-8">
+    <GlassCard className="relative flex h-full min-h-0 flex-col justify-center overflow-hidden p-4 sm:min-h-[20rem] sm:p-6 lg:min-h-[24rem] lg:p-8">
       <div className="pointer-events-none absolute -top-16 right-8 size-48 rounded-full bg-rose/12 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-20 left-10 size-40 rounded-full bg-gold/10 blur-3xl" />
       <div className="flex h-full flex-col items-center justify-center gap-5 text-center sm:flex-row sm:items-center sm:text-left">
