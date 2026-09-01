@@ -68,7 +68,7 @@ export function AppDock() {
                     <AnimateIcon
                       name={icon}
                       size={20}
-                      tone={isActive ? "foreground" : "muted"}
+                      tone={isActive ? "onLove" : "muted"}
                     />
                   ) : null}
                   <span className="max-w-full truncate">{item.shortLabel}</span>
@@ -97,7 +97,7 @@ export function AppDock() {
               />
             ) : null}
             <span className="relative z-10 flex flex-col items-center gap-0.5">
-              <AnimateIcon name="ellipsis" size={20} tone={moreActive ? "foreground" : "muted"} />
+              <AnimateIcon name="ellipsis" size={20} tone={moreActive ? "onLove" : "muted"} />
               <span>More</span>
             </span>
           </motion.button>
@@ -143,7 +143,7 @@ export function AppDock() {
                       isActive ? "bg-neon-foreground/12" : "bg-muted text-rose"
                     )}
                   >
-                    {icon ? <AnimateIcon name={icon} size={16} tone={isActive ? "foreground" : "rose"} /> : null}
+                    {icon ? <AnimateIcon name={icon} size={16} tone={isActive ? "onLove" : "rose"} /> : null}
                   </span>
                   <span className="min-w-0">
                     <span className="block font-heading text-base font-semibold">{item.shortLabel}</span>
@@ -157,7 +157,8 @@ export function AppDock() {
           </div>
           <form action={signOut} className="mt-4">
             <Button type="submit" variant="ghost" className="h-12 w-full rounded-2xl text-muted-foreground">
-              I'll wait here, Precious
+              <AnimateIcon name="logout" size={16} tone="muted" />
+              I&apos;ll wait here, Precious
             </Button>
           </form>
         </SheetContent>

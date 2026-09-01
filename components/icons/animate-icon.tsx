@@ -16,7 +16,7 @@ export function AnimateIcon({
 }: {
   name: TCareIconName;
   size?: number;
-  tone?: "rose" | "gold" | "neon" | "violet" | "muted" | "foreground";
+  tone?: "rose" | "gold" | "neon" | "violet" | "onLove" | "muted" | "foreground";
   className?: string;
   playOnMount?: boolean;
 }) {
@@ -37,6 +37,7 @@ export function AnimateIcon({
     gold: "text-gold",
     neon: "text-neon",
     violet: "text-violet",
+    onLove: "text-neon-foreground",
     muted: "text-muted-foreground",
     foreground: "text-foreground",
   }[tone];

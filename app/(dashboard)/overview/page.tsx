@@ -12,7 +12,6 @@ import { WeekCalorieChart } from "@/components/overview/week-calorie-chart";
 import { aggregateLogs, dailyTotals } from "@/lib/calories.utils";
 import {
   calorieCaption,
-  greetingPeriodLabel,
   mealsCaption,
   proteinCaption,
   weightCaption,
@@ -20,7 +19,6 @@ import {
 import {
   addDays,
   formatLongDate,
-  greetingWord,
   startOfWeekMonday,
   todayDateString,
   weekDaysMonday,
@@ -35,7 +33,6 @@ import { loggingStreak, meterPercent, todayGlow, uniqueLogDays } from "@/lib/glo
 import { formatNumber as formatNum, toNumber } from "@/lib/number.utils";
 import { loggedCoreMeals, remainingAmount } from "@/lib/overview.utils";
 import { requireAuthUser } from "@/lib/session";
-import { firstName } from "@/lib/user.utils";
 import { caloriesFromSteps, DEFAULT_STEP_GOAL, walkAchieved } from "@/lib/walk.utils";
 
 export default async function OverviewPage() {
@@ -43,8 +40,6 @@ export default async function OverviewPage() {
   const today = todayDateString();
   const weekStart = startOfWeekMonday(today);
   const weekAgo = addDays(today, -7);
-  const name = firstName(user.name);
-  const period = greetingWord();
 
   const [target, rangeLogs, measurements, meals, profile, todayWalk] = await Promise.all([
     getActiveMacroTarget(user.id),
@@ -107,8 +102,8 @@ export default async function OverviewPage() {
         score={glow.score}
       />
 
-      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(16rem,3fr)]">
-        <QuoteHero name={name} periodLabel={greetingPeriodLabel(period, name)} dateLabel={formatLongDate(today).toUpperCase()} />
+      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(16rem,3fr)] lg:items-stretch">
+        <QuoteHero dateLabel={formatLongDate(today).toUpperCase()} />
         <GlowCard glow={glow} streak={streak} />
       </div>
 

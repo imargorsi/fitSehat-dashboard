@@ -8,13 +8,15 @@ export function GlassCard({
   children,
   className,
   tilt = true,
+  magic = true,
 }: {
   children: ReactNode;
   className?: string;
   tilt?: boolean;
+  magic?: boolean;
 }) {
   return (
-    <TiltSpotlight className={className} tilt={tilt}>
+    <TiltSpotlight className={className} tilt={tilt} magic={magic}>
       {children}
     </TiltSpotlight>
   );

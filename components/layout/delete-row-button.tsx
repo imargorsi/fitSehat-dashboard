@@ -1,3 +1,4 @@
+import { UiIcon } from "@/components/icons/ui-icon";
 import { Button } from "@/components/ui/button";
 
 export function DeleteRowButton({
@@ -11,6 +12,7 @@ export function DeleteRowButton({
     <form action={action}>
       <input type="hidden" name="id" value={id} />
       <Button type="submit" variant="ghost" size="sm" className="text-muted-foreground hover:text-rose">
+        <UiIcon name="close" size={14} className="text-current" />
         Let go
       </Button>
     </form>

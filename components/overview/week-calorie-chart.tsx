@@ -27,8 +27,8 @@ export function WeekCalorieChart({
   const loggedDays = bars.filter((bar) => bar.calories > 0).length;
 
   return (
-    <GlassCard className="flex h-full flex-col gap-4 p-5 sm:p-6 lg:p-7">
-      <div>
+    <GlassCard className="flex h-full min-h-[20rem] flex-col gap-4 p-5 sm:p-6 lg:p-7">
+      <div className="shrink-0">
         <p className="text-xs tracking-[0.18em] text-muted-foreground uppercase">Week</p>
         <p className="font-heading mt-2 text-lg font-semibold tracking-tight">Calories this week, Precious</p>
         <p className="text-sm leading-6 text-muted-foreground">
@@ -39,46 +39,49 @@ export function WeekCalorieChart({
               : "A quiet week can still be a kind week, Jaan."}
         </p>
       </div>
-      <div className="flex min-h-44 flex-1 flex-col gap-2">
-        <div className="relative flex h-32 items-end gap-1.5 sm:h-36 sm:gap-2">
-          {goalTop != null ? (
-            <div
-              className="pointer-events-none absolute right-0 left-0 border-t border-dashed border-neon/40"
-              style={{ top: `${goalTop}%` }}
-            />
-          ) : null}
-          {bars.map((bar, index) => {
-            const height = Math.max(8, (bar.calories / peak) * 100);
-            return (
-              <div key={bar.date} className="flex h-full min-w-0 flex-1 items-end justify-center">
+
+      <div className="relative flex min-h-[12rem] flex-1 items-stretch gap-1.5 sm:min-h-[14rem] sm:gap-2">
+        {goalTop != null ? (
+          <div
+            className="pointer-events-none absolute right-0 left-0 border-t border-dashed border-neon/40"
+            style={{ top: `${goalTop}%` }}
+          />
+        ) : null}
+        {bars.map((bar, index) => {
+          const height = Math.max(10, (bar.calories / peak) * 100);
+          return (
+            <div key={bar.date} className="flex min-w-0 flex-1 flex-col items-center">
+              <div className="flex w-full flex-1 items-end justify-center pb-2">
                 <motion.div
                   title={`${bar.label}: ${formatInt(bar.calories)} kcal`}
                   className={cn(
-                    "w-full max-w-8 origin-bottom rounded-t-2xl",
-                    bar.isToday ? "bg-love shadow-glow" : bar.calories > 0 ? "bg-rose/45" : "bg-muted"
+                    "w-full max-w-9 origin-bottom rounded-full",
+                    bar.isToday ? "bg-love shadow-glow" : bar.calories > 0 ? "bg-rose/45" : "bg-muted/80"
                   )}
-                  initial={{ height: reduced ? `${height}%` : "8%" }}
+                  initial={{ height: reduced ? `${height}%` : "10%" }}
                   animate={{ height: `${height}%` }}
                   transition={{ duration: reduced ? 0 : 0.7, delay: reduced ? 0 : index * 0.05, ease: EASE_OUT }}
-                  whileHover={reduced ? undefined : { scaleY: 1.06 }}
+                  whileHover={reduced ? undefined : { scaleY: 1.04 }}
                 />
               </div>
-            );
-          })}
-        </div>
-        <div className="flex gap-2">
-          {bars.map((bar) => (
-            <span
-              key={`${bar.date}-label`}
-              className={cn(
-                "min-w-0 flex-1 text-center text-xs",
-                bar.isToday ? "font-medium text-rose" : "text-muted-foreground"
-              )}
-            >
-              {bar.label}
-            </span>
-          ))}
-        </div>
+              <div className="flex shrink-0 flex-col items-center gap-1.5">
+                {bar.isToday ? (
+                  <span aria-hidden className="h-1 w-5 rounded-full bg-love shadow-glow" />
+                ) : (
+                  <span aria-hidden className="h-1 w-5" />
+                )}
+                <span
+                  className={cn(
+                    "text-center text-xs",
+                    bar.isToday ? "font-medium text-rose" : "text-muted-foreground"
+                  )}
+                >
+                  {bar.label}
+                </span>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </GlassCard>
   );

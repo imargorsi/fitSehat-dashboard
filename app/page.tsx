@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { BrandLogo } from "@/components/layout/brand-logo";
+import { UiIcon } from "@/components/icons/ui-icon";
 import { Button } from "@/components/ui/button";
 import { ACTIONS } from "@/lib/care-copy";
 import { APP_NAME } from "@/lib/constants";
@@ -29,14 +30,17 @@ export default async function HomePage() {
         <div className="mt-8 flex w-full max-w-sm flex-col gap-3">
           {user ? (
             <Button size="lg" className="w-full" render={<Link href="/overview" />}>
+              <UiIcon name="dashboard" size={16} className="text-current" />
               {ACTIONS.openTracker}
             </Button>
           ) : (
             <>
               <Button size="lg" className="w-full" render={<Link href="/sign-up" />}>
+                <UiIcon name="heart" size={16} className="text-current" />
                 {ACTIONS.begin}
               </Button>
               <Button size="lg" variant="ghost" className="w-full" render={<Link href="/sign-in" />}>
+                <UiIcon name="heart" size={16} className="text-current" />
                 {ACTIONS.alreadyHaveKey}
               </Button>
             </>

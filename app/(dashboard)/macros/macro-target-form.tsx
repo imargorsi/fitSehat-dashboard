@@ -2,7 +2,7 @@
 
 import { createMacroTarget } from "@/app/(dashboard)/macros/actions";
 import { FormError } from "@/components/layout/form-error";
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/components/layout/action-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
@@ -73,9 +73,9 @@ export function MacroTargetForm() {
           </div>
         </div>
       </div>
-      <Button type="submit" size="lg" className="w-full rounded-full sm:w-auto" disabled={isPending}>
-        {isPending ? "Saving for you…" : "Keep this, Jaan"}
-      </Button>
+      <ActionButton type="submit" size="lg" icon="flame" pending={isPending} pendingLabel="Saving for you…" className="w-full rounded-full sm:w-auto">
+        Keep this, Jaan
+      </ActionButton>
       <FormError error={state && "error" in state ? state.error : undefined} />
     </form>
   );

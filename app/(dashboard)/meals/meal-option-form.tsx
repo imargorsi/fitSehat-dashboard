@@ -2,7 +2,7 @@
 
 import { createMealOption } from "@/app/(dashboard)/meals/actions";
 import { FormError } from "@/components/layout/form-error";
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/components/layout/action-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SelectField } from "@/components/ui/select-field";
@@ -51,9 +51,9 @@ export function MealOptionForm() {
         <Textarea id="notes" name="notes" placeholder={PLACE.notes} />
       </div>
       <div className="flex items-end sm:col-span-2 lg:col-span-4">
-        <Button type="submit" size="lg" className="w-full min-w-36 rounded-full sm:w-auto" disabled={isPending}>
-          {isPending ? "Saving…" : ACTIONS.addMeal}
-        </Button>
+        <ActionButton type="submit" size="lg" icon="utensils" pending={isPending} className="w-full min-w-36 rounded-full sm:w-auto">
+          {ACTIONS.addMeal}
+        </ActionButton>
       </div>
       <div className="sm:col-span-2 lg:col-span-4">
         <FormError error={state && "error" in state ? state.error : undefined} />

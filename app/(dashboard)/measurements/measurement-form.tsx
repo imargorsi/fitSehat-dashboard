@@ -2,7 +2,7 @@
 
 import { saveMeasurement, saveProfileBaselines } from "@/app/(dashboard)/measurements/actions";
 import { FormError } from "@/components/layout/form-error";
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/components/layout/action-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ACTIONS, PLACE } from "@/lib/care-copy";
@@ -51,14 +51,15 @@ export function MeasurementForm({
         />
       </div>
       <div className="flex items-end">
-        <Button
+        <ActionButton
           type="submit"
           size={compact ? "default" : "lg"}
+          icon="activity"
+          pending={isPending}
           className="w-full min-w-0 rounded-full"
-          disabled={isPending}
         >
-          {isPending ? "Saving…" : compact ? "Save" : ACTIONS.saveWeighIn}
-        </Button>
+          {compact ? "Save" : ACTIONS.saveWeighIn}
+        </ActionButton>
       </div>
       <div className={compact ? "sm:col-span-2" : "sm:col-span-2 lg:col-span-4"}>
         <FormError error={state && "error" in state ? state.error : undefined} />
@@ -117,9 +118,9 @@ export function ProfileBaselinesForm({
         />
       </div>
       <div className="flex items-end">
-        <Button type="submit" size="lg" className="w-full min-w-36 rounded-full sm:w-auto" disabled={isPending}>
-          {isPending ? "Saving…" : ACTIONS.saveBaselines}
-        </Button>
+        <ActionButton type="submit" size="lg" icon="settings" pending={isPending} className="w-full min-w-36 rounded-full sm:w-auto">
+          {ACTIONS.saveBaselines}
+        </ActionButton>
       </div>
       <div className="sm:col-span-2 lg:col-span-4">
         <FormError error={state && "error" in state ? state.error : undefined} />

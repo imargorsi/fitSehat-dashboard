@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from "motion/react";
 import { toast } from "sonner";
 
 import { saveWalkDay } from "@/app/(dashboard)/workouts/actions";
+import { ActionButton } from "@/components/layout/action-button";
 import { FormError } from "@/components/layout/form-error";
-import { Button } from "@/components/ui/button";
 import { ACTIONS, CELEBRATIONS } from "@/lib/care-copy";
 import { pickRandom } from "@/lib/care-notes";
 import type { TFormState } from "@/lib/form-state.types";
@@ -142,14 +142,16 @@ export function WalkSlider({
       )}
 
       <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
-        <Button
+        <ActionButton
           type="submit"
           size={compact ? "default" : "lg"}
+          icon="footprints"
+          pending={isPending}
+          pendingLabel="Saving for you…"
           className="w-full rounded-full sm:w-auto"
-          disabled={isPending}
         >
-          {isPending ? "Saving for you…" : compact ? ACTIONS.saveCompact : ACTIONS.saveWalk}
-        </Button>
+          {compact ? ACTIONS.saveCompact : ACTIONS.saveWalk}
+        </ActionButton>
         <FormError error={state && "error" in state ? state.error : undefined} />
       </div>
     </form>

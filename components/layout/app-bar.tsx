@@ -61,7 +61,7 @@ export function AppBar({ user }: { user: TAuthUser }) {
                     <AnimateIcon
                       name={icon}
                       size={16}
-                      tone={isActive ? "foreground" : "muted"}
+                      tone={isActive ? "onLove" : "muted"}
                       className="relative z-10"
                     />
                   ) : null}

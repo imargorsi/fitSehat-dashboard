@@ -3,6 +3,7 @@
 import { type PointerEvent, type ReactNode, useRef } from "react";
 import { motion, useMotionTemplate, useMotionValue, useReducedMotion } from "motion/react";
 
+import { MagicCard } from "@/components/ui/magic-card";
 import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -10,10 +11,12 @@ export function TiltSpotlight({
   children,
   className,
   tilt = true,
+  magic = true,
 }: {
   children: ReactNode;
   className?: string;
   tilt?: boolean;
+  magic?: boolean;
 }) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
@@ -40,29 +43,37 @@ export function TiltSpotlight({
     opacity.set(0);
   }
 
+  const panel = (
+    <div
+      ref={ref}
+      onPointerMove={onMove}
+      onPointerLeave={onLeave}
+      className="glass-panel relative flex h-full min-h-0 flex-col overflow-hidden rounded-[inherit] border border-border/35"
+    >
+      {showSpot ? (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{ background: spot, opacity }}
+        />
+      ) : null}
+      <div className={cn("relative z-10 flex min-h-0 flex-1 flex-col", className)}>{children}</div>
+    </div>
+  );
+
   return (
     <motion.div
       initial={reduced ? false : { opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.14, margin: "-28px" }}
       transition={{ duration: 0.42, ease: EASE_OUT }}
-      className="h-full"
+      className="h-full rounded-[1.75rem]"
     >
-      <div
-        ref={ref}
-        onPointerMove={onMove}
-        onPointerLeave={onLeave}
-        className="glass-panel relative h-full overflow-hidden rounded-[1.75rem] border border-border/35"
-      >
-        {showSpot ? (
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 z-0"
-            style={{ background: spot, opacity }}
-          />
-        ) : null}
-        <div className={cn("relative z-10 h-full", className)}>{children}</div>
-      </div>
+      {magic && !reduced ? (
+        <MagicCard className="h-full rounded-[1.75rem]">{panel}</MagicCard>
+      ) : (
+        panel
+      )}
     </motion.div>
   );
 }

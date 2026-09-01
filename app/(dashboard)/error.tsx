@@ -1,7 +1,7 @@
 "use client";
 
 import { QuietScreen } from "@/components/layout/quiet-screen";
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/components/layout/action-button";
 
 export default function DashboardError({ reset }: { reset: () => void }) {
   return (
@@ -9,9 +9,9 @@ export default function DashboardError({ reset }: { reset: () => void }) {
       title="A pause, Love"
       body="This screen hit a snag, Guddi. Your logs are still here. Try again when you are ready."
       action={
-        <Button type="button" className="rounded-full" onClick={reset}>
+        <ActionButton type="button" icon="history" className="rounded-full" onClick={reset}>
           Try with me, Precious
-        </Button>
+        </ActionButton>
       }
     />
   );

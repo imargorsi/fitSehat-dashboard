@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import { createCalorieLog } from "@/app/(dashboard)/calories/actions";
+import { ActionButton } from "@/components/layout/action-button";
 import { FormError } from "@/components/layout/form-error";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SelectField } from "@/components/ui/select-field";
@@ -66,9 +66,15 @@ export function CalorieLogForm({
           <Textarea id="notes" name="notes" placeholder={PLACE.notes} />
         </div>
         <div className="flex items-end sm:col-span-2 lg:col-span-4">
-          <Button type="submit" size="lg" className="w-full min-w-40 rounded-full sm:w-auto" disabled={isPending}>
-            {isPending ? "Saving…" : ACTIONS.logMeal}
-          </Button>
+          <ActionButton
+            type="submit"
+            size="lg"
+            icon="flame"
+            pending={isPending}
+            className="w-full min-w-40 rounded-full sm:w-auto"
+          >
+            {ACTIONS.logMeal}
+          </ActionButton>
         </div>
         <div className="sm:col-span-2 lg:col-span-4">
           <FormError error={state && "error" in state ? state.error : undefined} />
@@ -163,9 +169,9 @@ export function CalorieLogForm({
         <Textarea id="notes" name="notes" placeholder={PLACE.notes} />
       </section>
 
-      <Button type="submit" size="lg" className="w-full rounded-full" disabled={isPending}>
-        {isPending ? "Saving…" : ACTIONS.logMeal}
-      </Button>
+      <ActionButton type="submit" size="lg" icon="flame" pending={isPending} className="w-full rounded-full">
+        {ACTIONS.logMeal}
+      </ActionButton>
       <FormError error={state && "error" in state ? state.error : undefined} />
     </form>
   );

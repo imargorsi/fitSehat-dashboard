@@ -2,7 +2,7 @@
 
 import { createWeeklyReport } from "@/app/(dashboard)/reports/actions";
 import { FormError } from "@/components/layout/form-error";
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/components/layout/action-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
@@ -21,9 +21,9 @@ export function WeeklyReportForm() {
         <Input id="fileUrl" name="fileUrl" type="url" placeholder="Only if you want, Jaan" />
       </div>
       <div className="flex items-end">
-        <Button type="submit" size="lg" className="w-full min-w-36 rounded-full sm:w-auto" disabled={isPending}>
-          {isPending ? "Saving for you…" : "Keep this week, Love"}
-        </Button>
+        <ActionButton type="submit" size="lg" icon="book" pending={isPending} pendingLabel="Saving for you…" className="w-full min-w-36 rounded-full sm:w-auto">
+          Keep this week, Love
+        </ActionButton>
       </div>
       <div className="sm:col-span-2 lg:col-span-3">
         <FormError error={state && "error" in state ? state.error : undefined} />

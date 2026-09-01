@@ -4,8 +4,8 @@ import { useActionState } from "react";
 import Link from "next/link";
 
 import { signUpWithEmail } from "@/app/(auth)/sign-up/actions";
+import { ActionButton } from "@/components/layout/action-button";
 import { ACTIONS, PLACE } from "@/lib/care-copy";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,9 +46,9 @@ export default function SignUpPage() {
               {state.error}
             </p>
           ) : null}
-          <Button type="submit" size="lg" className="w-full" disabled={isPending}>
-            {isPending ? "Making your space…" : ACTIONS.begin}
-          </Button>
+          <ActionButton type="submit" size="lg" icon="heart" pending={isPending} pendingLabel="Making your space…" className="w-full">
+            {ACTIONS.begin}
+          </ActionButton>
           <p className="text-center text-sm text-muted-foreground">
             Already with me, Guddi?{" "}
             <Link href="/sign-in" className="text-foreground underline-offset-4 hover:underline">

@@ -1,13 +1,13 @@
 "use client";
 
 import { quickAddMealOption } from "@/app/(dashboard)/overview/actions";
+import { ActionButton } from "@/components/layout/action-button";
 import { AppLinkButton } from "@/components/layout/app-link-button";
 import { EmptyNote } from "@/components/layout/empty-note";
 import { FormError } from "@/components/layout/form-error";
 import { GlassCard } from "@/components/layout/glass-card";
 import { WidgetHeader } from "@/components/layout/widget-header";
 import { Press } from "@/components/motion/press";
-import { Button } from "@/components/ui/button";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
 import { EMPTY, ACTIONS } from "@/lib/care-copy";
 import { caloriesFromOption, mealKindFromOption } from "@/lib/meals.utils";
@@ -60,9 +60,9 @@ function QuickAddItem({ meal }: { meal: TMealOption }) {
             {meal.proteinG ? ` · ${meal.proteinG}g P` : ""}
           </p>
         </div>
-        <Button type="submit" size="sm" className="w-full rounded-full" disabled={isPending}>
-          {isPending ? "Adding…" : ACTIONS.addQuick}
-        </Button>
+        <ActionButton type="submit" size="sm" icon="plus" pending={isPending} pendingLabel="Adding…" className="w-full rounded-full">
+          {ACTIONS.addQuick}
+        </ActionButton>
         <FormError error={state && "error" in state ? state.error : undefined} />
       </form>
     </Press>

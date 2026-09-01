@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { saveStepGoal } from "@/app/(dashboard)/workouts/actions";
 import { FormError } from "@/components/layout/form-error";
-import { Button } from "@/components/ui/button";
+import { ActionButton } from "@/components/layout/action-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ACTIONS, PLACE } from "@/lib/care-copy";
@@ -41,9 +41,9 @@ export function WalkGoalForm({ goal }: { goal: number }) {
           placeholder={PLACE.stepGoal}
         />
       </div>
-      <Button type="submit" className="w-full rounded-full sm:w-auto" disabled={isPending}>
-        {isPending ? "Saving for you…" : ACTIONS.updateGoal}
-      </Button>
+      <ActionButton type="submit" icon="settings" pending={isPending} pendingLabel="Saving for you…" className="w-full rounded-full sm:w-auto">
+        {ACTIONS.updateGoal}
+      </ActionButton>
       <p className="text-sm text-muted-foreground sm:col-span-2">
         Common marks, Precious: {STEP_PRESETS.map((value) => value.toLocaleString()).join(", ")}.
       </p>
