@@ -22,10 +22,9 @@ import {
   Muted,
   Unit,
 } from "@/components/ui/typography";
-import { ACTIONS, CELEBRATIONS } from "@/lib/care-copy";
-import { pickRandom } from "@/lib/care-notes";
+import { ACTIONS, CELEBRATIONS } from "@/lib/app-copy";
 import type { TFormState } from "@/lib/form-state.types";
-import { dispatchLoveBurst } from "@/lib/love-motion.utils";
+import { pickRandom } from "@/lib/random.utils";
 import { formatInt } from "@/lib/number.utils";
 import { cn } from "@/lib/utils";
 import {
@@ -70,7 +69,6 @@ export function WalkSlider({
     toasted.current = state;
     if ("ok" in state && state.ok) {
       toast.success(pickRandom(CELEBRATIONS.workout));
-      dispatchLoveBurst();
       return;
     }
     if ("error" in state && state.error) {
@@ -91,7 +89,7 @@ export function WalkSlider({
           </StepMetric>
         </div>
         <div className="shrink-0 text-right">
-          {compact ? null : <Muted>About, Jaan</Muted>}
+          {compact ? null : <Muted>Estimated burn</Muted>}
           <BurnMetric>
             {formatInt(burned)}
             <Unit className="ml-1">kcal</Unit>
@@ -102,7 +100,7 @@ export function WalkSlider({
       <div className="relative h-8">
         <div className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 overflow-hidden rounded-full bg-muted">
           <motion.div
-            className="h-full rounded-full bg-love shadow-glow"
+            className="h-full rounded-full bg-brand shadow-glow"
             initial={false}
             animate={{ width: `${fill}%` }}
             transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 220, damping: 28 }}
@@ -149,7 +147,7 @@ export function WalkSlider({
 
       {compact ? null : (
         <Muted>
-          Goal {formatInt(goal)}. {met ? "You met it, Guddi. Beautiful consistency." : "Rest is allowed, Love. Every step still counts."}
+          Goal {formatInt(goal)}. {met ? "Daily step goal met." : "Every step counts toward your goal."}
         </Muted>
       )}
 
@@ -159,7 +157,7 @@ export function WalkSlider({
           size={compact ? "default" : "lg"}
           icon="footprints"
           pending={isPending}
-          pendingLabel="Saving for you…"
+          pendingLabel="Saving…"
           className="w-full rounded-full sm:w-auto"
         >
           {compact ? ACTIONS.saveCompact : ACTIONS.saveWalk}

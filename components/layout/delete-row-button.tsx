@@ -14,7 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { HiddenInput } from "@/components/ui/form-controls";
-import { CONFIRM, DELETE_TOAST } from "@/lib/care-copy";
+import { CONFIRM, DELETE_TOAST } from "@/lib/app-copy";
 import type { TFormState } from "@/lib/form-state.types";
 
 export function DeleteRowButton({

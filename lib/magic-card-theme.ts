@@ -1,7 +1,7 @@
-export const CARE_MAGIC_CARD = {
-  gradientFrom: "var(--rose)",
-  gradientTo: "var(--gold)",
-  gradientColor: "color-mix(in oklch, var(--rose) 24%, transparent)",
-  gradientOpacity: 0.5,
-  gradientSize: 220,
+export const FITSEHAT_MAGIC_CARD = {
+  gradientFrom: "var(--neon)",
+  gradientTo: "var(--rose)",
+  gradientColor: "color-mix(in oklch, var(--neon) 36%, transparent)",
+  gradientOpacity: 0.65,
+  gradientSize: 280,
 } as const;

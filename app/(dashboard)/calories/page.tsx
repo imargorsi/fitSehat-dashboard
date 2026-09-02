@@ -12,7 +12,7 @@ import { MealDots, StatCard } from "@/components/layout/stat-card";
 import { WeekCalorieChart } from "@/components/overview/week-calorie-chart";
 import { Caption, DayHeader, DayTotal, Meta, Strong, Unit } from "@/components/ui/typography";
 import { aggregateLogs, dailyTotals } from "@/lib/calories.utils";
-import { calorieCaption, EMPTY, mealsCaption, proteinCaption } from "@/lib/care-copy";
+import { calorieCaption, EMPTY, mealsCaption, proteinCaption } from "@/lib/app-copy";
 import {
   addDays,
   formatMediumDate,
@@ -95,7 +95,7 @@ export default async function CaloriesPage() {
           icon={<AnimateIcon name="list" size={16} tone="neon" />}
           label="Plates today"
           countTo={todaysLogs.length}
-          hint={target ? `Attached to ${target.name}` : "Logs save even before a target, Love. No rush."}
+          hint={target ? `Attached to ${target.name}` : "Logs save even before a target is set."}
         />
       </StatGrid>
 
@@ -105,8 +105,8 @@ export default async function CaloriesPage() {
 
       <ModulePanel
         eyebrow="Journal"
-        title="Your history, Precious"
-        description="Newest days first, Guddi. Tap edit to change a plate."
+        title="Calorie history"
+        description="Newest days first. Tap edit to update an entry."
         action={<CalorieLogDialog today={today} />}
       >
         {grouped.length === 0 ? (

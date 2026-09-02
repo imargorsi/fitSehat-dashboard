@@ -27,7 +27,7 @@ export function WalkPageClient({
   const selected = byDate.get(selectedDate);
   const steps = selected?.steps ?? 0;
   const isToday = selectedDate === today;
-  const title = isToday ? "Log today's walk, Love" : `Log walk for ${formatMediumDate(selectedDate)}`;
+  const title = isToday ? "Log today's walk" : `Log walk for ${formatMediumDate(selectedDate)}`;
 
   return (
     <>
@@ -36,14 +36,14 @@ export function WalkPageClient({
         title={title}
         description={
           isToday
-            ? "Slide to the steps you took, Guddi. We keep a soft calorie estimate beside it."
-            : "Tap a day on the calendar to switch, Precious. Future days stay empty."
+            ? "Slide to the steps you took. We estimate calories burned beside it."
+            : "Tap a day on the calendar to switch dates. Future days cannot be logged."
         }
       >
         <WalkSlider key={`${selectedDate}-${steps}-${goal}`} walkedOn={selectedDate} today={today} goal={goal} initialSteps={steps} />
         {!isToday ? (
           <Button type="button" variant="ghost" size="sm" className="mt-2" onClick={() => setSelectedDate(today)}>
-            Back to today, Jaan
+            Back to today
           </Button>
         ) : null}
       </ModulePanel>
@@ -51,8 +51,8 @@ export function WalkPageClient({
       <SectionGrid className="lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
         <ModulePanel
           eyebrow="Rhythm"
-          title="Your days, Precious"
-          description="Tap a day to log or edit steps. Peach met the goal. Gold walked. Empty can be rest."
+          title="Activity calendar"
+          description="Tap a day to log or edit steps. Highlighted days met the goal."
         >
           <WalkCalendar
             today={today}
@@ -67,7 +67,7 @@ export function WalkPageClient({
             </Muted>
           ) : null}
         </ModulePanel>
-        <ModulePanel eyebrow="Pace" title="Daily goal, Love" description="Change this whenever you like, Guddi.">
+        <ModulePanel eyebrow="Pace" title="Daily step goal" description="Update your daily step target anytime.">
           <WalkGoalForm goal={goal} />
         </ModulePanel>
       </SectionGrid>

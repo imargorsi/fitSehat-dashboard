@@ -13,7 +13,7 @@ import { SoftRow } from "@/components/layout/soft-row";
 import { StatCard } from "@/components/layout/stat-card";
 import { WeightTrendChart } from "@/components/measurements/weight-trend-chart";
 import { WaistTrendChart } from "@/components/measurements/waist-trend-chart";
-import { EMPTY } from "@/lib/care-copy";
+import { EMPTY } from "@/lib/app-copy";
 import { Meta } from "@/components/ui/typography";
 import { formatMediumDate, latestTuesdayOnOrBefore, todayDateString } from "@/lib/date.utils";
 import { listStackClass } from "@/lib/layout";
@@ -31,15 +31,15 @@ function lostAmount(start: number | null, current: number | null): number | null
 
 function lostHint(lost: number | null, unit: string): string {
   if (lost == null) {
-    return "Set a start when you are ready, Guddi.";
+    return "Set a starting value to track progress.";
   }
   if (lost === 0) {
-    return "Steady versus start, Love. Showing up is the glow.";
+    return "Steady compared to your start value.";
   }
   if (lost > 0) {
-    return `↓ ${lost} ${unit} from start, Precious. Beautiful consistency.`;
+    return `↓ ${lost} ${unit} from start.`;
   }
-  return `↑ ${Math.abs(lost)} ${unit} from start, Jaan. Numbers move. You are still on your way.`;
+  return `↑ ${Math.abs(lost)} ${unit} from start.`;
 }
 
 export default async function MeasurementsPage() {
@@ -84,7 +84,7 @@ export default async function MeasurementsPage() {
           label="Latest"
           value={latestWeight != null ? formatNumber(latestWeight) : "—"}
           unit="kg"
-          hint={latest ? formatMediumDate(String(latest.measuredOn).slice(0, 10)) : "Tuesday is a hug on the scale, Guddi — never a verdict."}
+          hint={latest ? formatMediumDate(String(latest.measuredOn).slice(0, 10)) : "Log a check-in to start tracking."}
         />
         <StatCard
           icon={<AnimateIcon name="trend" size={16} tone="violet" />}
@@ -106,15 +106,15 @@ export default async function MeasurementsPage() {
           label="North star"
           value={formatNumber(profile.targetWeightKg)}
           unit="kg"
-          hint="A north star, Love. Rest days still count."
+          hint="Your target weight goal."
         />
       </StatGrid>
 
       <SectionGrid>
         <ModulePanel
           eyebrow="Start"
-          title="Where we began, Precious"
-          description="Loss is from these start values, Jaan. Change them whenever the story starts over."
+          title="Starting values"
+          description="Progress is calculated from these baselines. Update them when you reset your goals."
         >
           <ProfileBaselinesForm
             key={String(profile.updatedAt)}
@@ -125,8 +125,8 @@ export default async function MeasurementsPage() {
         </ModulePanel>
         <ModulePanel
           eyebrow="Tuesday"
-          title="Weigh-in, Guddi"
-          description="Saving the same date updates that day, Love. The number is never a verdict."
+          title="Check-in"
+          description="Saving the same date updates that day's entry."
         >
           <MeasurementForm defaultDate={latestTuesdayOnOrBefore(today)} />
         </ModulePanel>
@@ -138,7 +138,7 @@ export default async function MeasurementsPage() {
       </SectionGrid>
 
       <SectionGrid>
-        <ModulePanel eyebrow="Ledger" title="History, Precious" description="Newest first, Jaan. I kept every check-in.">
+        <ModulePanel eyebrow="Ledger" title="History" description="Newest check-ins first.">
           {rows.length === 0 ? (
             <EmptyNote title={EMPTY.measurements.title} body={EMPTY.measurements.body} icon="activity" tone="neon" />
           ) : (

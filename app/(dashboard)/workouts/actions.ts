@@ -25,7 +25,7 @@ async function saveWalkDayImpl(_prev: TFormState, formData: FormData): Promise<T
 
   const today = todayDateString();
   if (parsed.data.walkedOn > today) {
-    return { error: "Future walks stay empty for now, Love. Pick today or earlier." };
+    return { error: "Future dates cannot be logged. Pick today or an earlier date." };
   }
 
   const profile = await ensureProfile(user.id);

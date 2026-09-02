@@ -9,7 +9,7 @@ import { SectionGrid } from "@/components/layout/page-grids";
 import { SoftRow } from "@/components/layout/soft-row";
 import { GlowIcon } from "@/components/layout/stat-card";
 import { InitialBadge, Meta, Strong } from "@/components/ui/typography";
-import { EMPTY } from "@/lib/care-copy";
+import { EMPTY } from "@/lib/app-copy";
 import { listStackClass } from "@/lib/layout";
 import { CALORIE_MEALS } from "@/lib/constants";
 import { listMealOptions } from "@/lib/db/meals";
@@ -25,8 +25,8 @@ export default async function MealsPage() {
     <PageShell>
       <ModulePanel
         eyebrow="Board"
-        title="Add a meal you like, Guddi"
-        description="Same fields as Fuel, Precious — name, type, energy, macros, and a note. Quick add copies them onto today."
+        title="Add a saved meal"
+        description="Same fields as Fuel — name, type, calories, macros, and a note. Quick add copies them to today."
       >
         <MealOptionForm />
       </ModulePanel>
@@ -35,7 +35,7 @@ export default async function MealsPage() {
         {CALORIE_MEALS.map((type) => {
           const items = rows.filter((row) => mealKindFromOption(row.mealType) === type);
           return (
-            <ModulePanel key={type} eyebrow="Saved for you" title={type} description="Tap-ready for Today, Jaan">
+            <ModulePanel key={type} eyebrow="Saved meals" title={type} description="One-tap add from the overview.">
               {items.length === 0 ? (
                 <EmptyNote title={EMPTY.mealBand.title} body={EMPTY.mealBand.body} icon="sparkles" tone="gold" />
               ) : (

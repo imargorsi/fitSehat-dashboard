@@ -9,7 +9,7 @@ import { FormError } from "@/components/layout/form-error";
 import { FormLabel, TextInput } from "@/components/ui/form-controls";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LinkHint, Span } from "@/components/ui/typography";
-import { ACTIONS, PLACE } from "@/lib/care-copy";
+import { ACTIONS, PLACE } from "@/lib/app-copy";
 
 export default function SignUpPage() {
   const [state, formAction, isPending] = useActionState(signUpWithEmail, null);
@@ -17,13 +17,13 @@ export default function SignUpPage() {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="items-center text-center">
-        <CardTitle>This is yours, Jaan</CardTitle>
-        <CardDescription>A name and a key, Love. Then the tracker waits for you.</CardDescription>
+        <CardTitle>Create your account</CardTitle>
+        <CardDescription>Set up your profile to start tracking calories, movement, and progress.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="grid gap-4">
           <div className="grid gap-2">
-            <FormLabel htmlFor="name">Name, Precious</FormLabel>
+            <FormLabel htmlFor="name">Full name</FormLabel>
             <TextInput id="name" name="name" type="text" autoComplete="name" required placeholder={PLACE.signUpName} />
           </div>
           <div className="grid gap-2">
@@ -43,13 +43,13 @@ export default function SignUpPage() {
             />
           </div>
           <FormError error={state?.error} />
-          <ActionButton type="submit" size="lg" icon="heart" pending={isPending} pendingLabel="Making your space…" className="w-full">
+          <ActionButton type="submit" size="lg" icon="activity" pending={isPending} pendingLabel="Creating account…" className="w-full">
             {ACTIONS.begin}
           </ActionButton>
           <LinkHint>
-            Already with me, Guddi?{" "}
+            Already have an account?{" "}
             <Link href="/sign-in" className="text-foreground underline-offset-4 hover:underline">
-              <Span>Come in</Span>
+              <Span>{ACTIONS.signIn}</Span>
             </Link>
           </LinkHint>
         </form>

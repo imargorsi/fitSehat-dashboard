@@ -21,14 +21,14 @@ export const choiceChipClass =
   "rounded-full px-3 py-1.5 text-sm transition-colors bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground";
 
 export const choiceChipSelectedClass =
-  "rounded-full px-3 py-1.5 text-sm transition-colors bg-love text-neon-foreground shadow-glow";
+  "rounded-full px-3 py-1.5 text-sm transition-colors bg-brand text-neon-foreground shadow-glow";
 
 /** Compact choice chip (step presets on mobile) */
 export const choiceChipCompactClass =
   "rounded-full px-2.5 py-1.5 text-xs transition-colors sm:px-3 sm:text-sm bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground";
 
 export const choiceChipCompactSelectedClass =
-  "rounded-full px-2.5 py-1.5 text-xs transition-colors sm:px-3 sm:text-sm bg-love text-neon-foreground shadow-glow";
+  "rounded-full px-2.5 py-1.5 text-xs transition-colors sm:px-3 sm:text-sm bg-brand text-neon-foreground shadow-glow";
 
 /** Range slider overlay input */
 export const rangeInputClass =

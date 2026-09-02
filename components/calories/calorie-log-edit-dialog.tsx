@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogHeading, Eyebrow } from "@/components/ui/typography";
-import { ACTIONS } from "@/lib/care-copy";
+import { ACTIONS } from "@/lib/app-copy";
 import { widgetBodyClass, widgetHeaderClass } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 
@@ -42,9 +42,9 @@ export function CalorieLogEditDialog({
           <DialogHeader className="gap-1.5 pr-8">
             <Eyebrow>Fuel</Eyebrow>
             <DialogTitle className="border-0 p-0">
-              <DialogHeading>Edit this plate, Guddi</DialogHeading>
+              <DialogHeading>{ACTIONS.saveChanges}</DialogHeading>
             </DialogTitle>
-            <DialogDescription>Change what you need, Love. Your history stays kind.</DialogDescription>
+            <DialogDescription>Update this entry. Your history stays intact.</DialogDescription>
           </DialogHeader>
         </div>
         <div

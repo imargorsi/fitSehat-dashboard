@@ -25,6 +25,7 @@ export function TiltSpotlight({
   const opacity = useMotionValue(0);
   const spot = useMotionTemplate`radial-gradient(22rem circle at ${x}% ${y}%, var(--spot-fill), transparent 64%)`;
   const showSpot = Boolean(tilt && !reduced);
+  const useMagic = Boolean(magic && !reduced);
 
   function onMove(event: PointerEvent<HTMLDivElement>) {
     if (!showSpot || event.pointerType === "touch") {
@@ -48,12 +49,16 @@ export function TiltSpotlight({
       ref={ref}
       onPointerMove={onMove}
       onPointerLeave={onLeave}
-      className="glass-panel relative flex h-full min-h-0 flex-col overflow-hidden rounded-[inherit] border border-border/35 bg-transparent shadow-none"
+      className={cn(
+        "glass-panel relative flex h-full min-h-0 flex-col rounded-[inherit] bg-transparent shadow-none",
+        /* MagicCard owns the visible outline — avoid a second inset border that clips corners */
+        useMagic ? "border-0" : "border border-white/30"
+      )}
     >
       {showSpot ? (
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-0"
+          className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit]"
           style={{ background: spot, opacity }}
         />
       ) : null}
@@ -69,7 +74,7 @@ export function TiltSpotlight({
       transition={{ duration: 0.42, ease: EASE_OUT }}
       className="h-full rounded-[1.75rem]"
     >
-      {magic && !reduced ? (
+      {useMagic ? (
         <MagicCard className="h-full rounded-[1.75rem]">{panel}</MagicCard>
       ) : (
         panel

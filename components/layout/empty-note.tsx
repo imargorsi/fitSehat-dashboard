@@ -3,19 +3,19 @@
 import { motion, useReducedMotion } from "motion/react";
 
 import { AnimateIcon } from "@/components/icons/animate-icon";
-import type { TCareIconName } from "@/components/icons/care-icons";
+import type { TAppIconName } from "@/components/icons/app-icons";
 import { H3, Muted } from "@/components/ui/typography";
 import { EASE_OUT } from "@/lib/motion";
 
 export function EmptyNote({
   title,
   body,
-  icon = "heart",
+  icon = "activity",
   tone = "rose",
 }: {
   title: string;
   body: string;
-  icon?: TCareIconName;
+  icon?: TAppIconName;
   tone?: "rose" | "gold" | "neon" | "muted";
 }) {
   const reduced = useReducedMotion();

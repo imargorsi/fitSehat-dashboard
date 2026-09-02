@@ -1,81 +1,83 @@
 /**
- * FitSehat design tokens
+ * FitSehat design tokens — merged with DESIGN.md (Kinetic Dark Evolution)
  *
  * Four brand primitives — the ONLY place raw color values may appear.
  * Every semantic token is derived via color-mix / opacity from these.
  *
- * Dark-only app: tokens live on :root (html). Keep class="dark" on <html>
- * for Tailwind's dark variant — do not add a light :root block after this.
+ *   --brand-midnight     canvas / surfaces (#111317)
+ *   --brand-perrywinkle  primary accent — actions, active nav, glows (#c5c0ff)
+ *   --brand-lime         secondary — success, growth, energy (#aad54c)
+ *   --brand-cyan         tertiary — charts, depth, gradients (#38d8f9)
  *
- *   --brand-dusk   canvas / surfaces (lilac night)
- *   --brand-blush  primary accent (peach)
- *   --brand-rose   warm accent
- *   --brand-gold   champagne highlight
+ * Tailwind aliases (unchanged in components):
+ *   neon → perrywinkle | gold → lime | rose → cyan | violet → deep perrywinkle
+ *
+ * Dark-only app: tokens live on :root (html). Keep class="dark" on <html>.
  */
 
 :root,
 .dark {
-  --brand-dusk: oklch(0.21 0.018 272);
-  --brand-blush: oklch(0.86 0.055 28);
-  --brand-rose: oklch(0.86 0.065 18);
-  --brand-gold: oklch(0.9 0.045 82);
+  --brand-midnight: oklch(0.165 0.012 264);
+  --brand-perrywinkle: oklch(0.82 0.095 278);
+  --brand-lime: oklch(0.79 0.19 128);
+  --brand-cyan: oklch(0.78 0.13 210);
 
-  --radius: 1.05rem;
+  --radius: 1rem;
 
   /* Surfaces */
-  --background: var(--brand-dusk);
-  --foreground: color-mix(in oklch, var(--brand-gold) 14%, white);
-  --card: color-mix(in oklch, var(--brand-dusk) 72%, white 28% / 88%);
+  --background: var(--brand-midnight);
+  --foreground: oklch(0.91 0.012 280);
+  --card: color-mix(in oklch, var(--brand-midnight) 68%, white 32% / 90%);
   --card-foreground: var(--foreground);
-  --popover: color-mix(in oklch, var(--brand-dusk) 78%, white 22%);
+  --popover: color-mix(in oklch, var(--brand-midnight) 74%, white 26% / 94%);
   --popover-foreground: var(--foreground);
 
   /* Interactive */
-  --primary: var(--brand-blush);
-  --primary-foreground: color-mix(in oklch, var(--brand-dusk) 85%, black);
-  --secondary: color-mix(in oklch, var(--brand-dusk) 82%, white 18% / 80%);
+  --primary: var(--brand-perrywinkle);
+  --primary-foreground: oklch(0.99 0.002 280);
+  --secondary: color-mix(in oklch, var(--brand-midnight) 82%, white 18% / 80%);
   --secondary-foreground: var(--foreground);
-  --muted: color-mix(in oklch, var(--brand-dusk) 78%, white 22% / 78%);
-  --muted-foreground: color-mix(in oklch, var(--brand-gold) 35%, white 65%);
-  --accent: color-mix(in oklch, var(--brand-rose) 18%, var(--brand-dusk) 82% / 42%);
-  --accent-foreground: color-mix(in oklch, var(--brand-gold) 20%, white);
-  --destructive: color-mix(in oklch, var(--brand-rose) 70%, black 30%);
-  --border: color-mix(in oklch, var(--foreground) 14%, transparent);
-  --input: color-mix(in oklch, var(--foreground) 16%, transparent);
-  --ring: color-mix(in oklch, var(--brand-blush) 50%, transparent);
+  --muted: color-mix(in oklch, var(--brand-midnight) 78%, white 22% / 78%);
+  --muted-foreground: color-mix(in oklch, var(--foreground) 58%, transparent);
+  --accent: color-mix(in oklch, var(--brand-cyan) 16%, var(--brand-midnight) 84% / 42%);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.78 0.14 22);
+  --border: color-mix(in oklch, white 28%, transparent);
+  --input: color-mix(in oklch, white 22%, transparent);
+  --ring: color-mix(in oklch, var(--brand-perrywinkle) 52%, transparent);
 
-  /* Brand aliases (use these in Tailwind: bg-neon, text-rose, etc.) */
-  --neon: var(--brand-blush);
+  /* Brand aliases — map legacy Tailwind names to DESIGN.md palette */
+  --neon: var(--brand-perrywinkle);
   --neon-foreground: var(--primary-foreground);
-  --rose: var(--brand-rose);
-  --rose-foreground: var(--primary-foreground);
-  --gold: var(--brand-gold);
-  --gold-foreground: color-mix(in oklch, var(--brand-dusk) 80%, black);
-  --violet: color-mix(in oklch, var(--brand-dusk) 38%, var(--brand-rose) 62%);
-  --violet-foreground: color-mix(in oklch, var(--brand-dusk) 85%, black);
-  --sage: color-mix(in oklch, var(--brand-gold) 52%, var(--brand-dusk) 48%);
-  --sage-foreground: color-mix(in oklch, var(--brand-dusk) 85%, black);
+  --rose: var(--brand-cyan);
+  --rose-foreground: oklch(0.22 0.06 210);
+  --gold: var(--brand-lime);
+  --gold-foreground: oklch(0.22 0.08 128);
+  --violet: oklch(0.48 0.14 278);
+  --violet-foreground: oklch(0.91 0.012 280);
+  --sage: color-mix(in oklch, var(--brand-lime) 52%, var(--brand-cyan) 48%);
+  --sage-foreground: oklch(0.22 0.06 200);
 
-  /* Charts & sidebar (derived) */
-  --chart-1: var(--brand-blush);
-  --chart-2: var(--violet);
-  --chart-3: var(--brand-gold);
-  --chart-4: var(--sage);
-  --chart-5: color-mix(in oklch, var(--brand-dusk) 55%, white);
-  --sidebar: color-mix(in oklch, var(--brand-dusk) 88%, white 12% / 90%);
+  /* Charts & sidebar */
+  --chart-1: var(--brand-perrywinkle);
+  --chart-2: var(--brand-lime);
+  --chart-3: var(--brand-cyan);
+  --chart-4: var(--violet);
+  --chart-5: color-mix(in oklch, var(--brand-midnight) 55%, white);
+  --sidebar: color-mix(in oklch, var(--brand-midnight) 88%, white 12% / 90%);
   --sidebar-foreground: var(--foreground);
-  --sidebar-primary: var(--brand-blush);
+  --sidebar-primary: var(--brand-perrywinkle);
   --sidebar-primary-foreground: var(--primary-foreground);
-  --sidebar-accent: color-mix(in oklch, var(--brand-blush) 14%, transparent);
+  --sidebar-accent: color-mix(in oklch, var(--brand-perrywinkle) 14%, transparent);
   --sidebar-accent-foreground: var(--accent-foreground);
   --sidebar-border: color-mix(in oklch, var(--foreground) 10%, transparent);
-  --sidebar-ring: var(--brand-blush);
+  --sidebar-ring: var(--brand-perrywinkle);
 
-  /* Effects (derived — never hardcode in components) */
+  /* Effects */
   --shadow-glow:
-    0 0 22px color-mix(in oklch, var(--brand-blush) 22%, transparent),
-    0 0 8px color-mix(in oklch, var(--brand-gold) 16%, transparent);
-  --spot-fill: color-mix(in oklch, var(--brand-gold) 18%, transparent);
-  --cursor-glow: color-mix(in oklch, var(--brand-rose) 14%, transparent);
-  --focus-ring: color-mix(in oklch, var(--brand-gold) 25%, transparent);
+    0 0 22px color-mix(in oklch, var(--brand-perrywinkle) 24%, transparent),
+    0 0 8px color-mix(in oklch, var(--brand-cyan) 18%, transparent);
+  --spot-fill: color-mix(in oklch, var(--brand-cyan) 16%, transparent);
+  --cursor-glow: color-mix(in oklch, var(--brand-perrywinkle) 16%, transparent);
+  --focus-ring: color-mix(in oklch, var(--brand-perrywinkle) 28%, transparent);
 }

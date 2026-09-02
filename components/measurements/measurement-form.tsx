@@ -10,7 +10,7 @@ import {
 import { FormError } from "@/components/layout/form-error";
 import { ActionButton } from "@/components/layout/action-button";
 import { DateInput, NumberInput } from "@/components/ui/form-controls";
-import { ACTIONS, PLACE } from "@/lib/care-copy";
+import { ACTIONS, PLACE } from "@/lib/app-copy";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
 
 export function MeasurementForm({

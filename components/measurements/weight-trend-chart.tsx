@@ -10,8 +10,8 @@ export function WeightTrendChart({ points }: { points: TWeightPoint[] }) {
       points={points}
       unit="kg"
       tone="violet"
-      title="Your curve, Jaan"
-      subtitle="Numbers move, Precious. You are still on your way."
+      title="Weight trend"
+      subtitle="Track changes over time from your check-ins."
     />
   );
 }

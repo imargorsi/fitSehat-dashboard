@@ -19,14 +19,21 @@ export function WalkWidget({
   return (
     <GlassCard className="flex h-full flex-col">
       <WidgetHeader
-        title="Move, Jaan"
+        title="Movement"
         subtitle={`${formatInt(steps)} / ${formatInt(goal)} steps${
           walkAchieved(steps, goal) ? " · met" : ""
         }${caloriesBurned ? ` · ${formatInt(caloriesBurned)} kcal` : ""}`}
         actions={<AppLinkButton href="/workouts" label="Calendar" icon="calendar" iconTone="gold" />}
       />
       <WidgetBody className="pt-0">
-        <WalkSlider key={`${today}-${steps}-${goal}`} walkedOn={today} today={today} goal={goal} initialSteps={steps} compact />
+        <WalkSlider
+          key={`${today}-${steps}-${goal}`}
+          walkedOn={today}
+          today={today}
+          goal={goal}
+          initialSteps={steps}
+          compact
+        />
       </WidgetBody>
     </GlassCard>
   );

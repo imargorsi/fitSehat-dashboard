@@ -24,7 +24,7 @@ export function FuelWidget({
   return (
     <GlassCard className="flex h-full flex-col">
       <WidgetHeader
-        title="Fuel, Love"
+        title="Fuel"
         subtitle={`${formatInt(calories)} kcal today${goal != null ? ` · ${formatInt(goal)} mark` : ""}`}
         actions={
           <>
@@ -35,7 +35,7 @@ export function FuelWidget({
       />
       <WidgetBody className={cn("flex flex-col gap-2", recent.length === 0 && "pt-0")}>
         {recent.length === 0 ? (
-          <Muted>Nothing logged yet, Guddi. One kind meal starts the day.</Muted>
+          <Muted>No meals logged yet today.</Muted>
         ) : (
           recent.map((log) => (
             <SoftRow

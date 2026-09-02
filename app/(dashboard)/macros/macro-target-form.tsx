@@ -6,6 +6,7 @@ import { FormField, FormStack, OptionalMacroSection } from "@/components/layout/
 import { ActionButton } from "@/components/layout/action-button";
 import { NumberInput, TextInput } from "@/components/ui/form-controls";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
+import { ACTIONS, PLACE } from "@/lib/app-copy";
 
 export function MacroTargetForm() {
   const { formRef, state, formAction, isPending } = useResettingForm(createMacroTarget, "macros");
@@ -13,53 +14,53 @@ export function MacroTargetForm() {
   return (
     <form ref={formRef} action={formAction}>
       <FormStack>
-        <FormField label="Name, Love" htmlFor="name">
-          <TextInput id="name" name="name" required defaultValue="Daily Calorie Goal" placeholder="A gentle daily mark, Guddi" />
+        <FormField label="Name" htmlFor="name">
+          <TextInput id="name" name="name" required defaultValue="Daily Calorie Goal" placeholder={PLACE.mealName} />
         </FormField>
-        <FormField label="Target calories, Jaan" htmlFor="targetCalories">
+        <FormField label="Target calories" htmlFor="targetCalories">
           <NumberInput
             id="targetCalories"
             name="targetCalories"
             min={1}
             step={1}
             required
-            placeholder="Energy for the day, Love"
+            placeholder={PLACE.calories}
           />
         </FormField>
-        <OptionalMacroSection title="Macros, Guddi">
-          <FormField label="Protein, Precious" htmlFor="proteinTargetG">
+        <OptionalMacroSection title="Optional macros">
+          <FormField label="Protein (g)" htmlFor="proteinTargetG">
             <NumberInput
               id="proteinTargetG"
               name="proteinTargetG"
               min={0}
               step={1}
               required
-              placeholder="Protein for you, Jaan"
+              placeholder={PLACE.protein}
             />
           </FormField>
-          <FormField label="Fats, Love" htmlFor="fatsTargetG">
+          <FormField label="Fat (g)" htmlFor="fatsTargetG">
             <NumberInput
               id="fatsTargetG"
               name="fatsTargetG"
               min={0}
               step={1}
               required
-              placeholder="A little fat is okay, Guddi"
+              placeholder={PLACE.fats}
             />
           </FormField>
-          <FormField label="Carbs, Precious" htmlFor="carbsTargetG">
+          <FormField label="Carbs (g)" htmlFor="carbsTargetG">
             <NumberInput
               id="carbsTargetG"
               name="carbsTargetG"
               min={0}
               step={1}
               required
-              placeholder="Carbs if you like, Love"
+              placeholder={PLACE.carbs}
             />
           </FormField>
         </OptionalMacroSection>
-        <ActionButton type="submit" size="lg" icon="flame" pending={isPending} pendingLabel="Saving for you…" className="w-full rounded-full sm:w-auto">
-          Keep this, Jaan
+        <ActionButton type="submit" size="lg" icon="flame" pending={isPending} pendingLabel="Saving…" className="w-full rounded-full sm:w-auto">
+          {ACTIONS.saveCompact}
         </ActionButton>
         <FormError error={state && "error" in state ? state.error : undefined} />
       </FormStack>

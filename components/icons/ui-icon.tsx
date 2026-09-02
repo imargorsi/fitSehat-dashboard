@@ -2,7 +2,7 @@
 
 import { useReducedMotion } from "motion/react";
 
-import { careIcons, type TCareIconName } from "@/components/icons/care-icons";
+import { appIcons, type TAppIconName } from "@/components/icons/app-icons";
 import { cn } from "@/lib/utils";
 
 export function UiIcon({
@@ -11,13 +11,13 @@ export function UiIcon({
   className,
   spin = false,
 }: {
-  name: TCareIconName;
+  name: TAppIconName;
   size?: number;
   className?: string;
   spin?: boolean;
 }) {
   const reduced = useReducedMotion();
-  const Icon = careIcons[name];
+  const Icon = appIcons[name];
 
   return (
     <Icon

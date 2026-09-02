@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "motion/react";
 
-import { careIcons, type TCareIconName } from "@/components/icons/care-icons";
+import { appIcons, type TAppIconName } from "@/components/icons/app-icons";
 import type { IconHandle } from "@animateicons/react";
 import { cn } from "@/lib/utils";
 
@@ -14,15 +14,15 @@ export function AnimateIcon({
   className,
   playOnMount = false,
 }: {
-  name: TCareIconName;
+  name: TAppIconName;
   size?: number;
-  tone?: "rose" | "gold" | "neon" | "violet" | "onLove" | "muted" | "foreground";
+  tone?: "rose" | "gold" | "neon" | "violet" | "onPrimary" | "muted" | "foreground";
   className?: string;
   playOnMount?: boolean;
 }) {
   const reduced = useReducedMotion();
   const ref = useRef<IconHandle>(null);
-  const Icon = careIcons[name];
+  const Icon = appIcons[name];
 
   useEffect(() => {
     if (reduced || !playOnMount) {
@@ -37,7 +37,7 @@ export function AnimateIcon({
     gold: "text-gold",
     neon: "text-neon",
     violet: "text-violet",
-    onLove: "text-neon-foreground",
+    onPrimary: "text-neon-foreground",
     muted: "text-muted-foreground",
     foreground: "text-foreground",
   }[tone];

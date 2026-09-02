@@ -1,5 +1,5 @@
+import { streakCaption } from "@/lib/app-copy";
 import { addDays } from "@/lib/date.utils";
-import { streakCaption } from "@/lib/care-copy";
 import { clampPercent } from "@/lib/number.utils";
 
 export type TGlowInput = {
@@ -60,13 +60,13 @@ export function todayGlow(input: TGlowInput): TGlow {
   }
   score = Math.min(100, score);
 
-  let label = "Soft start, Love";
+  let label = "Getting started";
   if (score >= 75) {
-    label = "Radiant, Jaan";
+    label = "Strong day";
   } else if (score >= 50) {
-    label = "Glowing, Precious";
+    label = "On track";
   } else if (score >= 25) {
-    label = "Warming up, Guddi";
+    label = "Building momentum";
   }
 
   return {
@@ -78,21 +78,21 @@ export function todayGlow(input: TGlowInput): TGlow {
 
 function glowCaption(score: number, input: TGlowInput): string {
   if (input.logCount === 0) {
-    return "Hey Guddi, a little care today still counts.";
+    return "Log a meal or activity to start your health score.";
   }
   if (input.coreMeals >= 4) {
-    return "Goal board complete, Precious. I knew you could do it.";
+    return "All core meals logged today.";
   }
   if (input.streak >= 7) {
     return streakCaption(input.streak);
   }
   if (score >= 75) {
-    return "Look at that glow, Love. I am so proud of you.";
+    return "Strong consistency across fuel and movement.";
   }
   if (score >= 50) {
-    return "Your healthy glow is loading, Jaan.";
+    return "Solid progress — keep building the habit.";
   }
-  return "Showing up is enough, Guddi. Keep going.";
+  return "Small consistent steps add up over time.";
 }
 
 export function meterPercent(value: number, max: number | null): number | null {

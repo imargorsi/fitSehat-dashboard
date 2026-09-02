@@ -16,7 +16,7 @@ import {
 import { FormError } from "@/components/layout/form-error";
 import { DateInput, NumberInput, SelectField, TextInput, Textarea, ChoiceChip, ChoiceChipGroup, HiddenInput, InputSuffix } from "@/components/ui/form-controls";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
-import { ACTIONS, PLACE } from "@/lib/care-copy";
+import { ACTIONS, PLACE } from "@/lib/app-copy";
 import { CALORIE_MEALS } from "@/lib/constants";
 
 export type TCalorieLogFormInitial = {

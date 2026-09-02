@@ -8,10 +8,9 @@ import { FormError } from "@/components/layout/form-error";
 import { ActionButton } from "@/components/layout/action-button";
 import { FormLabel, NumberInput } from "@/components/ui/form-controls";
 import { Muted } from "@/components/ui/typography";
-import { ACTIONS, CELEBRATIONS, PLACE } from "@/lib/care-copy";
-import { pickRandom } from "@/lib/care-notes";
+import { ACTIONS, CELEBRATIONS, PLACE } from "@/lib/app-copy";
+import { pickRandom } from "@/lib/random.utils";
 import type { TFormState } from "@/lib/form-state.types";
-import { dispatchLoveBurst } from "@/lib/love-motion.utils";
 import { STEP_PRESETS } from "@/lib/walk.utils";
 
 export function WalkGoalForm({ goal }: { goal: number }) {
@@ -25,7 +24,6 @@ export function WalkGoalForm({ goal }: { goal: number }) {
     notified.current = state;
     if ("ok" in state && state.ok) {
       toast.success(pickRandom(CELEBRATIONS.goal));
-      dispatchLoveBurst();
       return;
     }
     if ("error" in state && state.error) {
@@ -36,7 +34,7 @@ export function WalkGoalForm({ goal }: { goal: number }) {
   return (
     <form action={formAction} className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
       <div className="grid gap-2">
-        <FormLabel htmlFor="stepGoal">Daily step goal, Love</FormLabel>
+        <FormLabel htmlFor="stepGoal">Daily step goal</FormLabel>
         <NumberInput
           key={goal}
           id="stepGoal"
@@ -49,11 +47,11 @@ export function WalkGoalForm({ goal }: { goal: number }) {
           placeholder={PLACE.stepGoal}
         />
       </div>
-      <ActionButton type="submit" icon="settings" pending={isPending} pendingLabel="Saving for you…" className="w-full rounded-full sm:w-auto">
+      <ActionButton type="submit" icon="settings" pending={isPending} pendingLabel="Saving…" className="w-full rounded-full sm:w-auto">
         {ACTIONS.updateGoal}
       </ActionButton>
       <Muted className="sm:col-span-2">
-        Common marks, Precious: {STEP_PRESETS.map((value) => value.toLocaleString()).join(", ")}.
+        Common goals: {STEP_PRESETS.map((value) => value.toLocaleString()).join(", ")}.
       </Muted>
       <div className="sm:col-span-2">
         <FormError error={state && "error" in state ? state.error : undefined} />

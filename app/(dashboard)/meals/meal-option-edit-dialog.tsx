@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogHeading, Eyebrow } from "@/components/ui/typography";
-import { ACTIONS } from "@/lib/care-copy";
+import { ACTIONS } from "@/lib/app-copy";
 import { widgetBodyClass, widgetHeaderClass } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 
@@ -36,9 +36,9 @@ export function MealOptionEditDialog({ initial }: { initial: TMealOptionFormInit
           <DialogHeader className="gap-1.5 pr-8">
             <Eyebrow>Board</Eyebrow>
             <DialogTitle className="border-0 p-0">
-              <DialogHeading>Edit saved meal, Precious</DialogHeading>
+              <DialogHeading>{ACTIONS.saveChanges}</DialogHeading>
             </DialogTitle>
-            <DialogDescription>Update what you actually like, Guddi. Quick add will use the new values.</DialogDescription>
+            <DialogDescription>Update this saved meal. Quick add will use the new values.</DialogDescription>
           </DialogHeader>
         </div>
         <div

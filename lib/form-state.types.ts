@@ -1,1 +1,1 @@
-export type TFormState = { error: string } | { ok: true } | null;
+export type TFormState = { error: string } | { ok: true } | null; 

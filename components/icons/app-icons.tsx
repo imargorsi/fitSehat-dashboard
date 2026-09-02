@@ -13,7 +13,6 @@ import {
   EllipsisIcon,
   FlameIcon,
   FootprintsIcon,
-  HeartIcon,
   HistoryIcon,
   InfoIcon,
   LayoutDashboardIcon,
@@ -32,7 +31,7 @@ import {
   XIcon,
 } from "@animateicons/react/lucide";
 
-export const careIcons = {
+export const appIcons = {
   activity: ActivityIcon,
   alert: TriangleAlertIcon,
   book: BookOpenIcon,
@@ -49,7 +48,6 @@ export const careIcons = {
   ellipsis: EllipsisIcon,
   flame: FlameIcon,
   footprints: FootprintsIcon,
-  heart: HeartIcon,
   history: HistoryIcon,
   info: InfoIcon,
   list: ListIcon,
@@ -65,9 +63,9 @@ export const careIcons = {
   watch: WatchIcon,
 } as const;
 
-export type TCareIconName = keyof typeof careIcons;
+export type TAppIconName = keyof typeof appIcons;
 
-export const navIconByHref: Record<string, TCareIconName> = {
+export const navIconByHref: Record<string, TAppIconName> = {
   "/overview": "dashboard",
   "/calories": "flame",
   "/meals": "utensils",

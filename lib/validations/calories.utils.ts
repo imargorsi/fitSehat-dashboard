@@ -3,10 +3,10 @@ import { z } from "zod";
 import { CALORIE_MEALS } from "@/lib/constants";
 
 export const calorieLogSchema = z.object({
-  item: z.string().trim().min(1, "Tell me what you ate, Guddi").max(200),
-  loggedOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a date for me, Love"),
+  item: z.string().trim().min(1, "Enter what you ate").max(200),
+  loggedOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a valid date"),
   meal: z.enum(CALORIE_MEALS),
-  calories: z.coerce.number().int().nonnegative("Energy cannot be negative, Precious"),
+  calories: z.coerce.number().int().nonnegative("Calories cannot be negative"),
   proteinG: z.coerce.number().nonnegative().optional(),
   carbsG: z.coerce.number().nonnegative().optional(),
   fatsG: z.coerce.number().nonnegative().optional(),

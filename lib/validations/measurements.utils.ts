@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const measurementSchema = z.object({
-  measuredOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a date for me, Guddi"),
-  weightKg: z.coerce.number().positive("Weight needs to be more than 0, Love"),
+  measuredOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a valid date"),
+  weightKg: z.coerce.number().positive("Weight must be greater than 0"),
   waistCm: z.coerce.number().positive().optional(),
 });
 

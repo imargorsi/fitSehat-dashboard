@@ -10,8 +10,8 @@ export function WaistTrendChart({ points }: { points: TWaistPoint[] }) {
       points={points}
       unit="cm"
       tone="gold"
-      title="Waist curve, Love"
-      subtitle="Gentle check-ins, Guddi. The trend is yours."
+      title="Waist trend"
+      subtitle="Track waist measurements from your check-ins."
     />
   );
 }

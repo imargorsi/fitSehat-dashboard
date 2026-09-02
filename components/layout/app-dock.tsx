@@ -7,7 +7,7 @@ import { motion, useReducedMotion } from "motion/react";
 
 import { signOut } from "@/app/(auth)/sign-out/actions";
 import { AnimateIcon } from "@/components/icons/animate-icon";
-import { navIconByHref, type TCareIconName } from "@/components/icons/care-icons";
+import { navIconByHref, type TAppIconName } from "@/components/icons/app-icons";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -17,6 +17,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { H2, H4, Micro, Muted } from "@/components/ui/typography";
+import { useDashboardScrolled } from "@/hooks/useDashboardScrolled.hook";
 import { dockNav, isMorePath, moreNav } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ export function AppDock() {
   const reduced = useReducedMotion();
   const [moreOpen, setMoreOpen] = useState(false);
   const moreActive = isMorePath(pathname);
+  const scrolled = useDashboardScrolled();
 
   return (
     <>
@@ -36,7 +38,12 @@ export function AppDock() {
           initial={reduced ? false : { y: 28, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="pointer-events-auto mx-auto flex max-w-md items-stretch gap-0.5 rounded-[1.75rem] p-1.5 ring-1 ring-border glass-panel shadow-glow isolate"
+          className={cn(
+            "pointer-events-auto mx-auto flex max-w-md items-stretch gap-0.5 rounded-[1.75rem] p-1.5 ring-1 isolate transition-[background-color,box-shadow,backdrop-filter] duration-300",
+            scrolled
+              ? "border border-white/25 bg-background/95 shadow-[0_-12px_40px_color-mix(in_oklch,black_45%,transparent)] ring-white/20 backdrop-blur-xl"
+              : "glass-panel ring-border shadow-glow"
+          )}
         >
           {dockNav.map((item) => {
             const icon = navIconByHref[item.href];
@@ -60,7 +67,7 @@ export function AppDock() {
                   {isActive ? (
                     <motion.span
                       layoutId={reduced ? undefined : "dock-glow"}
-                      className="absolute inset-0 rounded-3xl bg-love shadow-glow"
+                      className="absolute inset-0 rounded-3xl bg-brand shadow-glow"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   ) : null}
@@ -69,7 +76,7 @@ export function AppDock() {
                       <AnimateIcon
                         name={icon}
                         size={20}
-                        tone={isActive ? "onLove" : "muted"}
+                        tone={isActive ? "onPrimary" : "muted"}
                       />
                     ) : null}
                     <Micro className="max-w-full truncate">{item.shortLabel}</Micro>
@@ -93,12 +100,12 @@ export function AppDock() {
             {moreActive ? (
               <motion.span
                 layoutId={reduced ? undefined : "dock-glow"}
-                className="absolute inset-0 rounded-3xl bg-love shadow-glow"
+                className="absolute inset-0 rounded-3xl bg-brand shadow-glow"
                 transition={{ type: "spring", stiffness: 380, damping: 32 }}
               />
             ) : null}
             <span className="relative z-10 flex flex-col items-center gap-0.5">
-              <AnimateIcon name="ellipsis" size={20} tone={moreActive ? "onLove" : "muted"} />
+              <AnimateIcon name="ellipsis" size={20} tone={moreActive ? "onPrimary" : "muted"} />
               <Micro>More</Micro>
             </span>
           </motion.button>
@@ -114,18 +121,18 @@ export function AppDock() {
           <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-foreground/20" />
           <SheetHeader className="px-1 pb-4">
             <div className="flex min-w-0 items-center gap-3">
-              <AnimateIcon name="heart" size={48} tone="rose" playOnMount className="shrink-0" />
+              <AnimateIcon name="activity" size={48} tone="neon" playOnMount={false} className="shrink-0" />
               <div className="min-w-0">
                 <SheetTitle>
-                  <H2>Saved for quieter days, Love</H2>
+                  <H2>More</H2>
                 </SheetTitle>
-                <SheetDescription>Check-in lives here, Guddi, whenever Tuesday calls.</SheetDescription>
+                <SheetDescription>Additional tracking modules and settings.</SheetDescription>
               </div>
             </div>
           </SheetHeader>
           <div className="grid gap-2">
             {moreNav.map((item) => {
-              const icon: TCareIconName = navIconByHref[item.href] ?? "activity";
+              const icon: TAppIconName = navIconByHref[item.href] ?? "activity";
               const isActive = pathname === item.href;
 
               return (
@@ -136,7 +143,7 @@ export function AppDock() {
                   className={cn(
                     "flex min-h-16 items-center gap-3 rounded-2xl px-3 py-3 ring-1 ring-border transition-colors",
                     isActive
-                      ? "bg-love text-neon-foreground shadow-glow ring-transparent"
+                      ? "bg-brand text-neon-foreground shadow-glow ring-transparent"
                       : "bg-card/80 text-foreground hover:bg-muted/70"
                   )}
                 >
@@ -146,7 +153,7 @@ export function AppDock() {
                       isActive ? "bg-neon-foreground/12" : "bg-muted text-rose"
                     )}
                   >
-                    {icon ? <AnimateIcon name={icon} size={16} tone={isActive ? "onLove" : "rose"} /> : null}
+                    {icon ? <AnimateIcon name={icon} size={16} tone={isActive ? "onPrimary" : "rose"} /> : null}
                   </span>
                   <span className="min-w-0 block">
                     <H4 className="block">{item.shortLabel}</H4>
@@ -161,7 +168,7 @@ export function AppDock() {
           <form action={signOut} className="mt-4">
             <Button type="submit" variant="ghost" className="h-12 w-full rounded-2xl text-muted-foreground">
               <AnimateIcon name="logout" size={16} tone="muted" />
-              I&apos;ll wait here, Precious
+              Sign out
             </Button>
           </form>
         </SheetContent>

@@ -31,7 +31,7 @@ export function normalizeError(error: unknown): AppError {
 }
 
 export const FALLBACK_FORM_ERROR =
-  "Something went sideways, Love. Your log is safe — try again in a moment.";
+  "Something went wrong. Your data is safe — try again in a moment.";
 
 export function userFacingMessage(error: unknown): string {
   const normalized = normalizeError(error);
@@ -39,7 +39,7 @@ export function userFacingMessage(error: unknown): string {
     return normalized.message;
   }
   if (normalized.code === ERROR_CODES.VALIDATION) {
-    return normalized.message || "Invalid input, Guddi.";
+    return normalized.message || "Invalid input.";
   }
   return FALLBACK_FORM_ERROR;
 }

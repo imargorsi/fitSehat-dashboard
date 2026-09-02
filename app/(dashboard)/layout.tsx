@@ -3,8 +3,6 @@ import { redirect } from "next/navigation";
 
 import { AppBar } from "@/components/layout/app-bar";
 import { AppDock } from "@/components/layout/app-dock";
-import { CareMoment } from "@/components/layout/care-moment";
-import { LoveAmbience } from "@/components/layout/love-ambience";
 import { DashboardStage } from "@/components/layout/dashboard-stage";
 import { ensureProfile } from "@/lib/db/profiles";
 import { getAuthUser } from "@/lib/session";
@@ -28,8 +26,6 @@ export default async function DashboardLayout({
       <DashboardStage>{children}</DashboardStage>
       <AppDock />
       <AppBar user={user} />
-      <CareMoment />
-      <LoveAmbience />
     </div>
   );
 }

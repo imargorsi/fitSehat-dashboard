@@ -7,10 +7,11 @@ import { CheckInWidget } from "@/components/overview/check-in-widget";
 import { FuelWidget } from "@/components/overview/fuel-widget";
 import { GlowCard } from "@/components/overview/glow-card";
 import { QuickAddCard } from "@/components/overview/quick-add-card";
-import { QuoteHero } from "@/components/overview/quote-hero";
+import { DashboardHero } from "@/components/overview/dashboard-hero";
 import { TodayMealsCard } from "@/components/overview/today-meals-card";
 import { WalkWidget } from "@/components/overview/walk-widget";
 import { WeekCalorieChart } from "@/components/overview/week-calorie-chart";
+import { APP_TAGLINE } from "@/lib/app-copy";
 import { Muted } from "@/components/ui/typography";
 import { aggregateLogs, dailyTotals } from "@/lib/calories.utils";
 import {
@@ -18,7 +19,7 @@ import {
   mealsCaption,
   proteinCaption,
   weightCaption,
-} from "@/lib/care-copy";
+} from "@/lib/app-copy";
 import {
   addDays,
   formatLongDate,
@@ -108,7 +109,7 @@ export default async function OverviewPage() {
       />
 
       <SectionGrid className="lg:grid-cols-[minmax(0,7fr)_minmax(16rem,3fr)] lg:items-stretch">
-        <QuoteHero dateLabel={formatLongDate(today).toUpperCase()} />
+        <DashboardHero dateLabel={formatLongDate(today).toUpperCase()} />
         <GlowCard glow={glow} streak={streak} />
       </SectionGrid>
 
@@ -162,9 +163,7 @@ export default async function OverviewPage() {
         <WeekCalorieChart bars={bars} goal={calorieGoal} />
       </SectionGrid>
 
-      <Muted className="text-center">
-        Take care of yourself, Guddi. Keep going. Someone is always rooting for you.
-      </Muted>
+      <Muted className="text-center">{APP_TAGLINE}</Muted>
     </PageShell>
   );
 }

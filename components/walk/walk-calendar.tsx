@@ -76,7 +76,7 @@ export function WalkCalendar({
             isFuture && "text-muted-foreground",
             cell.inMonth && !stamp && !isFuture && "bg-muted/35 text-muted-foreground",
             stamp && !achieved && "bg-gold/15 text-gold",
-            achieved && "bg-love text-neon-foreground shadow-glow",
+            achieved && "bg-brand text-neon-foreground shadow-glow",
             isToday && !achieved && "ring-1 ring-rose/50",
             isSelected && "ring-2 ring-violet/70",
             canSelect && "cursor-pointer hover:ring-1 hover:ring-rose/40"
@@ -113,13 +113,13 @@ export function WalkCalendar({
       </div>
       <div className="flex flex-wrap gap-4">
         <Legend className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full bg-love" /> Met it, Guddi
+          <span className="size-2.5 rounded-full bg-brand" /> Goal met
         </Legend>
         <Legend className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full bg-gold/70" /> Walked, still going, Love
+          <span className="size-2.5 rounded-full bg-gold/70" /> Walk logged
         </Legend>
         <Legend className="flex items-center gap-1.5">
-          <span className="size-2.5 rounded-full bg-muted" /> Rest / not logged, Jaan
+          <span className="size-2.5 rounded-full bg-muted" /> Rest / not logged
         </Legend>
       </div>
     </div>

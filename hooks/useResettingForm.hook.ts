@@ -3,10 +3,9 @@
 import { useActionState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 
-import { CELEBRATIONS, type TCelebrateKind } from "@/lib/care-copy";
-import { pickRandom } from "@/lib/care-notes";
+import { CELEBRATIONS, type TCelebrateKind } from "@/lib/app-copy";
 import type { TFormState } from "@/lib/form-state.types";
-import { dispatchLoveBurst } from "@/lib/love-motion.utils";
+import { pickRandom } from "@/lib/random.utils";
 
 export function useResettingForm(
   action: (prev: TFormState, data: FormData) => Promise<TFormState>,
@@ -30,7 +29,6 @@ export function useResettingForm(
       }
       if (celebrate) {
         toast.success(pickRandom(CELEBRATIONS[celebrate]));
-        dispatchLoveBurst();
       }
       onSuccess?.();
       return;

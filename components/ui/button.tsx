@@ -8,9 +8,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        /** Filled primary — rose→gold gradient, peach text */
-        default: "bg-love text-neon-foreground shadow-glow hover:opacity-90",
-        filled: "bg-love text-neon-foreground shadow-glow hover:opacity-90",
+        /** Filled primary — perrywinkle→cyan gradient, light text */
+        default: "bg-brand text-neon-foreground shadow-glow hover:opacity-90",
+        filled: "bg-brand text-neon-foreground shadow-glow hover:opacity-90",
         /** Bordered, transparent face */
         outline:
           "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",

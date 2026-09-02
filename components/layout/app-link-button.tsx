@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRef, type ComponentProps, type ReactNode } from "react";
 
-import { careIcons, type TCareIconName } from "@/components/icons/care-icons";
+import { appIcons, type TAppIconName } from "@/components/icons/app-icons";
 import { Button } from "@/components/ui/button";
 import type { IconHandle } from "@animateicons/react";
 import { navOutlineButtonClass } from "@/lib/layout";
@@ -35,12 +35,12 @@ export function AppLinkButton({
 }: {
   href: string;
   label: string;
-  icon: TCareIconName;
+  icon: TAppIconName;
   className?: string;
   iconTone?: keyof typeof iconToneClass;
 }) {
   const { ref, animate, stop } = useIconHover();
-  const Icon = careIcons[icon];
+  const Icon = appIcons[icon];
 
   return (
     <Button
@@ -68,11 +68,11 @@ export function AppIconButton({
   ...props
 }: Omit<ComponentProps<typeof Button>, "children"> & {
   children: ReactNode;
-  icon: TCareIconName;
+  icon: TAppIconName;
   iconTone?: keyof typeof iconToneClass;
 }) {
   const { ref, animate, stop } = useIconHover();
-  const Icon = careIcons[icon];
+  const Icon = appIcons[icon];
 
   return (
     <Button

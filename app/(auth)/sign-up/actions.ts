@@ -26,7 +26,7 @@ async function signUpWithEmailImpl(
   const { error } = await auth.signUp.email(parsed.data);
 
   if (error) {
-    return { error: publicAuthError(error, "Could not create this space, Precious. Try again with me.") };
+    return { error: publicAuthError(error, "Could not create your account. Try again.") };
   }
 
   redirect("/overview");

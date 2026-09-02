@@ -2,7 +2,7 @@
 
 import type { ComponentProps, ReactNode } from "react";
 
-import type { TCareIconName } from "@/components/icons/care-icons";
+import type { TAppIconName } from "@/components/icons/app-icons";
 import { UiIcon } from "@/components/icons/ui-icon";
 import { Button } from "@/components/ui/button";
 
@@ -14,7 +14,7 @@ export function ActionButton({
   disabled,
   ...props
 }: ComponentProps<typeof Button> & {
-  icon: TCareIconName;
+  icon: TAppIconName;
   pending?: boolean;
   pendingLabel?: string;
   children: ReactNode;

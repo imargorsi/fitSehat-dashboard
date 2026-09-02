@@ -24,15 +24,15 @@ export function ProgressRing({
     <svg viewBox="0 0 100 100" className={cn("size-32 -rotate-90", className)} aria-hidden>
       <defs>
         <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="var(--rose)" />
-          <stop offset="100%" stopColor="var(--gold)" />
+          <stop offset="0%" stopColor="var(--neon)" />
+          <stop offset="100%" stopColor="var(--rose)" />
         </linearGradient>
       </defs>
       <circle
         cx="50"
         cy="50"
         r={radius}
-        className="fill-none stroke-muted"
+        className="fill-none stroke-[color-mix(in_oklch,var(--neon)_16%,transparent)]"
         strokeWidth="8"
       />
       <motion.circle

@@ -10,7 +10,4 @@ export const MEAL_OPTION_TYPES = [
 export type TMealOptionType = (typeof MEAL_OPTION_TYPES)[number];
 
 export const APP_TIME_ZONE = "Asia/Karachi";
-export const APP_NAME = "Health - AR Gorsi";
-
-export const PET_NAMES = ["Guddi", "Precious", "Love", "Jaan"] as const;
-export type TPetName = (typeof PET_NAMES)[number];
+export const APP_NAME = "FitSehat";

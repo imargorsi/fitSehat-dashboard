@@ -16,7 +16,7 @@ export function QuietScreen({
 }) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-4 py-16 text-center">
-      <BrandLogo size="mark" float={false} />
+      <BrandLogo size="md" />
       <LandingHero className="mt-6">{title}</LandingHero>
       <Muted className="mt-3 max-w-sm">{body}</Muted>
       {action ? <div className="mt-8">{action}</div> : null}

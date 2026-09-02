@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
+import { APP_TAGLINE } from "@/lib/app-copy";
 import { APP_NAME } from "@/lib/constants";
 
 import "./globals.css";
@@ -18,29 +19,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: APP_NAME,
-  description: "A private health tracker made with love for Guddi — calories, meals, walking, and check-ins.",
+  description: APP_TAGLINE,
   robots: {
-    index: false,
-    follow: false,
-    nocache: true,
-    noarchive: true,
-    nosnippet: true,
-    noimageindex: true,
-    googleBot: {
-      index: false,
-      follow: false,
-      nocache: true,
-      noarchive: true,
-      nosnippet: true,
-      noimageindex: true,
-      "max-video-preview": -1,
-      "max-image-preview": "none",
-      "max-snippet": -1,
-    },
+    index: true,
+    follow: true,
   },
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: [{ url: "/logo.png", type: "image/png" }],
+    apple: [{ url: "/logo.png", type: "image/png" }],
+    shortcut: "/logo.png",
   },
   appleWebApp: {
     capable: true,

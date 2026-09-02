@@ -46,7 +46,7 @@ export function NeonMeter({
       <motion.div
         className={cn(
           "h-full rounded-full",
-          tone === "neon" && "bg-love shadow-glow",
+          tone === "neon" && "bg-brand shadow-glow",
           tone === "violet" && "bg-violet"
         )}
         initial={{ width: reduced ? `${percent}%` : "0%" }}

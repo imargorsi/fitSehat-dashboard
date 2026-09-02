@@ -6,7 +6,7 @@ import { EmptyNote } from "@/components/layout/empty-note";
 import { GlassCard } from "@/components/layout/glass-card";
 import { WidgetBody, WidgetHeader } from "@/components/layout/widget-header";
 import { ChartLabel, StrongViolet } from "@/components/ui/typography";
-import { EMPTY } from "@/lib/care-copy";
+import { EMPTY } from "@/lib/app-copy";
 import { formatChartAxisDate } from "@/lib/date.utils";
 import { EASE_OUT } from "@/lib/motion";
 import { formatNumber } from "@/lib/number.utils";
@@ -34,8 +34,8 @@ const toneStyles: Record<
     fill: "fill-gold",
     valueClass: "text-gold",
     empty: {
-      title: "No waist check-ins yet, Guddi.",
-      body: "Log waist on Tuesday when you are ready, Love. The number is never a verdict.",
+      title: "No waist check-ins yet",
+      body: "Log waist on your next check-in to see the trend.",
     },
   },
 };

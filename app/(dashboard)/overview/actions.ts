@@ -24,12 +24,12 @@ async function quickAddMealOptionImpl(_prev: TFormState, formData: FormData): Pr
 
   const option = await getMealOption(user.id, parsed.data.mealOptionId);
   if (!option) {
-    return { error: "That meal idea is gone, Love. Pick another." };
+    return { error: "That saved meal no longer exists. Pick another." };
   }
 
   const calories = caloriesFromOption(option);
   if (calories <= 0 && option.calories == null) {
-    return { error: "Add energy to that meal first, Guddi." };
+    return { error: "Add calories to that meal before quick add." };
   }
 
   const activeTarget = await getActiveMacroTarget(user.id);

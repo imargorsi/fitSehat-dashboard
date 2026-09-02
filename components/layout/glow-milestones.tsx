@@ -3,9 +3,8 @@
 import { useEffect } from "react";
 import { toast } from "sonner";
 
-import { CELEBRATIONS, streakCaption } from "@/lib/care-copy";
-import { pickRandom } from "@/lib/care-notes";
-import { dispatchLoveBurst } from "@/lib/love-motion.utils";
+import { CELEBRATIONS, mealsCaption, streakCaption } from "@/lib/app-copy";
+import { pickRandom } from "@/lib/random.utils";
 
 export function GlowMilestones({
   today,
@@ -31,23 +30,19 @@ export function GlowMilestones({
     };
 
     if (coreMeals >= 4 && unseen(`meals-4-${today}`)) {
-      toast.success("Four meals logged, Guddi. I knew you could do it.");
-      dispatchLoveBurst();
+      toast.success(mealsCaption(4, coreMeals));
       return;
     }
     if (walkMet && unseen(`walk-met-${today}`)) {
       toast.success(pickRandom(CELEBRATIONS.walkGoal));
-      dispatchLoveBurst();
       return;
     }
     if ((streak === 7 || streak === 14 || streak === 30) && unseen(`streak-${streak}`)) {
       toast.success(streakCaption(streak));
-      dispatchLoveBurst();
       return;
     }
     if (score >= 80 && unseen(`glow-80-${today}`)) {
-      toast.success("Your healthy glow is showing, Precious. I am so proud of you.");
-      dispatchLoveBurst();
+      toast.success("Strong day across fuel, movement, and logging.");
     }
   }, [today, coreMeals, streak, score, walkMet]);
 

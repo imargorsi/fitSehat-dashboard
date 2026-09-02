@@ -13,11 +13,11 @@ export function CheckInWidget({
   return (
     <GlassCard className="flex h-full flex-col">
       <WidgetHeader
-        title="Check-in, Guddi"
+        title="Check-in"
         subtitle={
           latestWeight
-            ? `Latest ${latestWeight} kg · Tuesday check-in`
-            : "Tuesday is a hug on the scale, Love — never a verdict."
+            ? `Latest ${latestWeight} kg · weekly check-in`
+            : "Log weight and waist to track progress over time."
         }
         actions={<AppLinkButton href="/measurements" label="Details" icon="activity" iconTone="neon" />}
       />

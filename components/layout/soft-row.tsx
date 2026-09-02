@@ -21,7 +21,7 @@ export function SoftRow({
   return (
     <div
       className={cn(
-        "flex min-w-0 items-center gap-2 rounded-[1.25rem] border border-border/60 bg-muted/25 px-3 py-3 transition-colors hover:bg-muted/40 sm:gap-3.5 sm:px-4 sm:py-4",
+        "flex min-w-0 items-center gap-2 rounded-[1.25rem] border border-white/20 bg-muted/25 px-3 py-3 transition-colors hover:bg-muted/40 sm:gap-3.5 sm:px-4 sm:py-4",
         className
       )}
     >

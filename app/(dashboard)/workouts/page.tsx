@@ -35,8 +35,8 @@ export default async function WalkPage() {
           unit="steps"
           hint={
             walkAchieved(steps, goal)
-              ? "Goal met, Guddi. Beautiful consistency."
-              : `A gentle ${formatInt(goal)}-step mark, Love. Rest is allowed.`
+              ? "Daily step goal met."
+              : `${formatInt(goal)} steps daily goal`
           }
           meter={{ value: steps, max: goal }}
         />
@@ -45,13 +45,13 @@ export default async function WalkPage() {
           label="Burn"
           countTo={todayWalk?.caloriesBurned ?? caloriesFromSteps(steps)}
           unit="kcal"
-          hint="A gentle walking estimate, Precious. Not a verdict."
+          hint="Estimated calories burned from walking."
         />
         <StatCard
           icon={<AnimateIcon name="calendarCheck" size={16} tone="neon" />}
           label="Days met"
           countTo={metDays}
-          hint="Showing up is the glow, Jaan. Missed days stay kind."
+          hint="Days you met your step goal this month."
         />
       </StatGrid>
 
