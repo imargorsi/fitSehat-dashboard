@@ -1,6 +1,6 @@
 import { AppLinkButton } from "@/components/layout/app-link-button";
 import { GlassCard } from "@/components/layout/glass-card";
-import { WidgetHeader } from "@/components/layout/widget-header";
+import { WidgetBody, WidgetHeader } from "@/components/layout/widget-header";
 import { WalkSlider } from "@/components/walk/walk-slider";
 import { formatInt } from "@/lib/number.utils";
 import { walkAchieved } from "@/lib/walk.utils";
@@ -25,9 +25,9 @@ export function WalkWidget({
         }${caloriesBurned ? ` · ${formatInt(caloriesBurned)} kcal` : ""}`}
         actions={<AppLinkButton href="/workouts" label="Calendar" icon="calendar" iconTone="gold" />}
       />
-      <div className="px-5 pb-5 sm:px-6 sm:pb-6">
+      <WidgetBody className="pt-0">
         <WalkSlider key={`${today}-${steps}-${goal}`} today={today} goal={goal} initialSteps={steps || goal} compact />
-      </div>
+      </WidgetBody>
     </GlassCard>
   );
 }

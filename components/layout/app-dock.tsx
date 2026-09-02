@@ -16,6 +16,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { H2, H4, Micro, Muted } from "@/components/ui/typography";
 import { dockNav, isMorePath, moreNav } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
@@ -48,32 +49,32 @@ export function AppDock() {
                 whileTap={reduced ? undefined : { scale: 0.92 }}
                 transition={{ type: "spring", stiffness: 420, damping: 28 }}
               >
-              <Link
-                href={item.href}
-                aria-current={isActive ? "page" : undefined}
-                className={cn(
-                  "relative flex min-h-14 min-w-0 flex-col items-center justify-center gap-0.5 rounded-3xl px-0.5 text-[0.65rem] font-medium tracking-wide leading-none",
-                  isActive ? "text-neon-foreground" : "text-muted-foreground"
-                )}
-              >
-                {isActive ? (
-                  <motion.span
-                    layoutId={reduced ? undefined : "dock-glow"}
-                    className="absolute inset-0 rounded-3xl bg-love shadow-glow"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                  />
-                ) : null}
-                <span className="relative z-10 flex flex-col items-center gap-0.5">
-                  {icon ? (
-                    <AnimateIcon
-                      name={icon}
-                      size={20}
-                      tone={isActive ? "onLove" : "muted"}
+                <Link
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "relative flex min-h-14 min-w-0 flex-col items-center justify-center gap-0.5 rounded-3xl px-0.5",
+                    isActive ? "text-neon-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  {isActive ? (
+                    <motion.span
+                      layoutId={reduced ? undefined : "dock-glow"}
+                      className="absolute inset-0 rounded-3xl bg-love shadow-glow"
+                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
                     />
                   ) : null}
-                  <span className="max-w-full truncate">{item.shortLabel}</span>
-                </span>
-              </Link>
+                  <span className="relative z-10 flex flex-col items-center gap-0.5">
+                    {icon ? (
+                      <AnimateIcon
+                        name={icon}
+                        size={20}
+                        tone={isActive ? "onLove" : "muted"}
+                      />
+                    ) : null}
+                    <Micro className="max-w-full truncate">{item.shortLabel}</Micro>
+                  </span>
+                </Link>
               </motion.div>
             );
           })}
@@ -85,7 +86,7 @@ export function AppDock() {
             whileTap={reduced ? undefined : { scale: 0.92 }}
             transition={{ type: "spring", stiffness: 420, damping: 28 }}
             className={cn(
-              "relative flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-3xl px-0.5 text-[0.65rem] font-medium tracking-wide leading-none",
+              "relative flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-3xl px-0.5",
               moreActive ? "text-neon-foreground" : "text-muted-foreground"
             )}
           >
@@ -98,7 +99,7 @@ export function AppDock() {
             ) : null}
             <span className="relative z-10 flex flex-col items-center gap-0.5">
               <AnimateIcon name="ellipsis" size={20} tone={moreActive ? "onLove" : "muted"} />
-              <span>More</span>
+              <Micro>More</Micro>
             </span>
           </motion.button>
         </motion.div>
@@ -115,7 +116,9 @@ export function AppDock() {
             <div className="flex min-w-0 items-center gap-3">
               <AnimateIcon name="heart" size={48} tone="rose" playOnMount className="shrink-0" />
               <div className="min-w-0">
-                <SheetTitle className="text-xl">Saved for quieter days, Love</SheetTitle>
+                <SheetTitle>
+                  <H2>Saved for quieter days, Love</H2>
+                </SheetTitle>
                 <SheetDescription>Check-in lives here, Guddi, whenever Tuesday calls.</SheetDescription>
               </div>
             </div>
@@ -145,11 +148,11 @@ export function AppDock() {
                   >
                     {icon ? <AnimateIcon name={icon} size={16} tone={isActive ? "onLove" : "rose"} /> : null}
                   </span>
-                  <span className="min-w-0">
-                    <span className="block font-heading text-base font-semibold">{item.shortLabel}</span>
-                    <span className={cn("block text-sm", isActive ? "opacity-80" : "text-muted-foreground")}>
+                  <span className="min-w-0 block">
+                    <H4 className="block">{item.shortLabel}</H4>
+                    <Muted className={cn("block", isActive && "opacity-80")}>
                       {item.description}
-                    </span>
+                    </Muted>
                   </span>
                 </Link>
               );

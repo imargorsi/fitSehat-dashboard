@@ -3,7 +3,9 @@
 import { useMemo, useState } from "react";
 
 import { AnimateIcon } from "@/components/icons/animate-icon";
+import { CalendarCell, CalendarTitle, CalendarWeekday, Legend } from "@/components/ui/typography";
 import { formatMonthTitle, monthCells, shiftMonth, startOfMonth } from "@/lib/date.utils";
+import { iconButtonClass } from "@/lib/field-control";
 import { formatInt } from "@/lib/number.utils";
 import { cn } from "@/lib/utils";
 import { walkAchieved } from "@/lib/walk.utils";
@@ -35,24 +37,24 @@ export function WalkCalendar({
         <button
           type="button"
           onClick={() => setCursor((value) => shiftMonth(value, -1))}
-          className="flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className={iconButtonClass}
           aria-label="Previous month"
         >
           <AnimateIcon name="chevronLeft" size={18} tone="muted" />
         </button>
-        <p className="font-heading min-w-0 truncate text-base font-semibold tracking-tight sm:text-lg">{formatMonthTitle(cursor)}</p>
+        <CalendarTitle>{formatMonthTitle(cursor)}</CalendarTitle>
         <button
           type="button"
           onClick={() => setCursor((value) => shiftMonth(value, 1))}
-          className="flex size-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className={iconButtonClass}
           aria-label="Next month"
         >
           <AnimateIcon name="chevronRight" size={18} tone="muted" />
         </button>
       </div>
-      <div className="grid grid-cols-7 gap-1 text-center text-[0.65rem] tracking-wide text-muted-foreground uppercase sm:gap-1.5 sm:text-xs">
+      <div className="grid grid-cols-7 gap-1 text-center sm:gap-1.5">
         {WEEKDAYS.map((day) => (
-          <span key={day}>{day}</span>
+          <CalendarWeekday key={day}>{day}</CalendarWeekday>
         ))}
       </div>
       <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
@@ -70,7 +72,7 @@ export function WalkCalendar({
                   : cell.date
               }
               className={cn(
-                "flex aspect-square flex-col items-center justify-center rounded-xl text-[0.7rem] tabular-nums sm:rounded-2xl sm:text-sm",
+                "flex aspect-square flex-col items-center justify-center rounded-xl sm:rounded-2xl",
                 !cell.inMonth && "opacity-30",
                 isFuture && "text-muted-foreground",
                 cell.inMonth && !stamp && !isFuture && "bg-muted/35 text-muted-foreground",
@@ -79,21 +81,21 @@ export function WalkCalendar({
                 isToday && !achieved && "ring-1 ring-rose/50"
               )}
             >
-              {Number(cell.date.slice(8, 10))}
+              <CalendarCell>{Number(cell.date.slice(8, 10))}</CalendarCell>
             </div>
           );
         })}
       </div>
-      <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
-        <span className="flex items-center gap-1.5">
+      <div className="flex flex-wrap gap-4">
+        <Legend className="flex items-center gap-1.5">
           <span className="size-2.5 rounded-full bg-love" /> Met it, Guddi
-        </span>
-        <span className="flex items-center gap-1.5">
+        </Legend>
+        <Legend className="flex items-center gap-1.5">
           <span className="size-2.5 rounded-full bg-gold/70" /> Walked, still going, Love
-        </span>
-        <span className="flex items-center gap-1.5">
+        </Legend>
+        <Legend className="flex items-center gap-1.5">
           <span className="size-2.5 rounded-full bg-muted" /> Rest / not logged, Jaan
-        </span>
+        </Legend>
       </div>
     </div>
   );

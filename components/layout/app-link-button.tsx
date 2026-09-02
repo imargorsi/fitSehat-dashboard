@@ -6,7 +6,25 @@ import { useRef, type ComponentProps, type ReactNode } from "react";
 import { careIcons, type TCareIconName } from "@/components/icons/care-icons";
 import { Button } from "@/components/ui/button";
 import type { IconHandle } from "@animateicons/react";
+import { navOutlineButtonClass } from "@/lib/layout";
 import { cn } from "@/lib/utils";
+
+const iconToneClass = {
+  rose: "text-rose",
+  gold: "text-gold",
+  neon: "text-neon",
+  muted: "text-muted-foreground",
+  foreground: "text-foreground",
+} as const;
+
+function useIconHover() {
+  const ref = useRef<IconHandle>(null);
+  return {
+    ref,
+    animate: () => ref.current?.startAnimation(),
+    stop: () => ref.current?.stopAnimation(),
+  };
+}
 
 export function AppLinkButton({
   href,
@@ -19,21 +37,10 @@ export function AppLinkButton({
   label: string;
   icon: TCareIconName;
   className?: string;
-  iconTone?: "rose" | "gold" | "neon" | "muted" | "foreground";
+  iconTone?: keyof typeof iconToneClass;
 }) {
-  const ref = useRef<IconHandle>(null);
+  const { ref, animate, stop } = useIconHover();
   const Icon = careIcons[icon];
-
-  const toneClass = {
-    rose: "text-rose",
-    gold: "text-gold",
-    neon: "text-neon",
-    muted: "text-muted-foreground",
-    foreground: "text-foreground",
-  }[iconTone];
-
-  const animate = () => ref.current?.startAnimation();
-  const stop = () => ref.current?.stopAnimation();
 
   return (
     <Button
@@ -41,16 +48,13 @@ export function AppLinkButton({
       size="sm"
       nativeButton={false}
       render={<Link href={href} />}
-      className={cn(
-        "h-9 shrink-0 rounded-full border-border/55 bg-transparent px-3.5 text-[0.8125rem] font-medium text-muted-foreground shadow-none hover:border-rose/35 hover:bg-transparent hover:text-foreground",
-        className
-      )}
+      className={cn(navOutlineButtonClass, className)}
       onMouseEnter={animate}
       onMouseLeave={stop}
       onFocus={animate}
       onBlur={stop}
     >
-      <Icon ref={ref} size={16} duration={0.85} className={toneClass} />
+      <Icon ref={ref} size={16} duration={0.85} className={iconToneClass[iconTone]} />
       {label}
     </Button>
   );
@@ -65,37 +69,23 @@ export function AppIconButton({
 }: Omit<ComponentProps<typeof Button>, "children"> & {
   children: ReactNode;
   icon: TCareIconName;
-  iconTone?: "rose" | "gold" | "neon" | "muted" | "foreground";
+  iconTone?: keyof typeof iconToneClass;
 }) {
-  const ref = useRef<IconHandle>(null);
+  const { ref, animate, stop } = useIconHover();
   const Icon = careIcons[icon];
-
-  const toneClass = {
-    rose: "text-rose",
-    gold: "text-gold",
-    neon: "text-neon",
-    muted: "text-muted-foreground",
-    foreground: "text-foreground",
-  }[iconTone];
-
-  const animate = () => ref.current?.startAnimation();
-  const stop = () => ref.current?.stopAnimation();
 
   return (
     <Button
       variant="outline"
       size="sm"
-      className={cn(
-        "h-9 shrink-0 rounded-full border-border/55 bg-transparent px-3.5 text-[0.8125rem] font-medium text-muted-foreground shadow-none hover:border-rose/35 hover:bg-transparent hover:text-foreground",
-        className
-      )}
+      className={cn(navOutlineButtonClass, className)}
       onMouseEnter={animate}
       onMouseLeave={stop}
       onFocus={animate}
       onBlur={stop}
       {...props}
     >
-      <Icon ref={ref} size={16} duration={0.85} className={toneClass} />
+      <Icon ref={ref} size={16} duration={0.85} className={iconToneClass[iconTone]} />
       {children}
     </Button>
   );

@@ -7,6 +7,21 @@ import { toast } from "sonner";
 import { saveWalkDay } from "@/app/(dashboard)/workouts/actions";
 import { ActionButton } from "@/components/layout/action-button";
 import { FormError } from "@/components/layout/form-error";
+import {
+  ChoiceChip,
+  ChoiceChipGroup,
+  HiddenInput,
+  RangeInput,
+} from "@/components/ui/form-controls";
+import {
+  Caption,
+  MetricAccent,
+  MetricAccentCompact,
+  MetricWalk,
+  MetricWalkCompact,
+  Muted,
+  Unit,
+} from "@/components/ui/typography";
 import { ACTIONS, CELEBRATIONS } from "@/lib/care-copy";
 import { pickRandom } from "@/lib/care-notes";
 import type { TFormState } from "@/lib/form-state.types";
@@ -43,6 +58,8 @@ export function WalkSlider({
   const met = walkAchieved(steps, goal);
   const fill = Math.min(100, (steps / MAX_STEPS) * 100);
   const goalMark = Math.min(96, Math.max(4, (goal / MAX_STEPS) * 100));
+  const StepMetric = compact ? MetricWalkCompact : MetricWalk;
+  const BurnMetric = compact ? MetricAccentCompact : MetricAccent;
 
   useEffect(() => {
     if (state && "ok" in state && state.ok && toasted.current !== state) {
@@ -54,29 +71,22 @@ export function WalkSlider({
 
   return (
     <form action={formAction} className={cn("grid", compact ? "gap-3" : "gap-4")}>
-      <input type="hidden" name="walkedOn" value={today} />
-      <input type="hidden" name="steps" value={steps} />
+      <HiddenInput name="walkedOn" value={today} />
+      <HiddenInput name="steps" value={steps} />
       <div className="flex items-end justify-between gap-3">
         <div className="min-w-0">
-          {compact ? null : (
-            <p className="text-sm tracking-[0.16em] text-muted-foreground uppercase">Today</p>
-          )}
-          <p
-            className={cn(
-              "font-heading font-semibold tracking-tight tabular-nums",
-              compact ? "text-xl sm:text-2xl" : "text-3xl sm:text-4xl"
-            )}
-          >
+          {compact ? null : <Caption>Today</Caption>}
+          <StepMetric>
             {formatInt(steps)}
-            <span className="ml-1 text-xs font-normal text-muted-foreground sm:ml-1.5 sm:text-sm">steps</span>
-          </p>
+            <Unit className="ml-1 sm:ml-1.5">steps</Unit>
+          </StepMetric>
         </div>
         <div className="shrink-0 text-right">
-          {compact ? null : <p className="text-sm text-muted-foreground">About, Jaan</p>}
-          <p className={cn("font-semibold tabular-nums text-rose", compact ? "text-lg sm:text-xl" : "text-xl sm:text-2xl")}>
+          {compact ? null : <Muted>About, Jaan</Muted>}
+          <BurnMetric>
             {formatInt(burned)}
-            <span className="ml-1 text-xs font-normal text-muted-foreground sm:text-sm">kcal</span>
-          </p>
+            <Unit className="ml-1">kcal</Unit>
+          </BurnMetric>
         </div>
       </div>
 
@@ -105,40 +115,33 @@ export function WalkSlider({
         <label htmlFor={sliderId} className="sr-only">
           Steps
         </label>
-        <input
+        <RangeInput
           id={sliderId}
-          type="range"
           min={MIN_STEPS}
           max={MAX_STEPS}
           step={100}
           value={steps}
           onChange={(event) => setSteps(snapSteps(Number(event.target.value)))}
-          className="absolute inset-0 w-full cursor-pointer appearance-none bg-transparent opacity-0"
         />
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <ChoiceChipGroup className="gap-2">
         {STEP_PRESETS.map((preset) => (
-          <button
+          <ChoiceChip
             key={preset}
-            type="button"
+            compact
+            selected={steps === preset}
             onClick={() => setSteps(preset)}
-            className={cn(
-              "rounded-full px-2.5 py-1.5 text-xs transition-colors sm:px-3 sm:text-sm",
-              steps === preset
-                ? "bg-love text-neon-foreground shadow-glow"
-                : "bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground"
-            )}
           >
             {formatInt(preset)}
-          </button>
+          </ChoiceChip>
         ))}
-      </div>
+      </ChoiceChipGroup>
 
       {compact ? null : (
-        <p className="text-sm text-muted-foreground">
+        <Muted>
           Goal {formatInt(goal)}. {met ? "You met it, Guddi. Beautiful consistency." : "Rest is allowed, Love. Every step still counts."}
-        </p>
+        </Muted>
       )}
 
       <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">

@@ -2,28 +2,17 @@ import { sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
+import { withRouteHandler } from "@/lib/errors/with-route-handler";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  try {
-    const result = await db.execute(sql`select now()::text as now`);
-    const now = (result.rows[0] as { now?: string } | undefined)?.now ?? null;
+export const GET = withRouteHandler("health.GET", async () => {
+  const result = await db.execute(sql`select now()::text as now`);
+  const now = (result.rows[0] as { now?: string } | undefined)?.now ?? null;
 
-    return NextResponse.json({
-      ok: true,
-      database: "connected",
-      now,
-    });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unknown database error";
-    return NextResponse.json(
-      {
-        ok: false,
-        database: "error",
-        ...(process.env.NODE_ENV === "production" ? {} : { message }),
-      },
-      { status: 503 }
-    );
-  }
-}
+  return NextResponse.json({
+    ok: true,
+    database: "connected",
+    now,
+  });
+});

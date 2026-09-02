@@ -16,4 +16,8 @@ export const mealOptionIdSchema = z.object({
   id: z.string().uuid(),
 });
 
+export const mealOptionQuickAddSchema = z.object({
+  mealOptionId: z.string().uuid("Pick a valid meal, Love"),
+});
+
 export type TMealOptionInput = z.infer<typeof mealOptionSchema>;

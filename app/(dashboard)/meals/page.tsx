@@ -4,9 +4,12 @@ import { DeleteRowButton } from "@/components/layout/delete-row-button";
 import { EmptyNote } from "@/components/layout/empty-note";
 import { ModulePanel } from "@/components/layout/module-panel";
 import { PageShell } from "@/components/layout/page-shell";
+import { SectionGrid } from "@/components/layout/page-grids";
 import { SoftRow } from "@/components/layout/soft-row";
 import { GlowIcon } from "@/components/layout/stat-card";
+import { InitialBadge, Meta, Strong } from "@/components/ui/typography";
 import { EMPTY } from "@/lib/care-copy";
+import { listStackClass } from "@/lib/layout";
 import { CALORIE_MEALS } from "@/lib/constants";
 import { listMealOptions } from "@/lib/db/meals";
 import { caloriesFromOption, mealKindFromOption } from "@/lib/meals.utils";
@@ -27,7 +30,7 @@ export default async function MealsPage() {
         <MealOptionForm />
       </ModulePanel>
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <SectionGrid>
         {CALORIE_MEALS.map((type) => {
           const items = rows.filter((row) => mealKindFromOption(row.mealType) === type);
           return (
@@ -35,7 +38,7 @@ export default async function MealsPage() {
               {items.length === 0 ? (
                 <EmptyNote title={EMPTY.mealBand.title} body={EMPTY.mealBand.body} icon="sparkles" tone="gold" />
               ) : (
-                <ul className="space-y-2.5">
+                <ul className={listStackClass}>
                   {items.map((item) => {
                     const calories = caloriesFromOption(item);
                     return (
@@ -43,19 +46,19 @@ export default async function MealsPage() {
                         <SoftRow
                           icon={
                             <GlowIcon>
-                              <span className="text-xs font-medium">{item.name.slice(0, 1).toUpperCase()}</span>
+                              <InitialBadge>{item.name.slice(0, 1).toUpperCase()}</InitialBadge>
                             </GlowIcon>
                           }
                           title={item.name}
                           subtitle={item.notes ?? undefined}
                           value={
                             <span>
-                              <span className="block font-medium text-foreground">{formatInt(calories)} kcal</span>
+                              <Strong className="block">{formatInt(calories)} kcal</Strong>
                               {item.proteinG ? (
-                                <span className="block text-xs text-muted-foreground">
+                                <Meta className="block">
                                   {formatNumber(item.proteinG)}g P
                                   {item.carbsG ? ` · ${formatNumber(item.carbsG)}g C` : ""}
-                                </span>
+                                </Meta>
                               ) : null}
                             </span>
                           }
@@ -69,7 +72,7 @@ export default async function MealsPage() {
             </ModulePanel>
           );
         })}
-      </div>
+      </SectionGrid>
     </PageShell>
   );
 }

@@ -4,6 +4,7 @@ import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 
 import { UiIcon } from "@/components/icons/ui-icon"
+import { typeH4, typeMuted } from "@/lib/typography"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -120,10 +121,7 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn(
-        "font-heading text-base leading-none font-semibold",
-        className
-      )}
+      className={cn(typeH4, "leading-none", className)}
       {...props}
     />
   )
@@ -136,10 +134,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn(
-        "text-sm text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
-        className
-      )}
+      className={cn(typeMuted, "*:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground", className)}
       {...props}
     />
   )

@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
+import { Quote, Span } from "@/components/ui/typography";
 import { nextCareNoteIndex } from "@/lib/care-notes";
 import { EASE_OUT } from "@/lib/motion";
 import { splitQuoteHighlight } from "@/lib/quote.utils";
-import { cn } from "@/lib/utils";
 
 const QUOTE_CYCLE_MS = 7000;
 
@@ -35,17 +35,18 @@ export function HeroQuoteRotator({
 
   return (
     <AnimatePresence mode="wait">
-      <motion.p
+      <motion.div
         key={index}
         initial={reduced ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         exit={reduced ? undefined : { opacity: 0, y: -10 }}
         transition={{ duration: 0.45, ease: EASE_OUT }}
-        className={cn("font-heading text-balance font-semibold tracking-tight", className)}
       >
-        <span className="text-foreground">{lead}</span>
-        {accent ? <span className="text-neon"> {accent}</span> : null}
-      </motion.p>
+        <Quote className={className}>
+          <Span>{lead}</Span>
+          {accent ? <Span className="text-neon"> {accent}</Span> : null}
+        </Quote>
+      </motion.div>
     </AnimatePresence>
   );
 }

@@ -4,16 +4,14 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/lib/db";
 import { weeklyReports } from "@/lib/db/schema";
+import { captureValidationError, firstZodError, wrapFormAction, wrapVoidAction } from "@/lib/errors";
 import type { TFormState } from "@/lib/form-state.types";
 import { emptyToUndefined } from "@/lib/number.utils";
 import { revalidateTracker } from "@/lib/revalidate.utils";
 import { requireAuthUser } from "@/lib/session";
 import { weeklyReportIdSchema, weeklyReportSchema } from "@/lib/validations/reports.utils";
 
-export async function createWeeklyReport(
-  _prev: TFormState,
-  formData: FormData
-): Promise<TFormState> {
+async function createWeeklyReportImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
   const parsed = weeklyReportSchema.safeParse({
     name: formData.get("name"),
@@ -21,7 +19,7 @@ export async function createWeeklyReport(
   });
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    return { error: firstZodError(parsed) };
   }
 
   await db.insert(weeklyReports).values({
@@ -34,10 +32,11 @@ export async function createWeeklyReport(
   return { ok: true };
 }
 
-export async function deleteWeeklyReport(formData: FormData): Promise<void> {
+async function deleteWeeklyReportImpl(formData: FormData): Promise<void> {
   const user = await requireAuthUser();
   const parsed = weeklyReportIdSchema.safeParse({ id: formData.get("id") });
   if (!parsed.success) {
+    captureValidationError("deleteWeeklyReport", firstZodError(parsed));
     return;
   }
 
@@ -47,3 +46,6 @@ export async function deleteWeeklyReport(formData: FormData): Promise<void> {
 
   revalidateTracker();
 }
+
+export const createWeeklyReport = wrapFormAction("createWeeklyReport", createWeeklyReportImpl);
+export const deleteWeeklyReport = wrapVoidAction("deleteWeeklyReport", deleteWeeklyReportImpl);

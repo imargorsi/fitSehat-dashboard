@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import { RowSubtitle, RowTitle, RowValue } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 
 export function SoftRow({
@@ -26,10 +27,10 @@ export function SoftRow({
     >
       {icon}
       <div className="min-w-0 flex-1">
-        <p className="truncate text-[0.9375rem] font-medium leading-6">{title}</p>
-        {subtitle ? <p className="truncate text-sm leading-5 text-muted-foreground">{subtitle}</p> : null}
+        <RowTitle>{title}</RowTitle>
+        {subtitle ? <RowSubtitle>{subtitle}</RowSubtitle> : null}
       </div>
-      {value ? <div className="max-w-[40%] shrink-0 text-right text-xs leading-5 sm:max-w-none sm:text-sm">{value}</div> : null}
+      {value ? <RowValue className="max-w-[40%] shrink-0 sm:max-w-none">{value}</RowValue> : null}
       {action}
     </div>
   );

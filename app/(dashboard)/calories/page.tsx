@@ -5,14 +5,17 @@ import { DeleteRowButton } from "@/components/layout/delete-row-button";
 import { EmptyNote } from "@/components/layout/empty-note";
 import { ModulePanel } from "@/components/layout/module-panel";
 import { PageShell } from "@/components/layout/page-shell";
+import { StatGrid } from "@/components/layout/page-grids";
 import { SoftRow } from "@/components/layout/soft-row";
 import { MealDots, StatCard } from "@/components/layout/stat-card";
+import { Caption, DayHeader, DayTotal, Meta, Strong, Unit } from "@/components/ui/typography";
 import { aggregateLogs } from "@/lib/calories.utils";
 import { calorieCaption, EMPTY, mealsCaption, proteinCaption } from "@/lib/care-copy";
 import { formatMediumDate, todayDateString } from "@/lib/date.utils";
 import { listCalorieLogs } from "@/lib/db/calories";
 import { getActiveMacroTarget } from "@/lib/db/macros";
 import type { TCalorieLog } from "@/lib/db/schema";
+import { listStackClass } from "@/lib/layout";
 import { formatInt, formatNumber } from "@/lib/number.utils";
 import { loggedCoreMeals, remainingAmount } from "@/lib/overview.utils";
 import { requireAuthUser } from "@/lib/session";
@@ -46,7 +49,7 @@ export default async function CaloriesPage() {
 
   return (
     <PageShell>
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <StatGrid>
         <StatCard
           icon={<AnimateIcon name="flame" size={16} tone="neon" />}
           label="Today"
@@ -77,7 +80,7 @@ export default async function CaloriesPage() {
           countTo={todaysLogs.length}
           hint={target ? `Attached to ${target.name}` : "Logs save even before a target, Love. No rush."}
         />
-      </div>
+      </StatGrid>
 
       <ModulePanel
         eyebrow="Journal"
@@ -95,19 +98,15 @@ export default async function CaloriesPage() {
                 <section key={day} className="space-y-3">
                   <div className="flex items-end justify-between gap-3 px-1">
                     <div>
-                      <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">
-                        {day === today ? "Today" : "Day"}
-                      </p>
-                      <p className="font-heading mt-1 text-base font-semibold tracking-tight">
-                        {day === today ? "Today" : formatMediumDate(day)}
-                      </p>
+                      <Caption>{day === today ? "Today" : "Day"}</Caption>
+                      <DayHeader>{day === today ? "Today" : formatMediumDate(day)}</DayHeader>
                     </div>
-                    <p className="text-sm tabular-nums text-rose">
+                    <DayTotal>
                       {formatInt(dayTotal.calories)}{" "}
-                      <span className="text-muted-foreground">kcal</span>
-                    </p>
+                      <Unit>kcal</Unit>
+                    </DayTotal>
                   </div>
-                  <ul className="space-y-2.5">
+                  <ul className={listStackClass}>
                     {rows.map((log) => (
                       <li key={log.id}>
                         <SoftRow
@@ -115,13 +114,13 @@ export default async function CaloriesPage() {
                           subtitle={log.notes ? `${log.meal} · ${log.notes}` : log.meal}
                           value={
                             <span>
-                              <span className="block font-medium text-foreground">
+                              <Strong className="block">
                                 {formatInt(log.calories)} kcal
-                              </span>
+                              </Strong>
                               {log.proteinG ? (
-                                <span className="block text-xs text-muted-foreground">
+                                <Meta className="block">
                                   {formatNumber(log.proteinG)}g P
-                                </span>
+                                </Meta>
                               ) : null}
                             </span>
                           }

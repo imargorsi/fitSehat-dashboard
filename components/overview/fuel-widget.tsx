@@ -2,9 +2,11 @@ import { CalorieLogDialog } from "@/components/calories/calorie-log-dialog";
 import { AppLinkButton } from "@/components/layout/app-link-button";
 import { GlassCard } from "@/components/layout/glass-card";
 import { SoftRow } from "@/components/layout/soft-row";
-import { WidgetHeader } from "@/components/layout/widget-header";
+import { WidgetBody, WidgetHeader } from "@/components/layout/widget-header";
+import { Muted } from "@/components/ui/typography";
 import type { TCalorieLog } from "@/lib/db/schema";
 import { formatInt } from "@/lib/number.utils";
+import { cn } from "@/lib/utils";
 
 export function FuelWidget({
   today,
@@ -31,11 +33,9 @@ export function FuelWidget({
           </>
         }
       />
-      <div className="flex flex-1 flex-col gap-2 px-4 pb-5 sm:px-5">
+      <WidgetBody className={cn("flex flex-col gap-2", recent.length === 0 && "pt-0")}>
         {recent.length === 0 ? (
-          <p className="px-1 text-sm leading-6 text-muted-foreground">
-            Nothing logged yet, Guddi. One kind meal starts the day.
-          </p>
+          <Muted>Nothing logged yet, Guddi. One kind meal starts the day.</Muted>
         ) : (
           recent.map((log) => (
             <SoftRow
@@ -46,7 +46,7 @@ export function FuelWidget({
             />
           ))
         )}
-      </div>
+      </WidgetBody>
     </GlassCard>
   );
 }

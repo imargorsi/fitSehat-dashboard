@@ -5,10 +5,11 @@ import Link from "next/link";
 
 import { signInWithEmail } from "@/app/(auth)/sign-in/actions";
 import { ActionButton } from "@/components/layout/action-button";
-import { ACTIONS, PLACE } from "@/lib/care-copy";
+import { FormError } from "@/components/layout/form-error";
+import { FormLabel, TextInput } from "@/components/ui/form-controls";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { LinkHint, Span } from "@/components/ui/typography";
+import { ACTIONS, PLACE } from "@/lib/care-copy";
 
 export default function SignInPage() {
   const [state, formAction, isPending] = useActionState(signInWithEmail, null);
@@ -22,12 +23,12 @@ export default function SignInPage() {
       <CardContent>
         <form action={formAction} className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" autoComplete="email" required placeholder={PLACE.email} />
+            <FormLabel htmlFor="email">Email</FormLabel>
+            <TextInput id="email" name="email" type="email" autoComplete="email" required placeholder={PLACE.email} />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <TextInput
               id="password"
               name="password"
               type="password"
@@ -36,20 +37,16 @@ export default function SignInPage() {
               required
             />
           </div>
-          {state?.error ? (
-            <p className="text-sm text-destructive" role="alert">
-              {state.error}
-            </p>
-          ) : null}
+          <FormError error={state?.error} />
           <ActionButton type="submit" size="lg" icon="heart" pending={isPending} pendingLabel="Coming in…" className="w-full">
             {ACTIONS.signIn}
           </ActionButton>
-          <p className="text-center text-sm text-muted-foreground">
+          <LinkHint>
             New here, Precious?{" "}
             <Link href="/sign-up" className="text-foreground underline-offset-4 hover:underline">
-              Make a space with me
+              <Span>Make a space with me</Span>
             </Link>
-          </p>
+          </LinkHint>
         </form>
       </CardContent>
     </Card>

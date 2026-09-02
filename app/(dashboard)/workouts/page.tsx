@@ -1,6 +1,7 @@
 import { AnimateIcon } from "@/components/icons/animate-icon";
 import { ModulePanel } from "@/components/layout/module-panel";
 import { PageShell } from "@/components/layout/page-shell";
+import { SectionGrid, StatGrid } from "@/components/layout/page-grids";
 import { StatCard } from "@/components/layout/stat-card";
 import { WalkCalendar } from "@/components/walk/walk-calendar";
 import { WalkGoalForm } from "@/components/walk/walk-goal-form";
@@ -29,7 +30,7 @@ export default async function WalkPage() {
 
   return (
     <PageShell>
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 [&>*:last-child]:col-span-2 lg:[&>*:last-child]:col-span-1">
+      <StatGrid className="lg:grid-cols-3 [&>*:last-child]:col-span-2 lg:[&>*:last-child]:col-span-1">
         <StatCard
           icon={<AnimateIcon name="footprints" size={16} tone="neon" />}
           label="Today"
@@ -55,7 +56,7 @@ export default async function WalkPage() {
           countTo={metDays}
           hint="Showing up is the glow, Jaan. Missed days stay kind."
         />
-      </div>
+      </StatGrid>
 
       <ModulePanel
         eyebrow="Today"
@@ -65,7 +66,7 @@ export default async function WalkPage() {
         <WalkSlider key={`${today}-${steps}-${goal}`} today={today} goal={goal} initialSteps={steps || goal} />
       </ModulePanel>
 
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
+      <SectionGrid className="lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
         <ModulePanel
           eyebrow="Rhythm"
           title="Your days, Precious"
@@ -76,7 +77,7 @@ export default async function WalkPage() {
         <ModulePanel eyebrow="Pace" title="Daily goal, Love" description="Change this whenever you like, Guddi.">
           <WalkGoalForm goal={goal} />
         </ModulePanel>
-      </div>
+      </SectionGrid>
     </PageShell>
   );
 }

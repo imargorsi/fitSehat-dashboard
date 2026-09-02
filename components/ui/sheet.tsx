@@ -4,6 +4,7 @@ import * as React from "react"
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
 
 import { UiIcon } from "@/components/icons/ui-icon"
+import { typeH4, typeMuted } from "@/lib/typography"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
@@ -103,10 +104,7 @@ function SheetTitle({ className, ...props }: SheetPrimitive.Title.Props) {
   return (
     <SheetPrimitive.Title
       data-slot="sheet-title"
-      className={cn(
-        "font-heading text-base font-semibold text-foreground",
-        className
-      )}
+      className={cn(typeH4, className)}
       {...props}
     />
   )
@@ -119,7 +117,7 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn(typeMuted, className)}
       {...props}
     />
   )

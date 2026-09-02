@@ -2,81 +2,67 @@
 
 import { createMacroTarget } from "@/app/(dashboard)/macros/actions";
 import { FormError } from "@/components/layout/form-error";
+import { FormField, FormStack, OptionalMacroSection } from "@/components/layout/form-field";
 import { ActionButton } from "@/components/layout/action-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { NumberInput, TextInput } from "@/components/ui/form-controls";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
 
 export function MacroTargetForm() {
   const { formRef, state, formAction, isPending } = useResettingForm(createMacroTarget, "macros");
 
   return (
-    <form ref={formRef} action={formAction} className="grid gap-5">
-      <div className="grid gap-2">
-        <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Name, Love</p>
-        <Label htmlFor="name" className="sr-only">
-          Name
-        </Label>
-        <Input id="name" name="name" required defaultValue="Daily Calorie Goal" placeholder="A gentle daily mark, Guddi" />
-      </div>
-      <div className="grid gap-2">
-        <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Energy, Precious</p>
-        <Label htmlFor="targetCalories">Target calories, Jaan</Label>
-        <Input
-          id="targetCalories"
-          name="targetCalories"
-          type="number"
-          min={1}
-          step={1}
-          required
-          placeholder="Energy for the day, Love"
-        />
-      </div>
-      <div className="grid gap-3 rounded-[1.25rem] bg-muted/35 p-4">
-        <p className="text-xs tracking-[0.16em] text-muted-foreground uppercase">Macros, Guddi</p>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div className="grid gap-2">
-            <Label htmlFor="proteinTargetG">Protein, Precious</Label>
-            <Input
+    <form ref={formRef} action={formAction}>
+      <FormStack>
+        <FormField label="Name, Love" htmlFor="name">
+          <TextInput id="name" name="name" required defaultValue="Daily Calorie Goal" placeholder="A gentle daily mark, Guddi" />
+        </FormField>
+        <FormField label="Target calories, Jaan" htmlFor="targetCalories">
+          <NumberInput
+            id="targetCalories"
+            name="targetCalories"
+            min={1}
+            step={1}
+            required
+            placeholder="Energy for the day, Love"
+          />
+        </FormField>
+        <OptionalMacroSection title="Macros, Guddi">
+          <FormField label="Protein, Precious" htmlFor="proteinTargetG">
+            <NumberInput
               id="proteinTargetG"
               name="proteinTargetG"
-              type="number"
               min={0}
               step={1}
               required
               placeholder="Protein for you, Jaan"
             />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="fatsTargetG">Fats, Love</Label>
-            <Input
+          </FormField>
+          <FormField label="Fats, Love" htmlFor="fatsTargetG">
+            <NumberInput
               id="fatsTargetG"
               name="fatsTargetG"
-              type="number"
               min={0}
               step={1}
               required
               placeholder="A little fat is okay, Guddi"
             />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="carbsTargetG">Carbs, Precious</Label>
-            <Input
+          </FormField>
+          <FormField label="Carbs, Precious" htmlFor="carbsTargetG">
+            <NumberInput
               id="carbsTargetG"
               name="carbsTargetG"
-              type="number"
               min={0}
               step={1}
               required
               placeholder="Carbs if you like, Love"
             />
-          </div>
-        </div>
-      </div>
-      <ActionButton type="submit" size="lg" icon="flame" pending={isPending} pendingLabel="Saving for you…" className="w-full rounded-full sm:w-auto">
-        Keep this, Jaan
-      </ActionButton>
-      <FormError error={state && "error" in state ? state.error : undefined} />
+          </FormField>
+        </OptionalMacroSection>
+        <ActionButton type="submit" size="lg" icon="flame" pending={isPending} pendingLabel="Saving for you…" className="w-full rounded-full sm:w-auto">
+          Keep this, Jaan
+        </ActionButton>
+        <FormError error={state && "error" in state ? state.error : undefined} />
+      </FormStack>
     </form>
   );
 }

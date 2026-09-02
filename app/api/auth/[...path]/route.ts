@@ -1,7 +1,14 @@
 import { auth } from "@/lib/auth/server";
+import { withRouteHandler } from "@/lib/errors/with-route-handler";
 
-export const GET = (...args: Parameters<ReturnType<typeof auth.handler>["GET"]>) =>
-  auth.handler().GET(...args);
+const handler = auth.handler();
 
-export const POST = (...args: Parameters<ReturnType<typeof auth.handler>["POST"]>) =>
-  auth.handler().POST(...args);
+type TAuthRouteContext = Parameters<NonNullable<ReturnType<typeof auth.handler>["GET"]>>[1];
+
+export const GET = withRouteHandler("auth.GET", (request, context: TAuthRouteContext) =>
+  handler.GET!(request, context)
+);
+
+export const POST = withRouteHandler("auth.POST", (request, context: TAuthRouteContext) =>
+  handler.POST!(request, context)
+);

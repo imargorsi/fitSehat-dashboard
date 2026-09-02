@@ -18,6 +18,7 @@ import { dashboardNav } from "@/lib/navigation";
 import type { TAuthUser } from "@/lib/session";
 import { firstName, initials } from "@/lib/user.utils";
 import { cn } from "@/lib/utils";
+import { NavLinkLabel } from "@/components/ui/typography";
 
 export function AppBar({ user }: { user: TAuthUser }) {
   const pathname = usePathname();
@@ -46,7 +47,7 @@ export function AppBar({ user }: { user: TAuthUser }) {
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "relative flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition-colors",
+                    "relative flex shrink-0 items-center gap-2 rounded-full px-3 py-2 transition-colors",
                     isActive ? "text-neon-foreground" : "text-muted-foreground hover:text-foreground"
                   )}
                 >
@@ -65,7 +66,7 @@ export function AppBar({ user }: { user: TAuthUser }) {
                       className="relative z-10"
                     />
                   ) : null}
-                  <span className="relative z-10 whitespace-nowrap">{item.shortLabel}</span>
+                  <NavLinkLabel className="relative z-10 whitespace-nowrap">{item.shortLabel}</NavLinkLabel>
                 </Link>
               );
             })}

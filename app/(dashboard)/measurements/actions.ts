@@ -5,6 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { ensureProfile } from "@/lib/db/profiles";
 import { profiles, weeklyMeasurements } from "@/lib/db/schema";
+import { captureValidationError, firstZodError, wrapFormAction, wrapVoidAction } from "@/lib/errors";
 import type { TFormState } from "@/lib/form-state.types";
 import { emptyToUndefined } from "@/lib/number.utils";
 import { revalidateTracker } from "@/lib/revalidate.utils";
@@ -15,10 +16,7 @@ import {
   profileBaselinesSchema,
 } from "@/lib/validations/measurements.utils";
 
-export async function saveMeasurement(
-  _prev: TFormState,
-  formData: FormData
-): Promise<TFormState> {
+async function saveMeasurementImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
   const parsed = measurementSchema.safeParse({
     measuredOn: formData.get("measuredOn"),
@@ -27,7 +25,7 @@ export async function saveMeasurement(
   });
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    return { error: firstZodError(parsed) };
   }
 
   await db
@@ -50,10 +48,11 @@ export async function saveMeasurement(
   return { ok: true };
 }
 
-export async function deleteMeasurement(formData: FormData): Promise<void> {
+async function deleteMeasurementImpl(formData: FormData): Promise<void> {
   const user = await requireAuthUser();
   const parsed = measurementIdSchema.safeParse({ id: formData.get("id") });
   if (!parsed.success) {
+    captureValidationError("deleteMeasurement", firstZodError(parsed));
     return;
   }
 
@@ -64,10 +63,7 @@ export async function deleteMeasurement(formData: FormData): Promise<void> {
   revalidateTracker();
 }
 
-export async function saveProfileBaselines(
-  _prev: TFormState,
-  formData: FormData
-): Promise<TFormState> {
+async function saveProfileBaselinesImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
   const parsed = profileBaselinesSchema.safeParse({
     startWeightKg: emptyToUndefined(formData.get("startWeightKg")),
@@ -76,7 +72,7 @@ export async function saveProfileBaselines(
   });
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    return { error: firstZodError(parsed) };
   }
 
   const profile = await ensureProfile(user.id);
@@ -99,3 +95,7 @@ export async function saveProfileBaselines(
   revalidateTracker();
   return { ok: true };
 }
+
+export const saveMeasurement = wrapFormAction("saveMeasurement", saveMeasurementImpl);
+export const deleteMeasurement = wrapVoidAction("deleteMeasurement", deleteMeasurementImpl);
+export const saveProfileBaselines = wrapFormAction("saveProfileBaselines", saveProfileBaselinesImpl);

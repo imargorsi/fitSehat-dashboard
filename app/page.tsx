@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/layout/brand-logo";
 import { UiIcon } from "@/components/icons/ui-icon";
 import { Button } from "@/components/ui/button";
+import { LandingApp, LandingHero, Muted, P } from "@/components/ui/typography";
 import { ACTIONS } from "@/lib/care-copy";
 import { APP_NAME } from "@/lib/constants";
 import { getAuthUser } from "@/lib/session";
@@ -19,14 +20,12 @@ export default async function HomePage() {
       </header>
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center px-6 pb-16 text-center">
         <BrandLogo size="hero" priority />
-        <p className="mt-1 text-sm text-muted-foreground">Made with love, Guddi</p>
-        <p className="font-heading mt-3 text-lg font-semibold tracking-tight">{APP_NAME}</p>
-        <h1 className="font-heading mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-          A quiet place for your glow, Precious.
-        </h1>
-        <p className="mt-4 max-w-sm text-base leading-7 text-muted-foreground">
+        <Muted className="mt-1">Made with love, Guddi</Muted>
+        <LandingApp className="mt-3">{APP_NAME}</LandingApp>
+        <LandingHero className="mt-2">A quiet place for your glow, Precious.</LandingHero>
+        <P className="mt-4 max-w-sm leading-7 text-muted-foreground">
           Take care of yourself, Jaan. I am proud of you. And I am always rooting for you, Love.
-        </p>
+        </P>
         <div className="mt-8 flex w-full max-w-sm flex-col gap-3">
           {user ? (
             <Button size="lg" className="w-full" render={<Link href="/overview" />}>

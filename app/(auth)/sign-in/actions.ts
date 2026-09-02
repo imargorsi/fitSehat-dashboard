@@ -4,11 +4,12 @@ import { redirect } from "next/navigation";
 
 import { publicAuthError } from "@/lib/auth/auth-error.utils";
 import { auth } from "@/lib/auth/server";
+import { firstZodError, wrapAuthAction } from "@/lib/errors";
 import { signInSchema } from "@/lib/validations/auth.utils";
 
 export type TAuthFormState = { error: string } | null;
 
-export async function signInWithEmail(
+async function signInWithEmailImpl(
   _prevState: TAuthFormState,
   formData: FormData
 ): Promise<TAuthFormState> {
@@ -18,7 +19,7 @@ export async function signInWithEmail(
   });
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    return { error: firstZodError(parsed) };
   }
 
   const { error } = await auth.signIn.email(parsed.data);
@@ -29,3 +30,5 @@ export async function signInWithEmail(
 
   redirect("/overview");
 }
+
+export const signInWithEmail = wrapAuthAction("signInWithEmail", signInWithEmailImpl);

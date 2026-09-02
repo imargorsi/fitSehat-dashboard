@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { CountUp } from "@/components/motion/count-up";
+import { Caption, Metric, MetricCompact, Percent, StatHint, Unit } from "@/components/ui/typography";
 import { GlassCard } from "@/components/layout/glass-card";
 import { cn } from "@/lib/utils";
 import { clampPercent } from "@/lib/number.utils";
@@ -86,38 +87,27 @@ export function StatCard({
       <div className="flex items-start justify-between gap-3">
         <GlowIcon tone={tone}>{icon}</GlowIcon>
         {meter ? (
-          <span className="text-xs text-muted-foreground sm:text-sm">
-            {clampPercent(meter.value, meter.max)}%
-          </span>
+          <Percent>{clampPercent(meter.value, meter.max)}%</Percent>
         ) : null}
       </div>
       <div className="space-y-1">
-        <p className="text-[0.7rem] tracking-[0.16em] text-muted-foreground uppercase sm:text-sm">{label}</p>
-        <p
-          className={cn(
-            "leading-none font-semibold tracking-tight",
-            compact ? "text-2xl lg:text-3xl" : "text-2xl sm:text-[1.85rem] lg:text-4xl"
-          )}
-        >
-          {countTo != null ? <CountUp value={countTo} /> : value}
-          {suffix ? (
-            <span className="text-lg font-normal text-muted-foreground sm:text-2xl">{suffix}</span>
-          ) : null}
-          {unit ? (
-            <span className="ml-1 text-sm font-normal text-muted-foreground sm:ml-1.5 sm:text-base">{unit}</span>
-          ) : null}
-        </p>
+        <Caption>{label}</Caption>
+        {(() => {
+          const MetricTag = compact ? MetricCompact : Metric;
+          return (
+            <MetricTag>
+              {countTo != null ? <CountUp value={countTo} /> : value}
+              {suffix ? <Unit>{suffix}</Unit> : null}
+              {unit ? <Unit className="ml-1 sm:ml-1.5">{unit}</Unit> : null}
+            </MetricTag>
+          );
+        })()}
       </div>
       {meter ? <NeonMeter value={meter.value} max={meter.max} tone={tone} /> : null}
       {footer}
-      <p
-        className={cn(
-          "text-xs leading-5 text-muted-foreground sm:text-sm sm:leading-6",
-          compact ? "line-clamp-1" : "line-clamp-2 sm:line-clamp-3"
-        )}
-      >
+      <StatHint className={compact ? "line-clamp-1" : "line-clamp-2 sm:line-clamp-3"}>
         {hint}
-      </p>
+      </StatHint>
     </GlassCard>
   );
 }

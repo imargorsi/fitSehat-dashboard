@@ -1,5 +1,7 @@
 import { AnimateIcon } from "@/components/icons/animate-icon";
 import { GlowMilestones } from "@/components/layout/glow-milestones";
+import { PageShell } from "@/components/layout/page-shell";
+import { SectionGrid, StatGrid } from "@/components/layout/page-grids";
 import { MealDots, StatCard } from "@/components/layout/stat-card";
 import { CheckInWidget } from "@/components/overview/check-in-widget";
 import { FuelWidget } from "@/components/overview/fuel-widget";
@@ -9,6 +11,7 @@ import { QuoteHero } from "@/components/overview/quote-hero";
 import { TodayMealsCard } from "@/components/overview/today-meals-card";
 import { WalkWidget } from "@/components/overview/walk-widget";
 import { WeekCalorieChart } from "@/components/overview/week-calorie-chart";
+import { Muted } from "@/components/ui/typography";
 import { aggregateLogs, dailyTotals } from "@/lib/calories.utils";
 import {
   calorieCaption,
@@ -94,7 +97,7 @@ export default async function OverviewPage() {
   );
 
   return (
-    <div className="flex flex-col gap-5 pb-2 sm:gap-8 sm:pb-6">
+    <PageShell>
       <GlowMilestones
         today={today}
         coreMeals={coreLogged.size}
@@ -102,12 +105,12 @@ export default async function OverviewPage() {
         score={glow.score}
       />
 
-      <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,7fr)_minmax(16rem,3fr)] lg:items-stretch">
+      <SectionGrid className="lg:grid-cols-[minmax(0,7fr)_minmax(16rem,3fr)] lg:items-stretch">
         <QuoteHero dateLabel={formatLongDate(today).toUpperCase()} />
         <GlowCard glow={glow} streak={streak} />
-      </div>
+      </SectionGrid>
 
-      <div className="grid min-w-0 grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <StatGrid>
         <StatCard
           icon={<AnimateIcon name="flame" size={16} tone="neon" />}
           label="Fuel"
@@ -140,9 +143,9 @@ export default async function OverviewPage() {
           hint={mealsCaption(coreLogged.size, todayLogs.length)}
           footer={<MealDots logged={coreLogged} />}
         />
-      </div>
+      </StatGrid>
 
-      <div className="grid min-w-0 gap-5 lg:grid-cols-2">
+      <SectionGrid>
         <FuelWidget today={today} calories={todayTotals.calories} goal={calorieGoal} logs={todayMeals} />
         <WalkWidget today={today} goal={stepGoal} steps={walkSteps} caloriesBurned={walkBurn} />
         <QuickAddCard meals={meals} />
@@ -150,16 +153,16 @@ export default async function OverviewPage() {
           today={today}
           latestWeight={latestWeight != null ? formatNum(latestWeight) : null}
         />
-      </div>
+      </SectionGrid>
 
-      <div className="grid min-w-0 gap-5 lg:grid-cols-2">
+      <SectionGrid>
         <TodayMealsCard logs={todayMeals} totalCalories={todayTotals.calories} />
         <WeekCalorieChart bars={bars} goal={calorieGoal} />
-      </div>
+      </SectionGrid>
 
-      <p className="pb-4 text-center text-sm leading-6 text-muted-foreground">
+      <Muted className="text-center">
         Take care of yourself, Guddi. Keep going. Someone is always rooting for you.
-      </p>
-    </div>
+      </Muted>
+    </PageShell>
   );
 }

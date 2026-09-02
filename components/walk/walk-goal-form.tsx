@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { saveStepGoal } from "@/app/(dashboard)/workouts/actions";
 import { FormError } from "@/components/layout/form-error";
 import { ActionButton } from "@/components/layout/action-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { FormLabel, NumberInput } from "@/components/ui/form-controls";
+import { Muted } from "@/components/ui/typography";
 import { ACTIONS, PLACE } from "@/lib/care-copy";
 import type { TFormState } from "@/lib/form-state.types";
 import { dispatchLoveBurst } from "@/lib/love-motion.utils";
@@ -28,11 +28,10 @@ export function WalkGoalForm({ goal }: { goal: number }) {
   return (
     <form action={formAction} className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
       <div className="grid gap-2">
-        <Label htmlFor="stepGoal">Daily step goal, Love</Label>
-        <Input
+        <FormLabel htmlFor="stepGoal">Daily step goal, Love</FormLabel>
+        <NumberInput
           id="stepGoal"
           name="stepGoal"
-          type="number"
           min={1000}
           max={20000}
           step={100}
@@ -44,9 +43,9 @@ export function WalkGoalForm({ goal }: { goal: number }) {
       <ActionButton type="submit" icon="settings" pending={isPending} pendingLabel="Saving for you…" className="w-full rounded-full sm:w-auto">
         {ACTIONS.updateGoal}
       </ActionButton>
-      <p className="text-sm text-muted-foreground sm:col-span-2">
+      <Muted className="sm:col-span-2">
         Common marks, Precious: {STEP_PRESETS.map((value) => value.toLocaleString()).join(", ")}.
-      </p>
+      </Muted>
       <div className="sm:col-span-2">
         <FormError error={state && "error" in state ? state.error : undefined} />
       </div>

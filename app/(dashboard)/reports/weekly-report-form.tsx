@@ -3,8 +3,7 @@
 import { createWeeklyReport } from "@/app/(dashboard)/reports/actions";
 import { FormError } from "@/components/layout/form-error";
 import { ActionButton } from "@/components/layout/action-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { FormLabel, TextInput } from "@/components/ui/form-controls";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
 
 export function WeeklyReportForm() {
@@ -13,12 +12,12 @@ export function WeeklyReportForm() {
   return (
     <form ref={formRef} action={formAction} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <div className="grid gap-2">
-        <Label htmlFor="name">Name, Love</Label>
-        <Input id="name" name="name" required placeholder="This week's note, Guddi" />
+        <FormLabel htmlFor="name">Name, Love</FormLabel>
+        <TextInput id="name" name="name" required placeholder="This week's note, Guddi" />
       </div>
       <div className="grid gap-2">
-        <Label htmlFor="fileUrl">A link if you like, Precious</Label>
-        <Input id="fileUrl" name="fileUrl" type="url" placeholder="Only if you want, Jaan" />
+        <FormLabel htmlFor="fileUrl">A link if you like, Precious</FormLabel>
+        <TextInput id="fileUrl" name="fileUrl" type="url" placeholder="Only if you want, Jaan" />
       </div>
       <div className="flex items-end">
         <ActionButton type="submit" size="lg" icon="book" pending={isPending} pendingLabel="Saving for you…" className="w-full min-w-36 rounded-full sm:w-auto">

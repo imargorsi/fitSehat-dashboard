@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
+import { EyebrowAccent, H1, Muted } from "@/components/ui/typography";
 import { dashboardNav } from "@/lib/navigation";
 
 export function ScreenHeading() {
@@ -14,13 +15,9 @@ export function ScreenHeading() {
 
   return (
     <div className="mb-8 max-w-3xl sm:mb-10">
-      <p className="text-xs tracking-[0.22em] text-muted-foreground uppercase">{current.label}</p>
-      <h1 className="font-heading mt-2 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-        {current.shortLabel}
-      </h1>
-      <p className="mt-2 text-sm leading-6 text-muted-foreground sm:mt-3 sm:leading-7 lg:text-base">
-        {current.description}
-      </p>
+      <EyebrowAccent>{current.label}</EyebrowAccent>
+      <H1 className="mt-2">{current.shortLabel}</H1>
+      <Muted className="mt-2 sm:mt-3">{current.description}</Muted>
     </div>
   );
 }

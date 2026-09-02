@@ -1,11 +1,9 @@
+import { ErrorText } from "@/components/ui/typography";
+
 export function FormError({ error }: { error?: string }) {
   if (!error) {
     return null;
   }
 
-  return (
-    <p className="text-sm text-destructive" role="alert">
-      {error}
-    </p>
-  );
+  return <ErrorText role="alert">{error}</ErrorText>;
 }

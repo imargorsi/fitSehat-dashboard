@@ -5,23 +5,21 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { ensureProfile } from "@/lib/db/profiles";
 import { profiles, walkDays } from "@/lib/db/schema";
+import { firstZodError, wrapFormAction } from "@/lib/errors";
 import type { TFormState } from "@/lib/form-state.types";
 import { revalidateTracker } from "@/lib/revalidate.utils";
 import { requireAuthUser } from "@/lib/session";
 import { stepGoalSchema, walkDaySchema } from "@/lib/validations/walks.utils";
 import { caloriesFromSteps, DEFAULT_STEP_GOAL, snapSteps } from "@/lib/walk.utils";
 
-export async function saveWalkDay(
-  _prev: TFormState,
-  formData: FormData
-): Promise<TFormState> {
+async function saveWalkDayImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
   const parsed = walkDaySchema.safeParse({
     walkedOn: formData.get("walkedOn"),
     steps: formData.get("steps"),
   });
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    return { error: firstZodError(parsed) };
   }
 
   const profile = await ensureProfile(user.id);
@@ -52,14 +50,11 @@ export async function saveWalkDay(
   return { ok: true };
 }
 
-export async function saveStepGoal(
-  _prev: TFormState,
-  formData: FormData
-): Promise<TFormState> {
+async function saveStepGoalImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
   const parsed = stepGoalSchema.safeParse({ stepGoal: formData.get("stepGoal") });
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    return { error: firstZodError(parsed) };
   }
 
   await db
@@ -70,3 +65,6 @@ export async function saveStepGoal(
   revalidateTracker();
   return { ok: true };
 }
+
+export const saveWalkDay = wrapFormAction("saveWalkDay", saveWalkDayImpl);
+export const saveStepGoal = wrapFormAction("saveStepGoal", saveStepGoalImpl);

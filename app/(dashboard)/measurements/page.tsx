@@ -3,16 +3,19 @@ import { deleteMeasurement } from "@/app/(dashboard)/measurements/actions";
 import {
   MeasurementForm,
   ProfileBaselinesForm,
-} from "@/app/(dashboard)/measurements/measurement-form";
+} from "@/components/measurements/measurement-form";
 import { DeleteRowButton } from "@/components/layout/delete-row-button";
 import { EmptyNote } from "@/components/layout/empty-note";
 import { ModulePanel } from "@/components/layout/module-panel";
 import { PageShell } from "@/components/layout/page-shell";
+import { SectionGrid, StatGrid } from "@/components/layout/page-grids";
 import { SoftRow } from "@/components/layout/soft-row";
 import { StatCard } from "@/components/layout/stat-card";
-import { WeightTrendChart } from "@/components/overview/weight-trend-chart";
+import { WeightTrendChart } from "@/components/measurements/weight-trend-chart";
 import { EMPTY } from "@/lib/care-copy";
+import { Meta } from "@/components/ui/typography";
 import { formatMediumDate, latestTuesdayOnOrBefore, todayDateString } from "@/lib/date.utils";
+import { listStackClass } from "@/lib/layout";
 import { listMeasurements } from "@/lib/db/measurements";
 import { ensureProfile } from "@/lib/db/profiles";
 import { formatNumber, toNumber } from "@/lib/number.utils";
@@ -63,7 +66,7 @@ export default async function MeasurementsPage() {
 
   return (
     <PageShell>
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <StatGrid>
         <StatCard
           icon={<AnimateIcon name="trend" size={16} tone="violet" />}
           tone="violet"
@@ -94,9 +97,9 @@ export default async function MeasurementsPage() {
           unit="kg"
           hint="A north star, Love. Rest days still count."
         />
-      </div>
+      </StatGrid>
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <SectionGrid>
         <ModulePanel
           eyebrow="Start"
           title="Where we began, Precious"
@@ -116,21 +119,21 @@ export default async function MeasurementsPage() {
         >
           <MeasurementForm defaultDate={latestTuesdayOnOrBefore(today)} />
         </ModulePanel>
-      </div>
+      </SectionGrid>
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <SectionGrid>
         <WeightTrendChart points={trend} />
         <ModulePanel eyebrow="Ledger" title="History, Precious" description="Newest first, Jaan. I kept every check-in.">
           {rows.length === 0 ? (
             <EmptyNote title={EMPTY.measurements.title} body={EMPTY.measurements.body} icon="activity" tone="neon" />
           ) : (
-            <ul className="space-y-2.5">
+            <ul className={listStackClass}>
               {rows.map((row, index) => (
                 <li key={row.id}>
                   <SoftRow
                     title={`${formatNumber(row.weightKg)} kg${row.waistCm ? ` · ${formatNumber(row.waistCm)} cm` : ""}`}
                     subtitle={`${formatMediumDate(String(row.measuredOn).slice(0, 10))} · lost ${lostAmount(startWeight, toNumber(row.weightKg)) ?? "—"} kg`}
-                    value={<span className="text-xs tabular-nums text-muted-foreground">{rows.length - index}</span>}
+                    value={<Meta className="tabular-nums">{rows.length - index}</Meta>}
                     action={<DeleteRowButton action={deleteMeasurement} id={row.id} />}
                   />
                 </li>
@@ -138,7 +141,7 @@ export default async function MeasurementsPage() {
             </ul>
           )}
         </ModulePanel>
-      </div>
+      </SectionGrid>
     </PageShell>
   );
 }

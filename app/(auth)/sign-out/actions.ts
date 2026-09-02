@@ -3,8 +3,11 @@
 import { redirect } from "next/navigation";
 
 import { auth } from "@/lib/auth/server";
+import { wrapVoidAction } from "@/lib/errors";
 
-export async function signOut() {
+async function signOutImpl() {
   await auth.signOut();
   redirect("/sign-in");
 }
+
+export const signOut = wrapVoidAction("signOut", signOutImpl);

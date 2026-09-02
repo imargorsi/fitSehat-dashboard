@@ -5,16 +5,14 @@ import { and, eq } from "drizzle-orm";
 import { getActiveMacroTarget } from "@/lib/db/macros";
 import { db } from "@/lib/db";
 import { calorieLogs } from "@/lib/db/schema";
+import { captureValidationError, firstZodError, wrapFormAction, wrapVoidAction } from "@/lib/errors";
 import type { TFormState } from "@/lib/form-state.types";
 import { emptyToUndefined } from "@/lib/number.utils";
 import { revalidateTracker } from "@/lib/revalidate.utils";
 import { requireAuthUser } from "@/lib/session";
 import { calorieLogIdSchema, calorieLogSchema } from "@/lib/validations/calories.utils";
 
-export async function createCalorieLog(
-  _prev: TFormState,
-  formData: FormData
-): Promise<TFormState> {
+async function createCalorieLogImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
   const parsed = calorieLogSchema.safeParse({
     item: formData.get("item"),
@@ -28,7 +26,7 @@ export async function createCalorieLog(
   });
 
   if (!parsed.success) {
-    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+    return { error: firstZodError(parsed) };
   }
 
   const activeTarget = await getActiveMacroTarget(user.id);
@@ -50,10 +48,11 @@ export async function createCalorieLog(
   return { ok: true };
 }
 
-export async function deleteCalorieLog(formData: FormData): Promise<void> {
+async function deleteCalorieLogImpl(formData: FormData): Promise<void> {
   const user = await requireAuthUser();
   const parsed = calorieLogIdSchema.safeParse({ id: formData.get("id") });
   if (!parsed.success) {
+    captureValidationError("deleteCalorieLog", firstZodError(parsed));
     return;
   }
 
@@ -63,3 +62,6 @@ export async function deleteCalorieLog(formData: FormData): Promise<void> {
 
   revalidateTracker();
 }
+
+export const createCalorieLog = wrapFormAction("createCalorieLog", createCalorieLogImpl);
+export const deleteCalorieLog = wrapVoidAction("deleteCalorieLog", deleteCalorieLogImpl);
