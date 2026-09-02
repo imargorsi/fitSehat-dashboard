@@ -4,7 +4,7 @@ import { and, eq } from "drizzle-orm";
 
 import { db } from "@/lib/db";
 import { weeklyReports } from "@/lib/db/schema";
-import { captureValidationError, firstZodError, wrapFormAction, wrapVoidAction } from "@/lib/errors";
+import { captureValidationError, firstZodError, wrapFormAction } from "@/lib/errors";
 import type { TFormState } from "@/lib/form-state.types";
 import { emptyToUndefined } from "@/lib/number.utils";
 import { revalidateTracker } from "@/lib/revalidate.utils";
@@ -32,12 +32,12 @@ async function createWeeklyReportImpl(_prev: TFormState, formData: FormData): Pr
   return { ok: true };
 }
 
-async function deleteWeeklyReportImpl(formData: FormData): Promise<void> {
+async function deleteWeeklyReportImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
   const parsed = weeklyReportIdSchema.safeParse({ id: formData.get("id") });
   if (!parsed.success) {
     captureValidationError("deleteWeeklyReport", firstZodError(parsed));
-    return;
+    return { error: firstZodError(parsed) };
   }
 
   await db
@@ -45,7 +45,8 @@ async function deleteWeeklyReportImpl(formData: FormData): Promise<void> {
     .where(and(eq(weeklyReports.id, parsed.data.id), eq(weeklyReports.userId, user.id)));
 
   revalidateTracker();
+  return { ok: true };
 }
 
 export const createWeeklyReport = wrapFormAction("createWeeklyReport", createWeeklyReportImpl);
-export const deleteWeeklyReport = wrapVoidAction("deleteWeeklyReport", deleteWeeklyReportImpl);
+export const deleteWeeklyReport = wrapFormAction("deleteWeeklyReport", deleteWeeklyReportImpl);

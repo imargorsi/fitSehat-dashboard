@@ -26,7 +26,7 @@ export function WalkWidget({
         actions={<AppLinkButton href="/workouts" label="Calendar" icon="calendar" iconTone="gold" />}
       />
       <WidgetBody className="pt-0">
-        <WalkSlider key={`${today}-${steps}-${goal}`} today={today} goal={goal} initialSteps={steps || goal} compact />
+        <WalkSlider key={`${today}-${steps}-${goal}`} walkedOn={today} today={today} goal={goal} initialSteps={steps} compact />
       </WidgetBody>
     </GlassCard>
   );

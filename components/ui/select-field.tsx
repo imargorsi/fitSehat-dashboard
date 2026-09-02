@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { UiIcon } from "@/components/icons/ui-icon";
 import {
   DropdownMenu,
@@ -32,8 +32,12 @@ export function SelectField({
   const autoId = useId();
   const triggerId = id ?? autoId;
   const hiddenRef = useRef<HTMLInputElement>(null);
-  const normalized = options.map((option) =>
-    typeof option === "string" ? { value: option, label: option } : option
+  const normalized = useMemo(
+    () =>
+      options.map((option) =>
+        typeof option === "string" ? { value: option, label: option } : option
+      ),
+    [options]
   );
   const fallback = defaultValue ?? normalized[0]?.value ?? "";
   const [value, setValue] = useState(fallback);

@@ -12,6 +12,7 @@ import { SectionGrid, StatGrid } from "@/components/layout/page-grids";
 import { SoftRow } from "@/components/layout/soft-row";
 import { StatCard } from "@/components/layout/stat-card";
 import { WeightTrendChart } from "@/components/measurements/weight-trend-chart";
+import { WaistTrendChart } from "@/components/measurements/waist-trend-chart";
 import { EMPTY } from "@/lib/care-copy";
 import { Meta } from "@/components/ui/typography";
 import { formatMediumDate, latestTuesdayOnOrBefore, todayDateString } from "@/lib/date.utils";
@@ -53,11 +54,21 @@ export default async function MeasurementsPage() {
   const latestWaist = latest ? toNumber(latest.waistCm) : null;
   const weightLost = lostAmount(startWeight, latestWeight);
   const waistLost = lostAmount(startWaist, latestWaist);
-  const trend = [...rows]
+  const weightTrend = [...rows]
     .reverse()
     .slice(-8)
     .flatMap((row) => {
       const value = toNumber(row.weightKg);
+      if (value == null) {
+        return [];
+      }
+      return [{ label: String(row.measuredOn).slice(0, 10), value }];
+    });
+  const waistTrend = [...rows]
+    .reverse()
+    .slice(-8)
+    .flatMap((row) => {
+      const value = toNumber(row.waistCm);
       if (value == null) {
         return [];
       }
@@ -122,7 +133,11 @@ export default async function MeasurementsPage() {
       </SectionGrid>
 
       <SectionGrid>
-        <WeightTrendChart points={trend} />
+        <WeightTrendChart points={weightTrend} />
+        <WaistTrendChart points={waistTrend} />
+      </SectionGrid>
+
+      <SectionGrid>
         <ModulePanel eyebrow="Ledger" title="History, Precious" description="Newest first, Jaan. I kept every check-in.">
           {rows.length === 0 ? (
             <EmptyNote title={EMPTY.measurements.title} body={EMPTY.measurements.body} icon="activity" tone="neon" />

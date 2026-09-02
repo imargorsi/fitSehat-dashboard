@@ -5,7 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { ensureProfile } from "@/lib/db/profiles";
 import { profiles, weeklyMeasurements } from "@/lib/db/schema";
-import { captureValidationError, firstZodError, wrapFormAction, wrapVoidAction } from "@/lib/errors";
+import { captureValidationError, firstZodError, wrapFormAction } from "@/lib/errors";
 import type { TFormState } from "@/lib/form-state.types";
 import { emptyToUndefined } from "@/lib/number.utils";
 import { revalidateTracker } from "@/lib/revalidate.utils";
@@ -48,12 +48,12 @@ async function saveMeasurementImpl(_prev: TFormState, formData: FormData): Promi
   return { ok: true };
 }
 
-async function deleteMeasurementImpl(formData: FormData): Promise<void> {
+async function deleteMeasurementImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
   const parsed = measurementIdSchema.safeParse({ id: formData.get("id") });
   if (!parsed.success) {
     captureValidationError("deleteMeasurement", firstZodError(parsed));
-    return;
+    return { error: firstZodError(parsed) };
   }
 
   await db
@@ -61,6 +61,7 @@ async function deleteMeasurementImpl(formData: FormData): Promise<void> {
     .where(and(eq(weeklyMeasurements.id, parsed.data.id), eq(weeklyMeasurements.userId, user.id)));
 
   revalidateTracker();
+  return { ok: true };
 }
 
 async function saveProfileBaselinesImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
@@ -97,5 +98,5 @@ async function saveProfileBaselinesImpl(_prev: TFormState, formData: FormData): 
 }
 
 export const saveMeasurement = wrapFormAction("saveMeasurement", saveMeasurementImpl);
-export const deleteMeasurement = wrapVoidAction("deleteMeasurement", deleteMeasurementImpl);
+export const deleteMeasurement = wrapFormAction("deleteMeasurement", deleteMeasurementImpl);
 export const saveProfileBaselines = wrapFormAction("saveProfileBaselines", saveProfileBaselinesImpl);

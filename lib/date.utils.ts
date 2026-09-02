@@ -72,6 +72,14 @@ export function formatMediumDate(dateStr: string): string {
   }).format(parseDateOnly(dateStr));
 }
 
+export function formatChartAxisDate(dateStr: string): string {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  }).format(parseDateOnly(dateStr));
+}
+
 export function greetingWord(date = new Date(), timeZone = APP_TIME_ZONE): "morning" | "afternoon" | "evening" {
   const hour = Number(
     new Intl.DateTimeFormat("en-GB", {

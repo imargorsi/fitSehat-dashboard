@@ -1,4 +1,5 @@
 import { deleteMealOption } from "@/app/(dashboard)/meals/actions";
+import { MealOptionEditDialog } from "@/app/(dashboard)/meals/meal-option-edit-dialog";
 import { MealOptionForm } from "@/app/(dashboard)/meals/meal-option-form";
 import { DeleteRowButton } from "@/components/layout/delete-row-button";
 import { EmptyNote } from "@/components/layout/empty-note";
@@ -12,7 +13,7 @@ import { EMPTY } from "@/lib/care-copy";
 import { listStackClass } from "@/lib/layout";
 import { CALORIE_MEALS } from "@/lib/constants";
 import { listMealOptions } from "@/lib/db/meals";
-import { caloriesFromOption, mealKindFromOption } from "@/lib/meals.utils";
+import { caloriesFromOption, mealKindFromOption, isCalorieMeal } from "@/lib/meals.utils";
 import { formatInt, formatNumber } from "@/lib/number.utils";
 import { requireAuthUser } from "@/lib/session";
 
@@ -62,7 +63,23 @@ export default async function MealsPage() {
                               ) : null}
                             </span>
                           }
-                          action={<DeleteRowButton action={deleteMealOption} id={item.id} />}
+                          action={
+                            <div className="flex shrink-0 items-center gap-0.5">
+                              <MealOptionEditDialog
+                                initial={{
+                                  id: item.id,
+                                  name: item.name,
+                                  mealType: isCalorieMeal(item.mealType) ? item.mealType : mealKindFromOption(item.mealType),
+                                  calories: calories,
+                                  proteinG: item.proteinG,
+                                  carbsG: item.carbsG,
+                                  fatsG: item.fatsG,
+                                  notes: item.notes,
+                                }}
+                              />
+                              <DeleteRowButton action={deleteMealOption} id={item.id} />
+                            </div>
+                          }
                         />
                       </li>
                     );

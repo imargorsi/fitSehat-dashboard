@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 /** Shared chrome for all form controls — sourced from theme tokens only. */
 export const fieldControlClass = cn(
-  "h-12 w-full min-w-0 appearance-none rounded-2xl border border-border bg-card px-4 text-base text-foreground",
+  "h-12 w-full min-w-0 appearance-none rounded-2xl border border-border bg-card px-4 text-base text-foreground [color-scheme:dark]",
   "shadow-[inset_0_1px_0_color-mix(in_oklch,var(--foreground)_8%,transparent)]",
   "outline-none transition-[border-color,box-shadow,background-color] duration-200",
   "placeholder:text-muted-foreground",

@@ -3,7 +3,8 @@
 import { useEffect } from "react";
 import { toast } from "sonner";
 
-import { streakCaption } from "@/lib/care-copy";
+import { CELEBRATIONS, streakCaption } from "@/lib/care-copy";
+import { pickRandom } from "@/lib/care-notes";
 import { dispatchLoveBurst } from "@/lib/love-motion.utils";
 
 export function GlowMilestones({
@@ -11,11 +12,13 @@ export function GlowMilestones({
   coreMeals,
   streak,
   score,
+  walkMet,
 }: {
   today: string;
   coreMeals: number;
   streak: number;
   score: number;
+  walkMet: boolean;
 }) {
   useEffect(() => {
     const unseen = (key: string) => {
@@ -32,6 +35,11 @@ export function GlowMilestones({
       dispatchLoveBurst();
       return;
     }
+    if (walkMet && unseen(`walk-met-${today}`)) {
+      toast.success(pickRandom(CELEBRATIONS.walkGoal));
+      dispatchLoveBurst();
+      return;
+    }
     if ((streak === 7 || streak === 14 || streak === 30) && unseen(`streak-${streak}`)) {
       toast.success(streakCaption(streak));
       dispatchLoveBurst();
@@ -41,7 +49,7 @@ export function GlowMilestones({
       toast.success("Your healthy glow is showing, Precious. I am so proud of you.");
       dispatchLoveBurst();
     }
-  }, [today, coreMeals, streak, score]);
+  }, [today, coreMeals, streak, score, walkMet]);
 
   return null;
 }

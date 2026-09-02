@@ -22,6 +22,7 @@ import {
 import {
   addDays,
   formatLongDate,
+  latestTuesdayOnOrBefore,
   startOfWeekMonday,
   todayDateString,
   weekDaysMonday,
@@ -103,6 +104,7 @@ export default async function OverviewPage() {
         coreMeals={coreLogged.size}
         streak={streak}
         score={glow.score}
+        walkMet={walkAchieved(walkSteps, stepGoal)}
       />
 
       <SectionGrid className="lg:grid-cols-[minmax(0,7fr)_minmax(16rem,3fr)] lg:items-stretch">
@@ -150,7 +152,7 @@ export default async function OverviewPage() {
         <WalkWidget today={today} goal={stepGoal} steps={walkSteps} caloriesBurned={walkBurn} />
         <QuickAddCard meals={meals} />
         <CheckInWidget
-          today={today}
+          checkInDate={latestTuesdayOnOrBefore(today)}
           latestWeight={latestWeight != null ? formatNum(latestWeight) : null}
         />
       </SectionGrid>

@@ -4,10 +4,10 @@ import { GlassCard } from "@/components/layout/glass-card";
 import { WidgetBody, WidgetHeader } from "@/components/layout/widget-header";
 
 export function CheckInWidget({
-  today,
+  checkInDate,
   latestWeight,
 }: {
-  today: string;
+  checkInDate: string;
   latestWeight: string | null;
 }) {
   return (
@@ -16,13 +16,13 @@ export function CheckInWidget({
         title="Check-in, Guddi"
         subtitle={
           latestWeight
-            ? `Latest ${latestWeight} kg`
+            ? `Latest ${latestWeight} kg · Tuesday check-in`
             : "Tuesday is a hug on the scale, Love — never a verdict."
         }
         actions={<AppLinkButton href="/measurements" label="Details" icon="activity" iconTone="neon" />}
       />
       <WidgetBody className="pt-0">
-        <MeasurementForm defaultDate={today} compact />
+        <MeasurementForm defaultDate={checkInDate} compact />
       </WidgetBody>
     </GlassCard>
   );

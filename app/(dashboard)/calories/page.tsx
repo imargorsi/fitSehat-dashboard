@@ -1,22 +1,31 @@
 import { AnimateIcon } from "@/components/icons/animate-icon";
 import { deleteCalorieLog } from "@/app/(dashboard)/calories/actions";
 import { CalorieLogDialog } from "@/components/calories/calorie-log-dialog";
+import { CalorieLogEditDialog } from "@/components/calories/calorie-log-edit-dialog";
 import { DeleteRowButton } from "@/components/layout/delete-row-button";
 import { EmptyNote } from "@/components/layout/empty-note";
 import { ModulePanel } from "@/components/layout/module-panel";
 import { PageShell } from "@/components/layout/page-shell";
-import { StatGrid } from "@/components/layout/page-grids";
+import { StatGrid, SectionGrid } from "@/components/layout/page-grids";
 import { SoftRow } from "@/components/layout/soft-row";
 import { MealDots, StatCard } from "@/components/layout/stat-card";
+import { WeekCalorieChart } from "@/components/overview/week-calorie-chart";
 import { Caption, DayHeader, DayTotal, Meta, Strong, Unit } from "@/components/ui/typography";
-import { aggregateLogs } from "@/lib/calories.utils";
+import { aggregateLogs, dailyTotals } from "@/lib/calories.utils";
 import { calorieCaption, EMPTY, mealsCaption, proteinCaption } from "@/lib/care-copy";
-import { formatMediumDate, todayDateString } from "@/lib/date.utils";
-import { listCalorieLogs } from "@/lib/db/calories";
+import {
+  addDays,
+  formatMediumDate,
+  startOfWeekMonday,
+  todayDateString,
+  weekDaysMonday,
+} from "@/lib/date.utils";
+import { listCalorieLogs, listCalorieLogsInRange } from "@/lib/db/calories";
 import { getActiveMacroTarget } from "@/lib/db/macros";
 import type { TCalorieLog } from "@/lib/db/schema";
 import { listStackClass } from "@/lib/layout";
 import { formatInt, formatNumber } from "@/lib/number.utils";
+import { isCalorieMeal } from "@/lib/meals.utils";
 import { loggedCoreMeals, remainingAmount } from "@/lib/overview.utils";
 import { requireAuthUser } from "@/lib/session";
 
@@ -34,9 +43,11 @@ function groupLogsByDate(logs: TCalorieLog[]): [string, TCalorieLog[]][] {
 export default async function CaloriesPage() {
   const user = await requireAuthUser();
   const today = todayDateString();
-  const [logs, target] = await Promise.all([
+  const weekStart = startOfWeekMonday(today);
+  const [logs, target, rangeLogs] = await Promise.all([
     listCalorieLogs(user.id),
     getActiveMacroTarget(user.id),
+    listCalorieLogsInRange(user.id, weekStart, addDays(weekStart, 6)),
   ]);
   const todaysLogs = logs.filter((log) => String(log.loggedOn).slice(0, 10) === today);
   const todayTotals = aggregateLogs(todaysLogs);
@@ -46,6 +57,12 @@ export default async function CaloriesPage() {
   const proteinLeft = remainingAmount(todayTotals.protein, proteinGoal);
   const coreLogged = loggedCoreMeals(todaysLogs);
   const grouped = groupLogsByDate(logs);
+  const byDay = dailyTotals(rangeLogs);
+  const bars = weekDaysMonday(weekStart).map((day) => ({
+    ...day,
+    calories: byDay.get(day.date)?.calories ?? 0,
+    isToday: day.date === today,
+  }));
 
   return (
     <PageShell>
@@ -82,10 +99,14 @@ export default async function CaloriesPage() {
         />
       </StatGrid>
 
+      <SectionGrid>
+        <WeekCalorieChart bars={bars} goal={calorieGoal} />
+      </SectionGrid>
+
       <ModulePanel
         eyebrow="Journal"
         title="Your history, Precious"
-        description="Newest days first, Guddi. One kind plate is enough."
+        description="Newest days first, Guddi. Tap edit to change a plate."
         action={<CalorieLogDialog today={today} />}
       >
         {grouped.length === 0 ? (
@@ -124,7 +145,25 @@ export default async function CaloriesPage() {
                               ) : null}
                             </span>
                           }
-                          action={<DeleteRowButton action={deleteCalorieLog} id={log.id} />}
+                          action={
+                            <div className="flex shrink-0 items-center gap-0.5">
+                              <CalorieLogEditDialog
+                                today={today}
+                                initial={{
+                                  id: log.id,
+                                  item: log.item,
+                                  loggedOn: String(log.loggedOn).slice(0, 10),
+                                  meal: isCalorieMeal(log.meal) ? log.meal : "Snack",
+                                  calories: log.calories,
+                                  proteinG: log.proteinG,
+                                  carbsG: log.carbsG,
+                                  fatsG: log.fatsG,
+                                  notes: log.notes,
+                                }}
+                              />
+                              <DeleteRowButton action={deleteCalorieLog} id={log.id} />
+                            </div>
+                          }
                         />
                       </li>
                     ))}

@@ -11,23 +11,35 @@ import { dispatchLoveBurst } from "@/lib/love-motion.utils";
 export function useResettingForm(
   action: (prev: TFormState, data: FormData) => Promise<TFormState>,
   celebrate?: TCelebrateKind,
-  onSuccess?: () => void
+  onSuccess?: () => void,
+  resetOnSuccess = true
 ) {
   const formRef = useRef<HTMLFormElement>(null);
-  const toasted = useRef<TFormState>(null);
+  const notified = useRef<TFormState>(null);
   const [state, formAction, isPending] = useActionState(action, null);
 
   useEffect(() => {
-    if (state && "ok" in state && state.ok && toasted.current !== state) {
-      toasted.current = state;
-      formRef.current?.reset();
+    if (!state || notified.current === state) {
+      return;
+    }
+    notified.current = state;
+
+    if ("ok" in state && state.ok) {
+      if (resetOnSuccess) {
+        formRef.current?.reset();
+      }
       if (celebrate) {
         toast.success(pickRandom(CELEBRATIONS[celebrate]));
         dispatchLoveBurst();
       }
       onSuccess?.();
+      return;
     }
-  }, [state, celebrate, onSuccess]);
+
+    if ("error" in state && state.error) {
+      toast.error(state.error);
+    }
+  }, [state, celebrate, onSuccess, resetOnSuccess]);
 
   return { formRef, state, formAction, isPending };
 }

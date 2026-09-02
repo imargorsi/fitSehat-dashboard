@@ -7,6 +7,7 @@ import { ensureProfile } from "@/lib/db/profiles";
 import { profiles, walkDays } from "@/lib/db/schema";
 import { firstZodError, wrapFormAction } from "@/lib/errors";
 import type { TFormState } from "@/lib/form-state.types";
+import { todayDateString } from "@/lib/date.utils";
 import { revalidateTracker } from "@/lib/revalidate.utils";
 import { requireAuthUser } from "@/lib/session";
 import { stepGoalSchema, walkDaySchema } from "@/lib/validations/walks.utils";
@@ -20,6 +21,11 @@ async function saveWalkDayImpl(_prev: TFormState, formData: FormData): Promise<T
   });
   if (!parsed.success) {
     return { error: firstZodError(parsed) };
+  }
+
+  const today = todayDateString();
+  if (parsed.data.walkedOn > today) {
+    return { error: "Future walks stay empty for now, Love. Pick today or earlier." };
   }
 
   const profile = await ensureProfile(user.id);

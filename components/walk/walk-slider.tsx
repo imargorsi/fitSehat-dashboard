@@ -30,7 +30,6 @@ import { formatInt } from "@/lib/number.utils";
 import { cn } from "@/lib/utils";
 import {
   caloriesFromSteps,
-  DEFAULT_STEP_GOAL,
   MAX_STEPS,
   MIN_STEPS,
   snapSteps,
@@ -39,11 +38,13 @@ import {
 } from "@/lib/walk.utils";
 
 export function WalkSlider({
+  walkedOn,
   today,
   goal,
   initialSteps,
   compact = false,
 }: {
+  walkedOn: string;
   today: string;
   goal: number;
   initialSteps: number;
@@ -52,30 +53,38 @@ export function WalkSlider({
   const reduced = useReducedMotion();
   const sliderId = useId();
   const toasted = useRef<TFormState>(null);
-  const [steps, setSteps] = useState(initialSteps || goal || DEFAULT_STEP_GOAL);
+  const [steps, setSteps] = useState(initialSteps);
   const [state, formAction, isPending] = useActionState(saveWalkDay, null);
   const burned = caloriesFromSteps(steps);
   const met = walkAchieved(steps, goal);
+  const isToday = walkedOn === today;
   const fill = Math.min(100, (steps / MAX_STEPS) * 100);
   const goalMark = Math.min(96, Math.max(4, (goal / MAX_STEPS) * 100));
   const StepMetric = compact ? MetricWalkCompact : MetricWalk;
   const BurnMetric = compact ? MetricAccentCompact : MetricAccent;
 
   useEffect(() => {
-    if (state && "ok" in state && state.ok && toasted.current !== state) {
-      toasted.current = state;
+    if (!state || toasted.current === state) {
+      return;
+    }
+    toasted.current = state;
+    if ("ok" in state && state.ok) {
       toast.success(pickRandom(CELEBRATIONS.workout));
       dispatchLoveBurst();
+      return;
+    }
+    if ("error" in state && state.error) {
+      toast.error(state.error);
     }
   }, [state]);
 
   return (
     <form action={formAction} className={cn("grid", compact ? "gap-3" : "gap-4")}>
-      <HiddenInput name="walkedOn" value={today} />
+      <HiddenInput name="walkedOn" value={walkedOn} />
       <HiddenInput name="steps" value={steps} />
       <div className="flex items-end justify-between gap-3">
         <div className="min-w-0">
-          {compact ? null : <Caption>Today</Caption>}
+          {compact ? null : <Caption>{isToday ? "Today" : "That day"}</Caption>}
           <StepMetric>
             {formatInt(steps)}
             <Unit className="ml-1 sm:ml-1.5">steps</Unit>

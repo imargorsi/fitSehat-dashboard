@@ -17,4 +17,9 @@ export const calorieLogIdSchema = z.object({
   id: z.string().uuid(),
 });
 
+export const calorieLogUpdateSchema = calorieLogSchema.extend({
+  id: z.string().uuid(),
+});
+
 export type TCalorieLogInput = z.infer<typeof calorieLogSchema>;
+export type TCalorieLogUpdateInput = z.infer<typeof calorieLogUpdateSchema>;

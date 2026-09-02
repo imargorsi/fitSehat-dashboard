@@ -1,11 +1,8 @@
 import { AnimateIcon } from "@/components/icons/animate-icon";
-import { ModulePanel } from "@/components/layout/module-panel";
 import { PageShell } from "@/components/layout/page-shell";
-import { SectionGrid, StatGrid } from "@/components/layout/page-grids";
+import { StatGrid } from "@/components/layout/page-grids";
 import { StatCard } from "@/components/layout/stat-card";
-import { WalkCalendar } from "@/components/walk/walk-calendar";
-import { WalkGoalForm } from "@/components/walk/walk-goal-form";
-import { WalkSlider } from "@/components/walk/walk-slider";
+import { WalkPageClient } from "@/components/walk/walk-page-client";
 import { addDays, startOfMonth, todayDateString } from "@/lib/date.utils";
 import { ensureProfile } from "@/lib/db/profiles";
 import { listWalkDaysInRange } from "@/lib/db/walks";
@@ -58,26 +55,7 @@ export default async function WalkPage() {
         />
       </StatGrid>
 
-      <ModulePanel
-        eyebrow="Today"
-        title="Log today's walk, Love"
-        description="Slide to the steps you took, Guddi. We keep a soft calorie estimate beside it."
-      >
-        <WalkSlider key={`${today}-${steps}-${goal}`} today={today} goal={goal} initialSteps={steps || goal} />
-      </ModulePanel>
-
-      <SectionGrid className="lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
-        <ModulePanel
-          eyebrow="Rhythm"
-          title="Your days, Precious"
-          description="Peach days met the goal. Gold days you walked. Empty days can be rest, Jaan."
-        >
-          <WalkCalendar today={today} monthStart={startOfMonth(today)} stamps={stamps} />
-        </ModulePanel>
-        <ModulePanel eyebrow="Pace" title="Daily goal, Love" description="Change this whenever you like, Guddi.">
-          <WalkGoalForm goal={goal} />
-        </ModulePanel>
-      </SectionGrid>
+      <WalkPageClient today={today} goal={goal} stamps={stamps} monthStart={startOfMonth(today)} />
     </PageShell>
   );
 }

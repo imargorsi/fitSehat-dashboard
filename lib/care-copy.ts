@@ -32,7 +32,28 @@ export const CELEBRATIONS = {
     "Week captured, Jaan. Look how far you have come.",
     "Saved, Love. Consistency is the glow.",
   ],
+  goal: [
+    "Goal saved, Guddi. Move at your own pace.",
+    "New mark set, Love. Gentle is still strong.",
+    "Pace noted, Precious. You choose the rhythm.",
+  ],
+  walkGoal: [
+    "Goal met today, Guddi. Look at you moving.",
+    "You hit your step mark, Love. Beautiful consistency.",
+    "Steps and intention, Precious. I am proud of you.",
+  ],
+  deleted: [
+    "Let go, Love. Your log stays kind.",
+    "Released, Guddi. Space for what comes next.",
+  ],
+  updated: [
+    "Updated, Guddi. Your log stays kind.",
+    "Saved your changes, Love. Still moving gently.",
+    "Noted, Precious. One edit at a time.",
+  ],
 } as const;
+
+export const DELETE_TOAST = CELEBRATIONS.deleted[0];
 
 export type TCelebrateKind = keyof typeof CELEBRATIONS;
 
@@ -184,9 +205,18 @@ export const PLACE = {
   signUpName: "Your name",
 } as const;
 
+export const CONFIRM = {
+  deleteTitle: "Release this entry, Love?",
+  deleteBody: "It leaves your history kindly. You can always log again.",
+  deleteConfirm: "Yes, let go",
+  deleteCancel: "Keep it",
+} as const;
+
 export const ACTIONS = {
   logMeal: "Log this, Guddi",
   addMeal: "Save this meal, Precious",
+  saveChanges: "Save changes, Love",
+  edit: "Edit",
   saveWalk: "Save your walk, Jaan",
   saveWeighIn: "I've got this, Love",
   saveCompact: "Save, Guddi",
