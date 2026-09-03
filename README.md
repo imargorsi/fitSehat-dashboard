@@ -19,7 +19,7 @@ cp .env.example .env.local
 | `NEON_AUTH_BASE_URL` | Neon Console → Auth → Auth URL |
 | `NEON_AUTH_COOKIE_SECRET` | `openssl rand -base64 32` (32+ characters) |
 
-Dev server uses **port 43127** on purpose (not Next.js default 3000). See `package.json` → `"dev": "next dev --port 43127 --hostname 127.0.0.1"`. This matches the Neon Auth allowlist for local sign-in (`http://127.0.0.1:43127`). To use `localhost:3000` instead, change the dev script and add that origin in Neon Console → Auth → Domains.
+Dev server uses the Next.js default: **http://localhost:3000**. Add that origin in Neon Console → Auth → Domains so local sign-in works (Neon pre-approves `http://localhost:*` in many setups; if you see an allowlist message, add `http://localhost:3000` explicitly).
 
 ```bash
 npm run db:push
@@ -53,7 +53,7 @@ Missing env or a short cookie secret fails the build on purpose.
 
 | Script | Purpose |
 |---|---|
-| `npm run dev` | Local server (`127.0.0.1:43127`) |
+| `npm run dev` | Local server (`http://localhost:3000`) |
 | `npm run build` | Production build (what Vercel runs) |
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint |
