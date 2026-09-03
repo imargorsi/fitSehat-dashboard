@@ -17,33 +17,34 @@
 
 :root,
 .dark {
-  --brand-midnight: oklch(0.165 0.012 264);
+  --brand-midnight: oklch(0.125 0.01 264);
   --brand-perrywinkle: oklch(0.82 0.095 278);
   --brand-lime: oklch(0.79 0.19 128);
   --brand-cyan: oklch(0.78 0.13 210);
+  --canvas-deep: color-mix(in oklch, var(--brand-midnight) 58%, black);
 
-  --radius: 1rem;
+  --radius: 1.05rem;
 
-  /* Surfaces */
+  /* Surfaces — dark glass: low white lift, enough opacity to read */
   --background: var(--brand-midnight);
-  --foreground: oklch(0.91 0.012 280);
-  --card: color-mix(in oklch, var(--brand-midnight) 68%, white 32% / 90%);
+  --foreground: oklch(0.93 0.01 280);
+  --card: color-mix(in oklch, var(--brand-midnight) 82%, white 10% / 68%);
   --card-foreground: var(--foreground);
-  --popover: color-mix(in oklch, var(--brand-midnight) 74%, white 26% / 94%);
+  --popover: color-mix(in oklch, var(--brand-midnight) 78%, white 12% / 86%);
   --popover-foreground: var(--foreground);
 
   /* Interactive */
   --primary: var(--brand-perrywinkle);
-  --primary-foreground: oklch(0.99 0.002 280);
-  --secondary: color-mix(in oklch, var(--brand-midnight) 82%, white 18% / 80%);
+  --primary-foreground: var(--brand-midnight);
+  --secondary: color-mix(in oklch, var(--brand-midnight) 80%, white 12% / 62%);
   --secondary-foreground: var(--foreground);
-  --muted: color-mix(in oklch, var(--brand-midnight) 78%, white 22% / 78%);
+  --muted: color-mix(in oklch, var(--brand-midnight) 76%, white 12% / 55%);
   --muted-foreground: color-mix(in oklch, var(--foreground) 58%, transparent);
-  --accent: color-mix(in oklch, var(--brand-cyan) 16%, var(--brand-midnight) 84% / 42%);
+  --accent: color-mix(in oklch, var(--brand-perrywinkle) 14%, var(--brand-midnight) 86% / 48%);
   --accent-foreground: var(--foreground);
   --destructive: oklch(0.78 0.14 22);
-  --border: color-mix(in oklch, white 28%, transparent);
-  --input: color-mix(in oklch, white 22%, transparent);
+  --border: color-mix(in oklch, white 32%, transparent);
+  --input: color-mix(in oklch, white 24%, transparent);
   --ring: color-mix(in oklch, var(--brand-perrywinkle) 52%, transparent);
 
   /* Brand aliases — map legacy Tailwind names to DESIGN.md palette */
@@ -75,9 +76,11 @@
 
   /* Effects */
   --shadow-glow:
-    0 0 22px color-mix(in oklch, var(--brand-perrywinkle) 24%, transparent),
-    0 0 8px color-mix(in oklch, var(--brand-cyan) 18%, transparent);
-  --spot-fill: color-mix(in oklch, var(--brand-cyan) 16%, transparent);
-  --cursor-glow: color-mix(in oklch, var(--brand-perrywinkle) 16%, transparent);
+    0 0 28px color-mix(in oklch, var(--brand-perrywinkle) 16%, transparent),
+    0 18px 40px color-mix(in oklch, black 42%, transparent);
+  --glass-highlight: color-mix(in oklch, white 22%, transparent);
+  --magic-from: var(--brand-perrywinkle);
+  --magic-to: var(--brand-cyan);
+  --magic-fill: color-mix(in oklch, var(--foreground) 11%, transparent);
   --focus-ring: color-mix(in oklch, var(--brand-perrywinkle) 28%, transparent);
 }

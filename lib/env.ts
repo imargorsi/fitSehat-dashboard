@@ -8,6 +8,11 @@ function required(name: string): string {
   return value;
 }
 
+function optional(name: string): string | null {
+  const value = process.env[name]?.trim();
+  return value ? value : null;
+}
+
 export const env = {
   get databaseUrl() {
     return required("DATABASE_URL");
@@ -24,5 +29,11 @@ export const env = {
   },
   get isProduction() {
     return process.env.NODE_ENV === "production";
+  },
+  get fatSecretClientId() {
+    return optional("FATSECRET_CLIENT_ID");
+  },
+  get fatSecretClientSecret() {
+    return optional("FATSECRET_CLIENT_SECRET");
   },
 };

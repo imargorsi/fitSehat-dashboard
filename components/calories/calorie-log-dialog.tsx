@@ -14,31 +14,36 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogHeading, Eyebrow } from "@/components/ui/typography";
-import { ACTIONS } from "@/lib/app-copy";
-import { widgetBodyClass, widgetHeaderClass } from "@/lib/layout";
+import { ACTIONS, LOOKUP } from "@/lib/app-copy";
+import { calorieDialogClass, widgetBodyClass, widgetHeaderClass } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 
 export function CalorieLogDialog({
   today,
   label = ACTIONS.logMeal,
+  size = "default",
 }: {
   today: string;
   label?: string;
+  size?: "default" | "sm" | "lg";
 }) {
   const [open, setOpen] = useState(false);
   const close = useCallback(() => setOpen(false), []);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger nativeButton={false} render={<Button className="w-full rounded-full sm:w-auto" />}>
+      <DialogTrigger
+        nativeButton={false}
+        render={<Button size={size} className="rounded-full" />}
+      >
         <span className="inline-flex items-center gap-1.5">
-          <AnimateIcon name="flame" size={16} tone="neon" playOnMount={false} />
+          <AnimateIcon name="flame" size={16} tone="current" playOnMount={false} />
           {label}
         </span>
       </DialogTrigger>
       <DialogContent
         showCloseButton
-        className="flex max-h-[min(90dvh,42rem)] w-[calc(100%-1.25rem)] flex-col gap-0 overflow-hidden rounded-[1.5rem] border border-border bg-card p-0 sm:max-w-lg sm:rounded-[1.75rem]"
+        className={calorieDialogClass}
       >
         <div className={cn("relative shrink-0 border-b border-border/50", widgetHeaderClass, "pb-4")}>
           <DialogHeader className="gap-1.5 pr-8">
@@ -46,7 +51,7 @@ export function CalorieLogDialog({
             <DialogTitle className="border-0 p-0">
               <DialogHeading>{ACTIONS.logMeal}</DialogHeading>
             </DialogTitle>
-            <DialogDescription>Log what you ate. Macros are optional.</DialogDescription>
+            <DialogDescription>{LOOKUP.hint}</DialogDescription>
           </DialogHeader>
         </div>
         <div

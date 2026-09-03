@@ -52,3 +52,26 @@ export function wrapAuthAction<TArgs extends unknown[], TState extends { error: 
 ) {
   return wrapFormAction(name, fn);
 }
+
+type TLookupFail = { ok: false; error: string };
+
+/** Wrap read-only lookups that return data or a user-facing error. */
+export function wrapLookupAction<TArgs extends unknown[], TResult>(
+  name: string,
+  fn: (...args: TArgs) => Promise<TResult>
+) {
+  const wrapped = async (...args: TArgs): Promise<TResult | TLookupFail> => {
+    try {
+      return await fn(...args);
+    } catch (error) {
+      if (isNextNavigationError(error)) {
+        throw error;
+      }
+      captureError(error, { source: "action", name });
+      return { ok: false, error: userFacingMessage(error) ?? FALLBACK_FORM_ERROR };
+    }
+  };
+
+  Object.defineProperty(wrapped, "name", { value: name });
+  return wrapped;
+}

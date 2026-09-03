@@ -19,7 +19,7 @@ export function ModulePanel({
   children: ReactNode;
 }) {
   return (
-    <GlassCard className="flex flex-col" tilt={false}>
+    <GlassCard className="flex flex-col">
       <div className={cn("flex flex-col gap-4 pb-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4 lg:pt-7", widgetInsetClass, "pt-5 sm:pt-6 lg:px-7")}>
         <div className="min-w-0">
           {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}

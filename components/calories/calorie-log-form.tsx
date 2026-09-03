@@ -1,20 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { createCalorieLog, updateCalorieLog } from "@/app/(dashboard)/calories/actions";
+import { CalorieEnergyFields } from "@/components/calories/calorie-energy-fields";
+import { FoodSearchPanel } from "@/components/calories/food-search";
 import { ActionButton } from "@/components/layout/action-button";
 import {
+  FormChunk,
   FormErrorRow,
   FormField,
   FormGrid,
-  FormSection,
   FormStack,
   FormSubmitRow,
-  OptionalMacroSection,
+  IconField,
 } from "@/components/layout/form-field";
 import { FormError } from "@/components/layout/form-error";
-import { DateInput, NumberInput, SelectField, TextInput, Textarea, ChoiceChip, ChoiceChipGroup, HiddenInput, InputSuffix } from "@/components/ui/form-controls";
+import { UiIcon } from "@/components/icons/ui-icon";
+import type { TAppIconName } from "@/components/icons/app-icons";
+import {
+  ChoiceChip,
+  ChoiceChipGroup,
+  DateInput,
+  HiddenInput,
+  NumberInput,
+  SelectField,
+  TextInput,
+  Textarea,
+} from "@/components/ui/form-controls";
+import { type TNutritionPrefill, useFoodSearch } from "@/hooks/useFoodSearch.hook";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
 import { ACTIONS, PLACE } from "@/lib/app-copy";
 import { CALORIE_MEALS } from "@/lib/constants";
@@ -30,6 +44,17 @@ export type TCalorieLogFormInitial = {
   fatsG?: string | null;
   notes?: string | null;
 };
+
+function fieldString(value: string | number | null | undefined): string {
+  if (value == null || value === "") {
+    return "";
+  }
+  return String(value);
+}
+
+function FieldIcon({ name }: { name: TAppIconName }) {
+  return <UiIcon name={name} size={16} className="text-muted-foreground" />;
+}
 
 export function CalorieLogForm({
   today,
@@ -48,6 +73,40 @@ export function CalorieLogForm({
   const submitLabel = isEdit ? ACTIONS.saveChanges : ACTIONS.logMeal;
   const { formRef, state, formAction, isPending } = useResettingForm(action, celebrate, onSuccess, !isEdit);
   const [meal, setMeal] = useState<(typeof CALORIE_MEALS)[number]>(initial?.meal ?? "Breakfast");
+  const [item, setItem] = useState(initial?.item ?? "");
+  const [calories, setCalories] = useState(fieldString(initial?.calories));
+  const [proteinG, setProteinG] = useState(fieldString(initial?.proteinG));
+  const [carbsG, setCarbsG] = useState(fieldString(initial?.carbsG));
+  const [fatsG, setFatsG] = useState(fieldString(initial?.fatsG));
+
+  const applyPrefill = useCallback((next: TNutritionPrefill) => {
+    setItem(next.item);
+    setCalories(String(next.calories));
+    setProteinG(fieldString(next.proteinG));
+    setCarbsG(fieldString(next.carbsG));
+    setFatsG(fieldString(next.fatsG));
+  }, []);
+
+  const lookup = useFoodSearch(item, compact && !isEdit, applyPrefill);
+  const { resetLookup } = lookup;
+
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) {
+      return;
+    }
+    const onReset = () => {
+      setMeal("Breakfast");
+      setItem("");
+      setCalories("");
+      setProteinG("");
+      setCarbsG("");
+      setFatsG("");
+      resetLookup();
+    };
+    form.addEventListener("reset", onReset);
+    return () => form.removeEventListener("reset", onReset);
+  }, [formRef, resetLookup]);
 
   if (!compact) {
     return (
@@ -55,7 +114,7 @@ export function CalorieLogForm({
         {isEdit ? <HiddenInput name="id" value={initial!.id} /> : null}
         <FormGrid>
           <FormField label="What you ate" htmlFor="item">
-            <TextInput id="item" name="item" required placeholder={PLACE.mealItem} defaultValue={initial?.item} />
+            <TextInput id="item" name="item" required placeholder={PLACE.mealItem} value={item} onChange={(event) => setItem(event.target.value)} />
           </FormField>
           <FormField label="Date" htmlFor="loggedOn">
             <DateInput id="loggedOn" name="loggedOn" required defaultValue={initial?.loggedOn ?? today} />
@@ -71,28 +130,22 @@ export function CalorieLogForm({
             />
           </FormField>
           <FormField label="Calories" htmlFor="calories">
-            <NumberInput id="calories" name="calories" min={0} step={1} required placeholder={PLACE.calories} defaultValue={initial?.calories} />
+            <NumberInput id="calories" name="calories" min={0} step={1} required placeholder={PLACE.calories} value={calories} onChange={(event) => setCalories(event.target.value)} />
           </FormField>
           <FormField label="Protein (g)" htmlFor="proteinG">
-            <NumberInput id="proteinG" name="proteinG" min={0} step={0.1} placeholder={PLACE.protein} defaultValue={initial?.proteinG ?? undefined} />
+            <NumberInput id="proteinG" name="proteinG" min={0} step={0.1} placeholder={PLACE.protein} value={proteinG} onChange={(event) => setProteinG(event.target.value)} />
           </FormField>
           <FormField label="Carbs (g)" htmlFor="carbsG">
-            <NumberInput id="carbsG" name="carbsG" min={0} step={0.1} placeholder={PLACE.carbs} defaultValue={initial?.carbsG ?? undefined} />
+            <NumberInput id="carbsG" name="carbsG" min={0} step={0.1} placeholder={PLACE.carbs} value={carbsG} onChange={(event) => setCarbsG(event.target.value)} />
           </FormField>
           <FormField label="Fats (g)" htmlFor="fatsG">
-            <NumberInput id="fatsG" name="fatsG" min={0} step={0.1} placeholder={PLACE.fats} defaultValue={initial?.fatsG ?? undefined} />
+            <NumberInput id="fatsG" name="fatsG" min={0} step={0.1} placeholder={PLACE.fats} value={fatsG} onChange={(event) => setFatsG(event.target.value)} />
           </FormField>
           <FormField label="Note" htmlFor="notes" className="sm:col-span-2 lg:col-span-4">
             <Textarea id="notes" name="notes" placeholder={PLACE.notes} defaultValue={initial?.notes ?? undefined} />
           </FormField>
           <FormSubmitRow>
-            <ActionButton
-              type="submit"
-              size="lg"
-              icon="flame"
-              pending={isPending}
-              className="w-full min-w-40 rounded-full sm:w-auto"
-            >
+            <ActionButton type="submit" size="lg" icon="flame" pending={isPending} className="w-full min-w-40 rounded-full sm:w-auto">
               {submitLabel}
             </ActionButton>
           </FormSubmitRow>
@@ -107,68 +160,75 @@ export function CalorieLogForm({
   return (
     <form ref={formRef} action={formAction}>
       {isEdit ? <HiddenInput name="id" value={initial!.id} /> : null}
-      <FormStack>
-        <HiddenInput name="meal" value={meal} />
-        <FormSection title="What">
-          <TextInput id="item" name="item" required placeholder={PLACE.mealItem} aria-label="What you ate" defaultValue={initial?.item} />
-        </FormSection>
+      <HiddenInput name="meal" value={meal} />
+      <FormStack className="gap-0">
+        <FormChunk>
+          <IconField icon={<FieldIcon name="search" />}>
+            <TextInput
+              id="item"
+              name="item"
+              required
+              placeholder={PLACE.mealItem}
+              aria-label="What you ate"
+              value={item}
+              onChange={(event) => setItem(event.target.value)}
+            />
+          </IconField>
+          {!isEdit ? <FoodSearchPanel {...lookup} /> : null}
+        </FormChunk>
 
-        <FormSection title="When" className="gap-3">
-          <div className="grid gap-3 sm:grid-cols-[minmax(0,11rem)_1fr] sm:items-end">
-            <FormField label="Date" htmlFor="loggedOn">
-              <DateInput id="loggedOn" name="loggedOn" required defaultValue={initial?.loggedOn ?? today} />
-            </FormField>
-            <ChoiceChipGroup>
+        <FormChunk>
+          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 sm:items-center">
+            <IconField icon={<FieldIcon name="calendar" />}>
+              <DateInput
+                id="loggedOn"
+                name="loggedOn"
+                required
+                aria-label="Date"
+                defaultValue={initial?.loggedOn ?? today}
+              />
+            </IconField>
+            <ChoiceChipGroup className="w-full" aria-label="Meal">
               {CALORIE_MEALS.map((option) => (
-                <ChoiceChip
-                  key={option}
-                  selected={meal === option}
-                  onClick={() => setMeal(option)}
-                >
+                <ChoiceChip key={option} compact selected={meal === option} onClick={() => setMeal(option)}>
                   {option}
                 </ChoiceChip>
               ))}
             </ChoiceChipGroup>
           </div>
-        </FormSection>
+        </FormChunk>
 
-        <FormSection title="Energy">
-          <div className="relative">
-            <NumberInput
-              id="calories"
-              name="calories"
-              min={0}
-              step={1}
-              required
-              placeholder={PLACE.calories}
-              className="pr-14"
-              aria-label="Calories"
-              defaultValue={initial?.calories}
+        <FormChunk>
+          <CalorieEnergyFields
+            calories={calories}
+            proteinG={proteinG}
+            carbsG={carbsG}
+            fatsG={fatsG}
+            onCalories={setCalories}
+            onProtein={setProteinG}
+            onCarbs={setCarbsG}
+            onFats={setFatsG}
+          />
+        </FormChunk>
+
+        <FormChunk>
+          <IconField icon={<FieldIcon name="list" />} align="start">
+            <Textarea
+              id="notes"
+              name="notes"
+              placeholder={PLACE.notes}
+              aria-label="Note"
+              defaultValue={initial?.notes ?? undefined}
             />
-            <InputSuffix>kcal</InputSuffix>
-          </div>
-        </FormSection>
+          </IconField>
+        </FormChunk>
 
-        <OptionalMacroSection>
-          <FormField label="Protein" htmlFor="proteinG">
-            <NumberInput id="proteinG" name="proteinG" min={0} step={0.1} placeholder={PLACE.protein} defaultValue={initial?.proteinG ?? undefined} />
-          </FormField>
-          <FormField label="Carbs" htmlFor="carbsG">
-            <NumberInput id="carbsG" name="carbsG" min={0} step={0.1} placeholder={PLACE.carbs} defaultValue={initial?.carbsG ?? undefined} />
-          </FormField>
-          <FormField label="Fats" htmlFor="fatsG">
-            <NumberInput id="fatsG" name="fatsG" min={0} step={0.1} placeholder={PLACE.fats} defaultValue={initial?.fatsG ?? undefined} />
-          </FormField>
-        </OptionalMacroSection>
-
-        <FormSection title="Note · optional">
-          <Textarea id="notes" name="notes" placeholder={PLACE.notes} aria-label="Note" defaultValue={initial?.notes ?? undefined} />
-        </FormSection>
-
-        <ActionButton type="submit" size="lg" icon="flame" pending={isPending} className="w-full rounded-full">
-          {submitLabel}
-        </ActionButton>
-        <FormError error={state && "error" in state ? state.error : undefined} />
+        <FormChunk>
+          <ActionButton type="submit" size="lg" icon="flame" pending={isPending} className="w-full rounded-full">
+            {submitLabel}
+          </ActionButton>
+          <FormError error={state && "error" in state ? state.error : undefined} />
+        </FormChunk>
       </FormStack>
     </form>
   );

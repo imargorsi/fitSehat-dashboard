@@ -180,13 +180,25 @@ export const EMPTY = {
   },
 } as const;
 
+export const LOOKUP = {
+  hint: "Search a food or enter calories manually.",
+  suggested: "Suggested macros — edit if your portion differed.",
+  none: "No match — enter calories manually.",
+  failed: "Lookup is unavailable. Enter calories manually.",
+  invalidClient: "Lookup is unavailable. Enter calories manually.",
+  unavailable: "Search is unavailable. Enter calories manually.",
+  loading: "Searching foods…",
+  servingsLoading: "Loading servings…",
+  enterManually: "Enter calories manually",
+} as const;
+
 export const PLACE = {
-  mealItem: "What did you eat?",
+  mealItem: "Search or type what you ate",
   mealName: "Meal name",
-  calories: "0",
-  protein: "Protein (g)",
-  carbs: "Carbs (g)",
-  fats: "Fat (g)",
+  calories: "Calories",
+  protein: "Protein",
+  carbs: "Carbs",
+  fats: "Fat",
   notes: "Optional note",
   weight: "Weight (kg)",
   waist: "Waist (cm)",
@@ -211,6 +223,7 @@ export const ACTIONS = {
   addMeal: "Save meal",
   saveChanges: "Save changes",
   edit: "Edit",
+  delete: "Delete",
   saveWalk: "Save walk",
   saveWeighIn: "Save check-in",
   saveCompact: "Save",
@@ -219,6 +232,7 @@ export const ACTIONS = {
   addQuick: "Add to today",
   begin: "Create account",
   signIn: "Sign in",
+  signOut: "Sign out",
   alreadyHaveKey: "Sign in",
   tryAgain: "Try again",
   home: "Back to home",

@@ -43,6 +43,28 @@ export function RangeInput(props: Omit<ComponentProps<typeof Input>, "type">) {
 
 export { Textarea };
 
+export function InputPrefix({
+  children,
+  className,
+  align = "center",
+}: {
+  children: ReactNode;
+  className?: string;
+  align?: "center" | "start";
+}) {
+  return (
+    <span
+      className={cn(
+        "pointer-events-none absolute left-3.5 z-[1] flex items-center text-muted-foreground",
+        align === "start" ? "top-3.5" : "inset-y-0",
+        className
+      )}
+    >
+      {children}
+    </span>
+  );
+}
+
 export function InputSuffix({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <Unit className={cn("pointer-events-none absolute inset-y-0 right-4 flex items-center", className)}>
@@ -78,9 +100,11 @@ export function ChoiceChip({
 export function ChoiceChipGroup({
   children,
   className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
-  return <div className={cn("flex flex-wrap gap-1.5", className)}>{children}</div>;
+  ...props
+}: ComponentProps<"div">) {
+  return (
+    <div className={cn("flex flex-wrap gap-1.5", className)} {...props}>
+      {children}
+    </div>
+  );
 }

@@ -1,16 +1,16 @@
 import { AnimateIcon } from "@/components/icons/animate-icon";
 import { deleteCalorieLog } from "@/app/(dashboard)/calories/actions";
+import { CalorieDayTotals, CalorieJournalRow } from "@/components/calories/calorie-journal-row";
 import { CalorieLogDialog } from "@/components/calories/calorie-log-dialog";
 import { CalorieLogEditDialog } from "@/components/calories/calorie-log-edit-dialog";
 import { DeleteRowButton } from "@/components/layout/delete-row-button";
 import { EmptyNote } from "@/components/layout/empty-note";
 import { ModulePanel } from "@/components/layout/module-panel";
 import { PageShell } from "@/components/layout/page-shell";
-import { StatGrid, SectionGrid } from "@/components/layout/page-grids";
-import { SoftRow } from "@/components/layout/soft-row";
+import { StatGrid } from "@/components/layout/page-grids";
 import { MealDots, StatCard } from "@/components/layout/stat-card";
 import { WeekCalorieChart } from "@/components/overview/week-calorie-chart";
-import { Caption, DayHeader, DayTotal, Meta, Strong, Unit } from "@/components/ui/typography";
+import { Caption, DayHeader } from "@/components/ui/typography";
 import { aggregateLogs, dailyTotals } from "@/lib/calories.utils";
 import { calorieCaption, EMPTY, mealsCaption, proteinCaption } from "@/lib/app-copy";
 import {
@@ -24,7 +24,6 @@ import { listCalorieLogs, listCalorieLogsInRange } from "@/lib/db/calories";
 import { getActiveMacroTarget } from "@/lib/db/macros";
 import type { TCalorieLog } from "@/lib/db/schema";
 import { listStackClass } from "@/lib/layout";
-import { formatInt, formatNumber } from "@/lib/number.utils";
 import { isCalorieMeal } from "@/lib/meals.utils";
 import { loggedCoreMeals, remainingAmount } from "@/lib/overview.utils";
 import { requireAuthUser } from "@/lib/session";
@@ -65,7 +64,7 @@ export default async function CaloriesPage() {
   }));
 
   return (
-    <PageShell>
+    <PageShell action={<CalorieLogDialog today={today} />}>
       <StatGrid>
         <StatCard
           icon={<AnimateIcon name="flame" size={16} tone="neon" />}
@@ -99,55 +98,47 @@ export default async function CaloriesPage() {
         />
       </StatGrid>
 
-      <SectionGrid>
-        <WeekCalorieChart bars={bars} goal={calorieGoal} />
-      </SectionGrid>
+      <WeekCalorieChart bars={bars} goal={calorieGoal} fullWidth />
 
       <ModulePanel
         eyebrow="Journal"
         title="Calorie history"
-        description="Newest days first. Tap edit to update an entry."
-        action={<CalorieLogDialog today={today} />}
+        description="Newest days first. Edit or delete a row to update your history."
       >
         {grouped.length === 0 ? (
           <EmptyNote title={EMPTY.calories.title} body={EMPTY.calories.body} icon="book" tone="rose" />
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-6">
             {grouped.map(([day, rows]) => {
               const dayTotal = aggregateLogs(rows);
               return (
-                <section key={day} className="space-y-3">
-                  <div className="flex items-end justify-between gap-3 px-1">
-                    <div>
+                <section key={day} className="space-y-2.5">
+                  <div className="flex items-end justify-between gap-3 border-b border-border/70 px-1 pb-2">
+                    <div className="min-w-0">
                       <Caption>{day === today ? "Today" : "Day"}</Caption>
-                      <DayHeader>{day === today ? "Today" : formatMediumDate(day)}</DayHeader>
+                      <DayHeader>{formatMediumDate(day)}</DayHeader>
                     </div>
-                    <DayTotal>
-                      {formatInt(dayTotal.calories)}{" "}
-                      <Unit>kcal</Unit>
-                    </DayTotal>
+                    <CalorieDayTotals
+                      calories={dayTotal.calories}
+                      protein={dayTotal.protein}
+                      carbs={dayTotal.carbs}
+                    />
                   </div>
                   <ul className={listStackClass}>
                     {rows.map((log) => (
                       <li key={log.id}>
-                        <SoftRow
-                          title={log.item}
-                          subtitle={log.notes ? `${log.meal} · ${log.notes}` : log.meal}
-                          value={
-                            <span>
-                              <Strong className="block">
-                                {formatInt(log.calories)} kcal
-                              </Strong>
-                              {log.proteinG ? (
-                                <Meta className="block">
-                                  {formatNumber(log.proteinG)}g P
-                                </Meta>
-                              ) : null}
-                            </span>
-                          }
+                        <CalorieJournalRow
+                          item={log.item}
+                          meal={log.meal}
+                          notes={log.notes}
+                          calories={log.calories}
+                          proteinG={log.proteinG}
+                          carbsG={log.carbsG}
+                          fatsG={log.fatsG}
                           action={
-                            <div className="flex shrink-0 items-center gap-0.5">
+                            <>
                               <CalorieLogEditDialog
+                                compact
                                 today={today}
                                 initial={{
                                   id: log.id,
@@ -161,8 +152,8 @@ export default async function CaloriesPage() {
                                   notes: log.notes,
                                 }}
                               />
-                              <DeleteRowButton action={deleteCalorieLog} id={log.id} />
-                            </div>
+                              <DeleteRowButton compact action={deleteCalorieLog} id={log.id} />
+                            </>
                           }
                         />
                       </li>

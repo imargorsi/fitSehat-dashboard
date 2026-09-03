@@ -18,12 +18,14 @@ import { cn } from "@/lib/utils";
 
 type TResetReason = "enter" | "leave" | "global" | "init";
 
+const RIM_MASK =
+  "linear-gradient(var(--foreground) 0 0) content-box, linear-gradient(var(--foreground) 0 0)";
+
 export function MagicCard({
   children,
   className,
   gradientSize = FITSEHAT_MAGIC_CARD.gradientSize,
   gradientColor = FITSEHAT_MAGIC_CARD.gradientColor,
-  gradientOpacity = FITSEHAT_MAGIC_CARD.gradientOpacity,
   gradientFrom = FITSEHAT_MAGIC_CARD.gradientFrom,
   gradientTo = FITSEHAT_MAGIC_CARD.gradientTo,
 }: {
@@ -31,7 +33,6 @@ export function MagicCard({
   className?: string;
   gradientSize?: number;
   gradientColor?: string;
-  gradientOpacity?: number;
   gradientFrom?: string;
   gradientTo?: string;
 }) {
@@ -92,77 +93,52 @@ export function MagicCard({
     };
   }, [reset]);
 
-  const frameBackground = useMotionTemplate`
-    linear-gradient(var(--color-card) 0 0) padding-box,
-    radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
-      ${gradientFrom} 0%,
-      ${gradientTo} 32%,
-      color-mix(in oklch, white 40%, transparent) 62%,
-      color-mix(in oklch, white 30%, transparent) 100%
-    ) border-box
-  `;
-
   const magicBorder = useMotionTemplate`
     radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
       ${gradientFrom} 0%,
       ${gradientTo} 35%,
-      color-mix(in oklch, white 45%, transparent) 70%,
-      transparent 100%
+      transparent 72%
     )
   `;
 
   const surfaceGlow = useMotionTemplate`
     radial-gradient(${gradientSize}px circle at ${mouseX}px ${mouseY}px,
       ${gradientColor},
-      transparent 72%
+      transparent 100%
     )
   `;
 
   return (
     <motion.div
       className={cn(
-        "group relative isolate rounded-[inherit] border border-transparent",
+        "group relative isolate overflow-hidden rounded-[inherit] border border-border bg-card backdrop-blur-xl",
+        "glass-chrome",
         className
       )}
       onPointerMove={handlePointerMove}
       onPointerLeave={() => reset("leave")}
       onPointerEnter={() => reset("enter")}
-      style={{ background: frameBackground }}
     >
-      {/* Base white outline — stays on hover */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] border border-white/30"
-      />
-
-      {/* Magic UI border highlight — follows cursor and brightens the rim */}
       <motion.div
         aria-hidden
         suppressHydrationWarning
-        className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
-          padding: "2px",
+          padding: "1px",
           background: magicBorder,
-          WebkitMask:
-            "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+          WebkitMask: RIM_MASK,
           WebkitMaskComposite: "xor",
-          mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+          mask: RIM_MASK,
           maskComposite: "exclude",
         }}
       />
-
-      <div className="absolute inset-px z-20 overflow-hidden rounded-[inherit] bg-card" />
-
       <motion.div
+        aria-hidden
         suppressHydrationWarning
-        className="pointer-events-none absolute inset-px z-30 overflow-hidden rounded-[inherit] opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-        style={{
-          background: surfaceGlow,
-          opacity: gradientOpacity,
-        }}
+        className="pointer-events-none absolute inset-px z-30 rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover:opacity-70"
+        style={{ background: surfaceGlow }}
       />
-
-      <div className="relative z-40 h-full overflow-hidden rounded-[inherit]">{children}</div>
+      {children}
     </motion.div>
   );
 }

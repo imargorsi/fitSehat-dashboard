@@ -1,7 +1,8 @@
-import type { ReactNode } from "react";
+import { Children, cloneElement, type ReactElement, type ReactNode } from "react";
 
-import { FormLabel } from "@/components/ui/form-controls";
+import { FormLabel, InputPrefix } from "@/components/ui/form-controls";
 import { Eyebrow } from "@/components/ui/typography";
+import { fieldControlIconPadClass } from "@/lib/field-control";
 import {
   formGridClass,
   formStackClass,
@@ -52,18 +53,62 @@ export function FormField({
   );
 }
 
+export function FormChunk({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("grid gap-3 border-t border-border pt-5 first:border-t-0 first:pt-0", className)}>
+      {children}
+    </div>
+  );
+}
+
+export function IconField({
+  icon,
+  suffix,
+  align = "center",
+  className,
+  children,
+}: {
+  icon: ReactNode;
+  suffix?: ReactNode;
+  align?: "center" | "start";
+  className?: string;
+  children: ReactElement<{ className?: string }>;
+}) {
+  const child = Children.only(children);
+  return (
+    <div className={cn("relative min-w-0", className)}>
+      <InputPrefix align={align}>{icon}</InputPrefix>
+      {cloneElement(child, {
+        className: cn(fieldControlIconPadClass, child.props.className),
+      })}
+      {suffix}
+    </div>
+  );
+}
+
 export function FormSection({
   title,
+  icon,
   children,
   className,
 }: {
   title: string;
+  icon?: ReactNode;
   children: ReactNode;
   className?: string;
 }) {
   return (
     <section className={cn("grid gap-2", className)}>
-      <Eyebrow>{title}</Eyebrow>
+      <Eyebrow className="flex items-center gap-1.5">
+        {icon}
+        {title}
+      </Eyebrow>
       {children}
     </section>
   );
@@ -71,14 +116,19 @@ export function FormSection({
 
 export function OptionalMacroSection({
   title = "Macros · optional",
+  icon,
   children,
 }: {
   title?: string;
+  icon?: ReactNode;
   children: ReactNode;
 }) {
   return (
     <section className={optionalMacroSectionClass}>
-      <Eyebrow>{title}</Eyebrow>
+      <Eyebrow className="flex items-center gap-1.5">
+        {icon}
+        {title}
+      </Eyebrow>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">{children}</div>
     </section>
   );

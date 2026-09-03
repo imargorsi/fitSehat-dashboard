@@ -14,17 +14,19 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { HiddenInput } from "@/components/ui/form-controls";
-import { CONFIRM, DELETE_TOAST } from "@/lib/app-copy";
+import { ACTIONS, CONFIRM, DELETE_TOAST } from "@/lib/app-copy";
 import type { TFormState } from "@/lib/form-state.types";
 
 export function DeleteRowButton({
   action,
   id,
   successMessage = DELETE_TOAST,
+  compact = false,
 }: {
   action: (prev: TFormState, formData: FormData) => Promise<TFormState>;
   id: string;
   successMessage?: string;
+  compact?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const handleAction = useCallback(
@@ -49,14 +51,15 @@ export function DeleteRowButton({
     <>
       <Button
         type="button"
-        variant="ghost"
-        size="sm"
+        variant={compact ? "ghost" : "outline"}
+        size={compact ? "icon" : "sm"}
         disabled={isPending}
-        className="text-muted-foreground hover:text-rose"
+        aria-label={ACTIONS.delete}
+        className="rounded-full text-muted-foreground hover:text-rose"
         onClick={() => setOpen(true)}
       >
         <UiIcon name={isPending ? "loader" : "close"} size={14} className="text-current" spin={isPending} />
-        Let go
+        {compact ? null : ACTIONS.delete}
       </Button>
       <Dialog open={open} onOpenChange={(next) => { if (!isPending) setOpen(next); }}>
         <DialogContent showCloseButton={false} className="sm:max-w-md">

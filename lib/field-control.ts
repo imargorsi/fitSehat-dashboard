@@ -10,6 +10,9 @@ export const fieldControlClass = cn(
   "disabled:cursor-not-allowed disabled:opacity-50"
 );
 
+/** Extra left padding when a leading icon sits inside the control */
+export const fieldControlIconPadClass = "pl-11";
+
 /** Outline nav / secondary action button chrome */
 export const outlineButtonClass = cn(
   "h-9 shrink-0 rounded-full border-border/55 bg-transparent px-3.5 text-[0.8125rem] font-medium text-muted-foreground shadow-none",

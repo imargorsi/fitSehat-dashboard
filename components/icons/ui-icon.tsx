@@ -24,7 +24,7 @@ export function UiIcon({
       size={size}
       duration={0.8}
       isAnimated={!reduced}
-      className={cn("shrink-0", spin && "animate-spin", className)}
+      className={cn("shrink-0 text-current", spin && "animate-spin", className)}
     />
   );
 }

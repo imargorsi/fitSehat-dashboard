@@ -16,7 +16,7 @@ export function AnimateIcon({
 }: {
   name: TAppIconName;
   size?: number;
-  tone?: "rose" | "gold" | "neon" | "violet" | "onPrimary" | "muted" | "foreground";
+  tone?: "rose" | "gold" | "neon" | "violet" | "onPrimary" | "current" | "muted" | "foreground";
   className?: string;
   playOnMount?: boolean;
 }) {
@@ -37,7 +37,8 @@ export function AnimateIcon({
     gold: "text-gold",
     neon: "text-neon",
     violet: "text-violet",
-    onPrimary: "text-neon-foreground",
+    onPrimary: "text-current",
+    current: "text-current",
     muted: "text-muted-foreground",
     foreground: "text-foreground",
   }[tone];

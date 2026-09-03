@@ -22,10 +22,10 @@ export default async function DashboardLayout({
   await ensureProfile(user.id);
 
   return (
-    <div className="relative flex h-dvh min-h-dvh w-full flex-col overflow-hidden overscroll-none bg-background touch-manipulation">
+    <div className="relative flex h-dvh min-h-dvh w-full flex-col overflow-hidden overscroll-none touch-manipulation">
+      <AppBar user={user} />
       <DashboardStage>{children}</DashboardStage>
       <AppDock />
-      <AppBar user={user} />
     </div>
   );
 }

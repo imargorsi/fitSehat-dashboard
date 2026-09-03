@@ -19,9 +19,11 @@ export type TWeekBar = {
 export function WeekCalorieChart({
   bars,
   goal,
+  fullWidth = false,
 }: {
   bars: TWeekBar[];
   goal: number | null;
+  fullWidth?: boolean;
 }) {
   const reduced = useReducedMotion();
   const peak = Math.max(goal ?? 0, ...bars.map((bar) => bar.calories), 1);
@@ -29,7 +31,7 @@ export function WeekCalorieChart({
   const loggedDays = bars.filter((bar) => bar.calories > 0).length;
 
   return (
-    <GlassCard className="flex h-full min-h-[20rem] flex-col">
+    <GlassCard className={cn("flex flex-col", fullWidth ? "min-h-[22rem]" : "h-full min-h-[20rem]")}>
       <WidgetHeader
         eyebrow="Week"
         title="Calories this week"
@@ -42,8 +44,8 @@ export function WeekCalorieChart({
         }
         className="pb-3 sm:pb-4"
       />
-      <WidgetBody className="flex min-h-[12rem] flex-1 flex-col pt-0 sm:min-h-[14rem]">
-        <div className="relative flex flex-1 items-stretch gap-1.5 sm:gap-2">
+      <WidgetBody className={cn("flex flex-1 flex-col pt-0", fullWidth ? "min-h-[14rem] sm:min-h-[16rem]" : "min-h-[12rem] sm:min-h-[14rem]")}>
+        <div className="relative flex flex-1 items-stretch gap-1.5 sm:gap-3">
           {goalTop != null ? (
             <div
               className="pointer-events-none absolute right-0 left-0 border-t border-dashed border-neon/40"
@@ -58,7 +60,8 @@ export function WeekCalorieChart({
                   <motion.div
                     title={`${bar.label}: ${formatInt(bar.calories)} kcal`}
                     className={cn(
-                      "w-full max-w-9 origin-bottom rounded-full",
+                      "w-full origin-bottom rounded-full",
+                      fullWidth ? "max-w-14 sm:max-w-16" : "max-w-9",
                       bar.isToday ? "bg-brand shadow-glow" : bar.calories > 0 ? "bg-rose/45" : "bg-muted/80"
                     )}
                     initial={{ height: reduced ? `${height}%` : "10%" }}

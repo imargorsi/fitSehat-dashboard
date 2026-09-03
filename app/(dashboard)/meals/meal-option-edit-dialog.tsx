@@ -24,7 +24,10 @@ export function MealOptionEditDialog({ initial }: { initial: TMealOptionFormInit
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger nativeButton={false} render={<Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground" />}>
+      <DialogTrigger
+        nativeButton={false}
+        render={<Button variant="outline" size="sm" className="rounded-full text-muted-foreground hover:text-foreground" />}
+      >
         <UiIcon name="list" size={14} className="text-current" />
         {ACTIONS.edit}
       </DialogTrigger>

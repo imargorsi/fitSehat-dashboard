@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sheet";
 import { H2, H4, Micro, Muted } from "@/components/ui/typography";
 import { useDashboardScrolled } from "@/hooks/useDashboardScrolled.hook";
+import { ACTIONS } from "@/lib/app-copy";
 import { dockNav, isMorePath, moreNav } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
@@ -39,10 +40,10 @@ export function AppDock() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           className={cn(
-            "pointer-events-auto mx-auto flex max-w-md items-stretch gap-0.5 rounded-[1.75rem] p-1.5 ring-1 isolate transition-[background-color,box-shadow,backdrop-filter] duration-300",
+            "pointer-events-auto mx-auto flex max-w-md items-stretch gap-0.5 rounded-[1.75rem] border border-border p-1.5 isolate transition-[background-color,box-shadow,backdrop-filter] duration-300",
             scrolled
-              ? "border border-white/25 bg-background/95 shadow-[0_-12px_40px_color-mix(in_oklch,black_45%,transparent)] ring-white/20 backdrop-blur-xl"
-              : "glass-panel ring-border shadow-glow"
+              ? "bg-background/90 shadow-glow backdrop-blur-xl"
+              : "glass-panel"
           )}
         >
           {dockNav.map((item) => {
@@ -168,7 +169,7 @@ export function AppDock() {
           <form action={signOut} className="mt-4">
             <Button type="submit" variant="ghost" className="h-12 w-full rounded-2xl text-muted-foreground">
               <AnimateIcon name="logout" size={16} tone="muted" />
-              Sign out
+              {ACTIONS.signOut}
             </Button>
           </form>
         </SheetContent>

@@ -3,6 +3,7 @@ export const ERROR_CODES = {
   AUTH: "AUTH",
   NOT_FOUND: "NOT_FOUND",
   DATABASE: "DATABASE",
+  EXTERNAL: "EXTERNAL",
   INTERNAL: "INTERNAL",
 } as const;
 

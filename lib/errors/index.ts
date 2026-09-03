@@ -5,5 +5,5 @@ export { log } from "@/lib/errors/logger";
 export { isNextNavigationError } from "@/lib/errors/next.utils";
 export { FALLBACK_FORM_ERROR, normalizeError, userFacingMessage } from "@/lib/errors/normalize-error";
 export { withRouteHandler } from "@/lib/errors/with-route-handler";
-export { wrapAuthAction, wrapFormAction, wrapVoidAction } from "@/lib/errors/wrap-action";
+export { wrapAuthAction, wrapFormAction, wrapLookupAction, wrapVoidAction } from "@/lib/errors/wrap-action";
 export { firstZodError } from "@/lib/errors/zod.utils";

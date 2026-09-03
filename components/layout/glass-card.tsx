@@ -1,23 +1,43 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { motion, useReducedMotion } from "motion/react";
 
-import { TiltSpotlight } from "@/components/motion/tilt-spotlight";
+import { MagicCard } from "@/components/ui/magic-card";
+import { EASE_OUT } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 export function GlassCard({
   children,
   className,
-  tilt = true,
   magic = true,
 }: {
   children: ReactNode;
   className?: string;
-  tilt?: boolean;
   magic?: boolean;
 }) {
-  return (
-    <TiltSpotlight className={className} tilt={tilt} magic={magic}>
+  const reduced = useReducedMotion();
+  const useMagic = Boolean(magic && !reduced);
+
+  const inner = (
+    <div className={cn("relative z-40 flex h-full min-h-0 flex-col rounded-[inherit]", className)}>
       {children}
-    </TiltSpotlight>
+    </div>
+  );
+
+  return (
+    <motion.div
+      initial={reduced ? false : { opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.14, margin: "-28px" }}
+      transition={{ duration: 0.48, ease: EASE_OUT }}
+      className="h-full rounded-[1.75rem]"
+    >
+      {useMagic ? (
+        <MagicCard className="h-full rounded-[1.75rem]">{inner}</MagicCard>
+      ) : (
+        <div className="glass-panel h-full rounded-[1.75rem] border border-border">{inner}</div>
+      )}
+    </motion.div>
   );
 }
