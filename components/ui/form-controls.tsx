@@ -29,8 +29,8 @@ export function NumberInput(props: Omit<ComponentProps<typeof Input>, "type">) {
   return <Input type="number" {...props} />;
 }
 
-export function DateInput(props: Omit<ComponentProps<typeof Input>, "type">) {
-  return <Input type="date" {...props} />;
+export function DateInput({ className, ...props }: Omit<ComponentProps<typeof Input>, "type">) {
+  return <Input type="date" className={cn("min-w-0 max-w-full", className)} {...props} />;
 }
 
 export function HiddenInput(props: Omit<ComponentProps<typeof Input>, "type">) {

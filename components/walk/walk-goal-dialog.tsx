@@ -16,7 +16,7 @@ import {
 import { DialogHeading, Eyebrow } from "@/components/ui/typography";
 import { ACTIONS } from "@/lib/app-copy";
 import { formatInt } from "@/lib/number.utils";
-import { calorieDialogClass, widgetBodyClass, widgetHeaderClass } from "@/lib/layout";
+import { calorieDialogClass, dialogScrollClass, widgetHeaderClass } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 
 export function WalkGoalDialog({ goal }: { goal: number }) {
@@ -46,12 +46,7 @@ export function WalkGoalDialog({ goal }: { goal: number }) {
             </DialogDescription>
           </DialogHeader>
         </div>
-        <div
-          className={cn(
-            "dashboard-scroll modal-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]",
-            widgetBodyClass
-          )}
-        >
+        <div className={dialogScrollClass}>
           {open ? <WalkGoalForm key={goal} goal={goal} onSuccess={close} /> : null}
         </div>
       </DialogContent>

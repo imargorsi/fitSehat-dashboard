@@ -17,9 +17,9 @@ export function PageShell({
   return (
     <div
       className={cn(
-        "flex flex-col gap-6 pb-4 sm:gap-8 sm:pb-6",
+        "flex min-w-0 flex-col gap-6 overflow-x-hidden pb-4 sm:gap-8 sm:pb-6",
         fill &&
-          "mx-auto h-full min-h-0 w-full max-w-6xl flex-1 justify-start gap-5 pb-0 sm:gap-8 lg:justify-center lg:gap-10"
+          "mx-auto min-h-0 w-full max-w-6xl flex-1 justify-center gap-5 overflow-visible pb-0 sm:gap-8 lg:h-full lg:gap-10"
       )}
     >
       <ScreenHeading action={action} scene={scene} />

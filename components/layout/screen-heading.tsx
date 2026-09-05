@@ -37,7 +37,7 @@ export function ScreenHeading({
               <div className="flex shrink-0 flex-wrap items-center gap-2 sm:justify-end">{action}</div>
             ) : null}
           </div>
-          <Muted className="mt-1.5 max-w-2xl sm:mt-3">{current.description}</Muted>
+          <Muted className="mt-1.5 max-w-2xl text-pretty sm:mt-3">{current.description}</Muted>
         </div>
         {scene}
       </div>

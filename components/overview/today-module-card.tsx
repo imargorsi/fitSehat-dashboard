@@ -37,7 +37,7 @@ export function TodayModuleCard({
   const percent = meter ? clampPercent(meter.value, meter.max) : null;
 
   return (
-    <GlassCard className="h-full items-center overflow-visible p-3 text-center sm:p-5">
+    <GlassCard className="h-full min-w-0 items-center overflow-hidden p-4 text-center sm:overflow-visible sm:p-5">
       <Badge variant="outline" className="rounded-full border-border/70 bg-muted/30">
         {label}
       </Badge>

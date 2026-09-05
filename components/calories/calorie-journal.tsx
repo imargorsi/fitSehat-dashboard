@@ -14,6 +14,7 @@ export function CalorieJournal({ today, logs }: { today: string; logs: TCalorieJ
     <ModulePanel
       magic={false}
       bordered={false}
+      hideIconOnMobile
       icon={<SceneIcon src="/icons/healthy-eating.png" alt="" delay={0} className={sceneHeroIconClass} />}
       eyebrow="Fuel"
       title="Journal"

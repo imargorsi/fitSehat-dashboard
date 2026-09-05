@@ -43,7 +43,7 @@ export const typeEyebrow = "text-xs tracking-[0.18em] text-muted-foreground uppe
 export const typeEyebrowAccent = "text-[0.62rem] tracking-[0.22em] text-neon uppercase sm:text-xs";
 
 /** Stat card / compact label */
-export const typeCaption = "text-[0.7rem] tracking-[0.16em] text-muted-foreground uppercase sm:text-sm";
+export const typeCaption = "text-[0.65rem] tracking-[0.08em] text-muted-foreground uppercase sm:text-sm sm:tracking-[0.16em]";
 
 /** Large metric numbers */
 export const typeMetric = "text-2xl font-semibold tracking-tight sm:text-[1.85rem] lg:text-4xl leading-none";
@@ -71,7 +71,7 @@ export const typeQuote =
   "font-heading text-balance font-semibold tracking-tight text-center text-[1.05rem] leading-[1.28] sm:text-[1.45rem] sm:leading-[1.22] lg:text-[1.85rem]";
 
 /** Nav dock micro label */
-export const typeMicro = "text-[0.65rem] font-medium tracking-wide leading-none";
+export const typeMicro = "max-w-full truncate text-center text-[0.62rem] font-medium tracking-wide leading-tight sm:text-[0.65rem]";
 
 /** Desktop nav link label */
 export const typeNavLink = "text-sm font-medium";

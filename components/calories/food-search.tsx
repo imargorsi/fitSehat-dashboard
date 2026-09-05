@@ -29,7 +29,7 @@ export function FoodSearchPanel({
   }
 
   return (
-    <div className="grid gap-3">
+    <div className="grid min-w-0 gap-3 overflow-x-hidden">
       {isSearching ? (
         <Muted className="flex items-center gap-2">
           <UiIcon name="loader" size={14} spin className="text-muted-foreground" />
@@ -38,23 +38,25 @@ export function FoodSearchPanel({
       ) : null}
 
       {!isSearching && foods.length > 0 && !selected ? (
-        <ul className="grid max-h-56 gap-1.5 overflow-y-auto">
+        <ul className="grid max-h-56 min-w-0 gap-1.5 overflow-y-auto overflow-x-hidden">
           {foods.map((food) => (
-            <li key={food.foodId}>
+            <li key={food.foodId} className="min-w-0">
               <button
                 type="button"
                 onClick={() => void selectFood(food)}
                 className={cn(
-                  "flex w-full min-w-0 items-center gap-3 rounded-[1.35rem] glass-row px-3 py-3 text-left transition-colors",
+                  "flex w-full min-w-0 items-start gap-3 rounded-[1.35rem] glass-row px-3 py-3 text-left transition-colors",
                   "hover:bg-muted/40"
                 )}
               >
-                <div className="min-w-0 flex-1">
-                  <RowTitle>{food.name}</RowTitle>
-                  <RowSubtitle>{food.brand ?? food.description}</RowSubtitle>
+                <div className="min-w-0 flex-1 overflow-hidden">
+                  <RowTitle className="whitespace-normal break-words">{food.name}</RowTitle>
+                  <RowSubtitle className="whitespace-normal break-words">
+                    {food.brand ?? food.description}
+                  </RowSubtitle>
                 </div>
                 {food.calories != null ? (
-                  <RowValue className="shrink-0">{formatInt(food.calories)} kcal</RowValue>
+                  <RowValue className="shrink-0 pt-0.5">{formatInt(food.calories)} kcal</RowValue>
                 ) : null}
               </button>
             </li>
@@ -91,7 +93,7 @@ export function FoodSearchPanel({
       {message ? <Muted>{message}</Muted> : null}
 
       {(message || selected || (!isSearching && foods.length > 0)) && (
-        <Button type="button" variant="outline" size="sm" className="w-fit rounded-full" onClick={enterManually}>
+        <Button type="button" variant="outline" size="sm" className="w-full max-w-full rounded-full sm:w-fit" onClick={enterManually}>
           {LOOKUP.enterManually}
         </Button>
       )}

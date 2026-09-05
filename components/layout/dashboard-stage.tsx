@@ -20,15 +20,15 @@ export function DashboardStage({ children }: { children: ReactNode }) {
     <main
       ref={ref}
       className={cn(
-        "dashboard-scroll relative min-h-0 flex-1 overflow-x-clip overflow-y-auto overscroll-y-contain px-4 sm:px-6 lg:px-8",
+        "dashboard-scroll relative min-h-0 w-full min-w-0 flex-1 overflow-x-clip overflow-y-auto overscroll-y-contain px-4 sm:px-6 lg:px-8",
         isToday
-          ? "flex flex-col pt-[max(0.5rem,env(safe-area-inset-top))] pb-[calc(5.25rem+env(safe-area-inset-bottom))] lg:pt-5 lg:pb-6"
-          : "pt-[max(1rem,env(safe-area-inset-top))] pb-[calc(6.5rem+env(safe-area-inset-bottom))] lg:pt-8 lg:pb-12"
+          ? "flex flex-col pt-[max(0.5rem,env(safe-area-inset-top))] pb-[calc(6.25rem+env(safe-area-inset-bottom))] lg:pt-5 lg:pb-6"
+          : "pt-[max(1rem,env(safe-area-inset-top))] pb-[calc(6.25rem+env(safe-area-inset-bottom))] lg:pt-8 lg:pb-12"
       )}
     >
       <div
         className={cn(
-          "relative z-10 mx-auto w-full max-w-[120rem]",
+          "relative z-10 mx-auto w-full min-w-0 max-w-[120rem]",
           isToday && "flex min-h-0 flex-1 flex-col"
         )}
       >

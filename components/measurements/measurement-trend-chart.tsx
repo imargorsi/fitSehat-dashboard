@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Eyebrow, H3, Muted } from "@/components/ui/typography";
 import { EMPTY } from "@/lib/app-copy";
 import { formatChartAxisDate } from "@/lib/date.utils";
-import { widgetHeaderClass } from "@/lib/layout";
+import { pillTabsListClass, pillTabsTriggerClass, widgetHeaderClass } from "@/lib/layout";
 import { formatNumber } from "@/lib/number.utils";
 import { cn } from "@/lib/utils";
 
@@ -39,9 +39,6 @@ const waistConfig = {
     color: "var(--rose)",
   },
 } satisfies ChartConfig;
-
-const chipClass =
-  "h-8 flex-none rounded-full bg-transparent px-3 py-1.5 text-sm font-medium text-muted-foreground shadow-none after:hidden hover:text-foreground data-active:shadow-none";
 
 function seriesData(points: TTrendPoint[], key: "weight" | "waist") {
   return points
@@ -164,12 +161,12 @@ export function MeasurementTrendChart({ points }: { points: TTrendPoint[] }) {
             <H3 className="mt-2">Trend</H3>
             <Muted className="mt-1.5">Last twelve check-ins, oldest on the left.</Muted>
           </div>
-          <TabsList className="flex h-auto w-fit max-w-full flex-wrap justify-start gap-1 rounded-full border border-border bg-muted/40 p-1">
+          <TabsList className={pillTabsListClass}>
             <TabsTrigger
               value="weight"
               className={cn(
-                chipClass,
-                "data-active:bg-neon data-active:text-neon-foreground dark:data-active:bg-neon dark:data-active:text-neon-foreground"
+                pillTabsTriggerClass,
+                "flex-1 data-active:bg-neon data-active:text-neon-foreground dark:data-active:bg-neon dark:data-active:text-neon-foreground"
               )}
             >
               Weight
@@ -177,8 +174,8 @@ export function MeasurementTrendChart({ points }: { points: TTrendPoint[] }) {
             <TabsTrigger
               value="waist"
               className={cn(
-                chipClass,
-                "data-active:bg-rose data-active:text-rose-foreground dark:data-active:bg-rose dark:data-active:text-rose-foreground"
+                pillTabsTriggerClass,
+                "flex-1 data-active:bg-rose data-active:text-rose-foreground dark:data-active:bg-rose dark:data-active:text-rose-foreground"
               )}
             >
               Waist

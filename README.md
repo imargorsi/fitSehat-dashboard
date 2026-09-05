@@ -20,6 +20,7 @@ cp .env.example .env.local
 | `NEON_AUTH_COOKIE_SECRET` | `openssl rand -base64 32` (32+ characters) |
 | `FATSECRET_CLIENT_ID` | Optional. FatSecret Consumer Key |
 | `FATSECRET_CLIENT_SECRET` | Optional. FatSecret Consumer Secret |
+| `NEXT_PUBLIC_SITE_URL` | Optional. Public origin for sitemap, robots, and Open Graph |
 
 Food lookup is optional. Meal logging still works without FatSecret keys (manual calories/macros). Do not prefix FatSecret vars with `NEXT_PUBLIC_`. Lookup uses OAuth 1.0 signed REST calls — no IP whitelist.
 
@@ -40,9 +41,10 @@ The app is a standard Next.js project (`vercel.json` sets `framework: nextjs`). 
    - `DATABASE_URL`
    - `NEON_AUTH_BASE_URL`
    - `NEON_AUTH_COOKIE_SECRET` — a **new** 32+ character secret, not the local one
+   - `NEXT_PUBLIC_SITE_URL` — optional. Canonical origin (`https://YOUR-APP.vercel.app` or your custom domain). Used for sitemap, robots, and Open Graph.
    - `FATSECRET_CLIENT_ID` and `FATSECRET_CLIENT_SECRET` — optional; meal logging works without them
 
-   Do not prefix these with `NEXT_PUBLIC_`.
+   Do not prefix FatSecret keys with `NEXT_PUBLIC_`. `NEXT_PUBLIC_SITE_URL` is public on purpose.
 
 4. Deploy. Open `https://YOUR-APP.vercel.app/api/health`. You want `{ "ok": true, "database": "connected" }`.
 5. Neon Console → Auth → Domains. Add:
@@ -51,6 +53,7 @@ The app is a standard Next.js project (`vercel.json` sets `framework: nextjs`). 
    - each Preview URL you will actually sign in on (Neon does not treat `*.vercel.app` as `localhost`)
 
 6. Sign in on the live origin. If you see the allowlist message, the origin is missing from step 5.
+7. Confirm SEO: `https://YOUR-APP.vercel.app/robots.txt` allows `/` and lists the sitemap. `https://YOUR-APP.vercel.app/sitemap.xml` includes `/`, `/sign-in`, and `/sign-up`. Dashboard routes stay out of the sitemap and are `noindex`.
 
 Missing env or a short cookie secret fails the build on purpose.
 

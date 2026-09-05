@@ -78,7 +78,7 @@ export function WalkSlider({
   }, [state, onSuccess]);
 
   return (
-    <form action={formAction} className={cn("grid", compact ? "gap-3" : "gap-4")}>
+    <form action={formAction} className={cn("grid min-w-0 overflow-x-hidden", compact ? "gap-3" : "gap-4")}>
       <HiddenInput name="walkedOn" value={walkedOn} />
       <HiddenInput name="steps" value={steps} />
       <div className="flex items-end justify-between gap-3">

@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { DialogHeading, Eyebrow } from "@/components/ui/typography";
 import { ACTIONS } from "@/lib/app-copy";
-import { calorieDialogClass, widgetBodyClass, widgetHeaderClass } from "@/lib/layout";
+import { calorieDialogClass, dialogScrollClass, widgetHeaderClass } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 
 export function CheckInEditDialog({ initial }: { initial: TMeasurementFormInitial }) {
@@ -50,12 +50,7 @@ export function CheckInEditDialog({ initial }: { initial: TMeasurementFormInitia
             <DialogDescription>Update this check-in. Your history stays intact.</DialogDescription>
           </DialogHeader>
         </div>
-        <div
-          className={cn(
-            "dashboard-scroll modal-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]",
-            widgetBodyClass
-          )}
-        >
+        <div className={dialogScrollClass}>
           {open ? (
             <MeasurementForm
               key={`${initial.id}-${initial.measuredOn}-${initial.weightKg}-${initial.waistCm ?? ""}`}

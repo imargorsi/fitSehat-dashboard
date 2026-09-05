@@ -17,7 +17,8 @@ import {
 import { MealFilterTabsList, MealTypeChip, type TMealFilter } from "@/components/meals/meal-filter-chips";
 import { MealQuickAddButton } from "@/components/meals/meal-quick-add-button";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { Caption, Meta, Strong } from "@/components/ui/typography";
+import { MacroStatGrid } from "@/components/layout/macro-stat-grid";
+import { Strong } from "@/components/ui/typography";
 import { EMPTY } from "@/lib/app-copy";
 import { CALORIE_MEALS, type TCalorieMeal } from "@/lib/constants";
 import { sceneHeroIconClass } from "@/lib/layout";
@@ -55,11 +56,11 @@ function MealTable({
     <>
       <ul className="grid gap-2.5 sm:hidden">
         {items.map((item) => (
-          <li key={item.id} className="rounded-2xl border border-border bg-muted/20 p-3.5">
-            <div className="flex items-center justify-between gap-2">
+          <li key={item.id} className="min-w-0 rounded-2xl border border-border bg-muted/20 p-3.5">
+            <div className="flex items-start justify-between gap-2">
               <div className="min-w-0">
                 <MealTypeChip meal={item.mealType} />
-                <Strong className="mt-2 block truncate">{item.name}</Strong>
+                <Strong className="mt-2 block break-words">{item.name}</Strong>
               </div>
               <div className="flex shrink-0 items-center">
                 <MealQuickAddButton mealId={item.id} today={today} />
@@ -67,24 +68,12 @@ function MealTable({
                 <DeleteRowButton compact action={deleteMealOption} id={item.id} />
               </div>
             </div>
-            <dl className="mt-3 grid grid-cols-4 gap-2">
-              <div>
-                <Caption>Calories</Caption>
-                <Meta className="mt-1 block tabular-nums">{formatInt(item.calories)}</Meta>
-              </div>
-              <div>
-                <Caption>Protein</Caption>
-                <Meta className="mt-1 block tabular-nums">{macroCell(item.proteinG)}</Meta>
-              </div>
-              <div>
-                <Caption>Carbs</Caption>
-                <Meta className="mt-1 block tabular-nums">{macroCell(item.carbsG)}</Meta>
-              </div>
-              <div>
-                <Caption>Fat</Caption>
-                <Meta className="mt-1 block tabular-nums">{macroCell(item.fatsG)}</Meta>
-              </div>
-            </dl>
+            <MacroStatGrid
+              calories={formatInt(item.calories)}
+              protein={macroCell(item.proteinG)}
+              carbs={macroCell(item.carbsG)}
+              fat={macroCell(item.fatsG)}
+            />
           </li>
         ))}
       </ul>
@@ -142,7 +131,7 @@ export function MealLibrary({ today, meals }: { today: string; meals: TMealLibra
   } as Record<TMealFilter, number>;
 
   return (
-    <Tabs defaultValue="All" className="w-full min-w-0 gap-0">
+    <Tabs defaultValue="All" className="w-full min-w-0 gap-0 overflow-x-hidden">
       <ModulePanel
         magic={false}
         bordered={false}

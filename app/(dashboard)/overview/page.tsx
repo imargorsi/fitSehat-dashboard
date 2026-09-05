@@ -65,7 +65,7 @@ export default async function OverviewPage() {
 
       <DashboardHero dateLabel={formatLongDate(today).toUpperCase()} glow={glow} />
 
-      <StatGrid className="w-full shrink-0">
+      <StatGrid className="hidden w-full shrink-0 sm:grid">
         <TodayModuleCard
           href="/calories"
           action={ACTIONS.logMeal}

@@ -67,7 +67,7 @@ export function WalkCalendar({
   const cells = monthCells(cursor);
 
   return (
-    <div className="grid gap-4 sm:gap-5">
+    <div className="grid min-w-0 gap-4 overflow-x-hidden sm:gap-5">
       <div className="flex items-center justify-between gap-3">
         <button
           type="button"
@@ -102,7 +102,7 @@ export function WalkCalendar({
           const canSelect = onSelectDate && cell.inMonth && !isFuture;
 
           const className = cn(
-            "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 py-1.5 sm:min-h-[4.75rem] sm:rounded-2xl sm:py-2",
+            "flex min-h-12 min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 py-1.5 sm:min-h-[4.75rem] sm:rounded-2xl sm:py-2",
             "transition-colors",
             !cell.inMonth && "opacity-30",
             isFuture && "text-muted-foreground",

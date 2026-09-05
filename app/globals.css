@@ -158,6 +158,17 @@
       linear-gradient(158deg, color-mix(in oklch, var(--neon) 14%, transparent), transparent 64%);
   }
 
+  .stat-float {
+    box-shadow:
+      0 12px 28px color-mix(in oklch, black 42%, transparent),
+      0 28px 56px color-mix(in oklch, black 28%, transparent);
+  }
+
+  .stat-surface {
+    background-color: var(--background);
+    border: 1px solid var(--border);
+  }
+
   .dashboard-scroll {
     scrollbar-width: thin;
     scrollbar-color: color-mix(in oklch, var(--neon) 42%, transparent) transparent;

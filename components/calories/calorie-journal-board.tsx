@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { MealTypeChip } from "@/components/meals/meal-filter-chips";
+import { MacroStatGrid } from "@/components/layout/macro-stat-grid";
 import { Caption, DayHeader, DayTotal, Meta, Muted, Strong, Unit } from "@/components/ui/typography";
 import { formatMediumDate } from "@/lib/date.utils";
 import { isCalorieMeal } from "@/lib/meals.utils";
@@ -89,12 +90,12 @@ function RowActions({ today, item }: { today: string; item: TCalorieJournalItem 
 function DayHeading({ day, today, rows }: { day: string; today: string; rows: TCalorieJournalItem[] }) {
   const totals = dayTotals(rows);
   return (
-    <div className="flex items-end justify-between gap-3">
+    <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-3">
       <div className="min-w-0">
         <Caption>{day === today ? "Today" : "Day"}</Caption>
         <DayHeader>{formatMediumDate(day)}</DayHeader>
       </div>
-      <div className="flex flex-wrap items-baseline justify-end gap-x-4 gap-y-1">
+      <div className="flex min-w-0 flex-wrap items-baseline gap-x-3 gap-y-1 sm:justify-end sm:gap-x-4">
         <DayTotal>
           {formatInt(totals.calories)} <Unit>kcal</Unit>
         </DayTotal>
@@ -129,33 +130,21 @@ export function CalorieJournalBoard({
             <DayHeading day={day} today={today} rows={rows} />
             <ul className="grid gap-2.5">
               {rows.map((item) => (
-                <li key={item.id} className="rounded-2xl border border-border bg-muted/20 p-3.5">
-                  <div className="flex items-center justify-between gap-2">
+                <li key={item.id} className="min-w-0 rounded-2xl border border-border bg-muted/20 p-3.5">
+                  <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <MealTypeChip meal={item.meal} />
-                      <Strong className="mt-2 block truncate">{item.item}</Strong>
-                      {item.notes ? <Muted className="mt-1">{item.notes}</Muted> : null}
+                      <Strong className="mt-2 block break-words">{item.item}</Strong>
+                      {item.notes ? <Muted className="mt-1 break-words">{item.notes}</Muted> : null}
                     </div>
                     <RowActions today={today} item={item} />
                   </div>
-                  <dl className="mt-3 grid grid-cols-4 gap-2">
-                    <div>
-                      <Caption>Calories</Caption>
-                      <Meta className="mt-1 block tabular-nums">{formatInt(item.calories)}</Meta>
-                    </div>
-                    <div>
-                      <Caption>Protein</Caption>
-                      <Meta className="mt-1 block tabular-nums">{macroCell(item.proteinG)}</Meta>
-                    </div>
-                    <div>
-                      <Caption>Carbs</Caption>
-                      <Meta className="mt-1 block tabular-nums">{macroCell(item.carbsG)}</Meta>
-                    </div>
-                    <div>
-                      <Caption>Fat</Caption>
-                      <Meta className="mt-1 block tabular-nums">{macroCell(item.fatsG)}</Meta>
-                    </div>
-                  </dl>
+                  <MacroStatGrid
+                    calories={formatInt(item.calories)}
+                    protein={macroCell(item.proteinG)}
+                    carbs={macroCell(item.carbsG)}
+                    fat={macroCell(item.fatsG)}
+                  />
                 </li>
               ))}
             </ul>

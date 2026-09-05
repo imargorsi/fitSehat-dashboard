@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { DialogHeading, Eyebrow } from "@/components/ui/typography";
 import { ACTIONS } from "@/lib/app-copy";
-import { calorieDialogClass, widgetBodyClass, widgetHeaderClass } from "@/lib/layout";
+import { calorieDialogClass, dialogScrollClass, widgetHeaderClass } from "@/lib/layout";
 import { cn } from "@/lib/utils";
 
 export function MealOptionDialog() {
@@ -42,12 +42,7 @@ export function MealOptionDialog() {
             </DialogDescription>
           </DialogHeader>
         </div>
-        <div
-          className={cn(
-            "dashboard-scroll modal-scroll flex min-h-0 w-full min-w-0 flex-1 flex-col overflow-y-auto overscroll-contain pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]",
-            widgetBodyClass
-          )}
-        >
+        <div className={cn(dialogScrollClass, "flex w-full flex-col")}>
           {open ? <MealOptionForm onSuccess={close} /> : null}
         </div>
       </DialogContent>

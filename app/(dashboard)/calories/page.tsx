@@ -56,6 +56,7 @@ export default async function CaloriesPage() {
       <StatGrid>
         <StatCard
           scene
+          tone="neon"
           icon={<SceneIcon src="/icons/food-cover.png" delay={0} />}
           label="Calories"
           countTo={todayTotals.calories}
@@ -65,6 +66,7 @@ export default async function CaloriesPage() {
         />
         <StatCard
           scene
+          tone="rose"
           icon={<SceneIcon src="/icons/arm-muscle.png" delay={0.12} />}
           label="Protein"
           countTo={Math.round(todayTotals.protein)}
@@ -74,6 +76,7 @@ export default async function CaloriesPage() {
         />
         <StatCard
           scene
+          tone="gold"
           icon={<SceneIcon src="/icons/plate.png" delay={0.24} />}
           label="Plates"
           countTo={todaysLogs.length}
@@ -82,6 +85,7 @@ export default async function CaloriesPage() {
         />
         <StatCard
           scene
+          tone="violet"
           icon={<SceneIcon src="/icons/calorie-tracker.png" delay={0.36} />}
           label="Goal"
           value={calorieGoal == null ? "—" : undefined}

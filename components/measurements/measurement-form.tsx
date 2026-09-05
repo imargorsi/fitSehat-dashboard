@@ -45,7 +45,7 @@ export function MeasurementForm({
     <form
       ref={formRef}
       action={formAction}
-      className={compact ? "grid grid-cols-1 gap-3 sm:grid-cols-2" : undefined}
+      className={compact ? "grid min-w-0 grid-cols-1 gap-3 overflow-x-hidden sm:grid-cols-2" : "min-w-0 overflow-x-hidden"}
     >
       {isEdit ? <HiddenInput name="id" value={initial!.id} /> : null}
       {compact ? (

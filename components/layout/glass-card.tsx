@@ -13,12 +13,16 @@ export function GlassCard({
   magic = true,
   bordered = true,
   stretch = true,
+  elevated = false,
+  surfaceClassName,
 }: {
   children: ReactNode;
   className?: string;
   magic?: boolean;
   bordered?: boolean;
   stretch?: boolean;
+  elevated?: boolean;
+  surfaceClassName?: string;
 }) {
   const reduced = useReducedMotion();
   const useMagic = Boolean(magic && !reduced);
@@ -35,12 +39,18 @@ export function GlassCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.14, margin: "-28px" }}
       transition={{ duration: 0.48, ease: EASE_OUT }}
-      className={cn("overflow-visible rounded-[1.75rem]", stretch && "h-full")}
+      className={cn("min-w-0 overflow-visible rounded-[1.75rem]", stretch && "h-full", elevated && "stat-float")}
     >
       {useMagic ? (
-        <MagicCard className="h-full rounded-[1.75rem]">{inner}</MagicCard>
+        <MagicCard className={cn("h-full rounded-[1.75rem]", surfaceClassName)}>{inner}</MagicCard>
       ) : (
-        <div className={cn("h-full overflow-visible rounded-[1.75rem]", bordered && "glass-panel border border-border")}>
+        <div
+          className={cn(
+            "h-full overflow-hidden rounded-[1.75rem]",
+            bordered && "glass-panel border border-border",
+            surfaceClassName
+          )}
+        >
           {inner}
         </div>
       )}

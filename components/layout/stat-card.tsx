@@ -9,18 +9,22 @@ import { GlassCard } from "@/components/layout/glass-card";
 import { cn } from "@/lib/utils";
 import { clampPercent } from "@/lib/number.utils";
 
+export type TStatTone = "neon" | "rose" | "gold" | "violet";
+
 export function GlowIcon({
   children,
   tone = "neon",
 }: {
   children: ReactNode;
-  tone?: "neon" | "violet";
+  tone?: TStatTone;
 }) {
   return (
     <div
       className={cn(
         "flex size-9 shrink-0 items-center justify-center rounded-2xl sm:size-10",
         tone === "neon" && "bg-neon/15 text-neon shadow-glow",
+        tone === "rose" && "bg-rose/15 text-rose",
+        tone === "gold" && "bg-gold/15 text-gold",
         tone === "violet" && "bg-violet/15 text-violet"
       )}
     >
@@ -36,7 +40,7 @@ export function NeonMeter({
 }: {
   value: number;
   max: number;
-  tone?: "neon" | "violet";
+  tone?: TStatTone;
 }) {
   const reduced = useReducedMotion();
   const percent = clampPercent(value, max);
@@ -46,7 +50,9 @@ export function NeonMeter({
       <motion.div
         className={cn(
           "h-full rounded-full",
-          tone === "neon" && "bg-brand shadow-glow",
+          tone === "neon" && "bg-brand",
+          tone === "rose" && "bg-rose",
+          tone === "gold" && "bg-gold",
           tone === "violet" && "bg-violet"
         )}
         initial={{ width: reduced ? `${percent}%` : "0%" }}
@@ -72,7 +78,7 @@ export function StatCard({
   scene = false,
 }: {
   icon: ReactNode;
-  tone?: "neon" | "violet";
+  tone?: TStatTone;
   label: string;
   value?: string;
   countTo?: number;
@@ -93,19 +99,18 @@ export function StatCard({
     </MetricTag>
   );
 
-  return (
-    <GlassCard
-      magic={!scene}
-      className={cn(
-        "flex h-full min-w-0 flex-col",
-        compact && "gap-3 p-4",
-        !compact && !scene && "gap-3 p-4 sm:gap-4 sm:p-6",
-        scene && !compact && "min-h-[9.5rem] justify-between gap-3 overflow-visible p-3.5 sm:min-h-[12.75rem] sm:gap-4 sm:p-6"
-      )}
-    >
-      {scene ? (
-        <div className="flex items-center justify-between gap-3">
-          <div className="min-w-0 space-y-1.5">
+  if (scene && !compact) {
+    return (
+      <GlassCard
+        magic={false}
+        bordered={false}
+        elevated
+        surfaceClassName="stat-surface"
+        className="flex h-full min-w-0 flex-col justify-between gap-3 overflow-hidden p-4 sm:p-5 lg:min-h-[12.75rem] lg:gap-4 lg:p-6"
+      >
+        <div className="flex min-w-0 items-center gap-4">
+          <div className="order-1 shrink-0 lg:order-2">{icon}</div>
+          <div className="order-2 min-w-0 flex-1 space-y-1.5 lg:order-1">
             <div className="flex flex-wrap items-center gap-2">
               <Caption>{label}</Caption>
               {meter ? <Percent>{clampPercent(meter.value, meter.max)}%</Percent> : null}
@@ -113,34 +118,36 @@ export function StatCard({
             {metric}
             {footer}
           </div>
-          <div className="-mr-1 shrink-0">{icon}</div>
         </div>
-      ) : (
-        <>
-          <div className="flex items-start justify-between gap-3">
-            <GlowIcon tone={tone}>{icon}</GlowIcon>
-            {meter ? <Percent>{clampPercent(meter.value, meter.max)}%</Percent> : null}
-          </div>
-          <div className="space-y-1">
-            <Caption>{label}</Caption>
-            {metric}
-          </div>
-          {footer}
-        </>
-      )}
-      {scene && !compact ? (
         <div className="space-y-3">
-          <div className="h-1.5">{meter ? <NeonMeter value={meter.value} max={meter.max} tone={tone} /> : null}</div>
-          <StatHint className="line-clamp-2 min-h-10 sm:min-h-12">{hint ?? "\u00a0"}</StatHint>
+          <div className="h-1.5">{meter ? <NeonMeter value={meter.value} max={meter.max} /> : null}</div>
+          <StatHint className="line-clamp-2 min-h-10 lg:min-h-12">{hint ?? "\u00a0"}</StatHint>
         </div>
-      ) : (
-        <>
-          {meter ? <NeonMeter value={meter.value} max={meter.max} tone={tone} /> : null}
-          {hint ? (
-            <StatHint className={compact ? "line-clamp-1" : "line-clamp-2 sm:line-clamp-3"}>{hint}</StatHint>
-          ) : null}
-        </>
+      </GlassCard>
+    );
+  }
+
+  return (
+    <GlassCard
+      magic
+      className={cn(
+        "flex h-full min-w-0 flex-col",
+        compact ? "gap-3 p-4" : "gap-3 p-4 sm:gap-4 sm:p-6"
       )}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <GlowIcon tone={tone}>{icon}</GlowIcon>
+        {meter ? <Percent>{clampPercent(meter.value, meter.max)}%</Percent> : null}
+      </div>
+      <div className="space-y-1">
+        <Caption>{label}</Caption>
+        {metric}
+      </div>
+      {footer}
+      {meter ? <NeonMeter value={meter.value} max={meter.max} tone={tone} /> : null}
+      {hint ? (
+        <StatHint className={compact ? "line-clamp-1" : "line-clamp-2 sm:line-clamp-3"}>{hint}</StatHint>
+      ) : null}
     </GlassCard>
   );
 }

@@ -72,6 +72,7 @@ export default async function MeasurementsPage() {
       <StatGrid>
         <StatCard
           scene
+          tone="rose"
           icon={<SceneIcon src="/icons/3dicons-heart-front-color.png" delay={0} />}
           label="Latest"
           value={latestWeight != null ? formatNumber(latestWeight) : "—"}
@@ -80,6 +81,7 @@ export default async function MeasurementsPage() {
         />
         <StatCard
           scene
+          tone="gold"
           icon={<SceneIcon src="/icons/weightlifting-woman.png" delay={0.12} />}
           label="Change"
           value={formatSignedChange(weightLost)}
@@ -88,6 +90,7 @@ export default async function MeasurementsPage() {
         />
         <StatCard
           scene
+          tone="neon"
           icon={<SceneIcon src="/icons/tailor-s-measuring-tape.png" delay={0.24} />}
           label="Waist"
           value={latestWaist != null ? formatNumber(latestWaist) : "—"}
@@ -96,6 +99,7 @@ export default async function MeasurementsPage() {
         />
         <StatCard
           scene
+          tone="violet"
           icon={<SceneIcon src="/icons/3dicons-target-front-color.png" delay={0.36} />}
           label="Target"
           value={formatNumber(profile.targetWeightKg)}

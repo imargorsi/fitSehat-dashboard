@@ -101,7 +101,7 @@ export function CalorieLogForm({
 
   if (!compact) {
     return (
-      <form ref={formRef} action={formAction}>
+      <form ref={formRef} action={formAction} className="min-w-0 overflow-x-hidden">
         {isEdit ? <HiddenInput name="id" value={initial!.id} /> : null}
         <FormGrid>
           <FormField label="What you ate" htmlFor="item">
@@ -146,7 +146,7 @@ export function CalorieLogForm({
   }
 
   return (
-    <form ref={formRef} action={formAction}>
+    <form ref={formRef} action={formAction} className="min-w-0 overflow-x-hidden">
       {isEdit ? <HiddenInput name="id" value={initial!.id} /> : null}
       <HiddenInput name="meal" value={meal} />
       <FormStack className="gap-0">
@@ -173,10 +173,11 @@ export function CalorieLogForm({
                 name="loggedOn"
                 required
                 aria-label="Date"
+                className="min-w-0 max-w-full"
                 defaultValue={initial?.loggedOn ?? today}
               />
             </IconField>
-            <ChoiceChipGroup className="w-full" aria-label="Meal">
+            <ChoiceChipGroup className="min-w-0 w-full" aria-label="Meal">
               {CALORIE_MEALS.map((option) => (
                 <ChoiceChip key={option} compact selected={meal === option} onClick={() => setMeal(option)}>
                   {option}

@@ -17,14 +17,14 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DialogHeading, Eyebrow, Muted } from "@/components/ui/typography";
 import { ACTIONS, LOOKUP } from "@/lib/app-copy";
-import { calorieDialogClass, widgetBodyClass, widgetHeaderClass } from "@/lib/layout";
+import { calorieDialogClass, dialogScrollClass, pillTabsListClass, pillTabsTriggerClass, widgetHeaderClass } from "@/lib/layout";
 import type { TSavedMealPick } from "@/lib/meals.utils";
 import { cn } from "@/lib/utils";
 
 const tabTriggerClass = cn(
-  "h-9 min-h-0 flex-1 rounded-full bg-transparent px-3 text-sm font-medium text-muted-foreground shadow-none after:hidden after:content-none",
-  "hover:text-foreground data-active:bg-neon data-active:text-neon-foreground data-active:shadow-none",
-  "dark:data-active:bg-neon dark:data-active:text-neon-foreground dark:data-active:border-transparent"
+  pillTabsTriggerClass,
+  "flex-1",
+  "data-active:bg-neon data-active:text-neon-foreground dark:data-active:bg-neon dark:data-active:text-neon-foreground"
 );
 
 export function CalorieLogDialog({
@@ -53,7 +53,7 @@ export function CalorieLogDialog({
         </span>
       </DialogTrigger>
       <DialogContent showCloseButton className={calorieDialogClass}>
-        <Tabs defaultValue="log" className="flex min-h-0 flex-1 flex-col gap-0">
+        <Tabs defaultValue="log" className="flex min-h-0 min-w-0 flex-1 flex-col gap-0 overflow-x-hidden">
           <div className={cn("relative shrink-0 border-b border-border/50", widgetHeaderClass, "pb-4")}>
             <DialogHeader className="gap-4 pr-8">
               <div className="grid gap-1.5">
@@ -63,7 +63,7 @@ export function CalorieLogDialog({
                 </DialogTitle>
                 <DialogDescription className="sr-only">{LOOKUP.hint}</DialogDescription>
               </div>
-              <TabsList className="flex h-12 w-full items-center gap-1 rounded-full border border-border bg-muted/40 p-1.5 group-data-horizontal/tabs:h-12">
+              <TabsList className={cn(pillTabsListClass, "w-full")}>
                 <TabsTrigger value="log" className={tabTriggerClass}>
                   {ACTIONS.logMeal}
                 </TabsTrigger>
@@ -73,12 +73,7 @@ export function CalorieLogDialog({
               </TabsList>
             </DialogHeader>
           </div>
-          <div
-            className={cn(
-              "dashboard-scroll modal-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain pt-4 pb-[max(1.25rem,env(safe-area-inset-bottom))]",
-              widgetBodyClass
-            )}
-          >
+          <div className={dialogScrollClass}>
             <TabsContent value="log" className="outline-none">
               <Muted className="mb-4">{LOOKUP.hint}</Muted>
               {open ? <CalorieLogForm today={today} compact onSuccess={close} /> : null}

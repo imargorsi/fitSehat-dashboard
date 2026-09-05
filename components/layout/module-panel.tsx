@@ -11,6 +11,7 @@ export function ModulePanel({
   description,
   action,
   icon,
+  hideIconOnMobile = false,
   magic = true,
   bordered = true,
   children,
@@ -21,6 +22,7 @@ export function ModulePanel({
   description?: string;
   action?: ReactNode;
   icon?: ReactNode;
+  hideIconOnMobile?: boolean;
   magic?: boolean;
   bordered?: boolean;
   children: ReactNode;
@@ -30,7 +32,7 @@ export function ModulePanel({
     <GlassCard
       magic={magic}
       bordered={bordered}
-      className={cn("flex h-full min-w-0 flex-col", icon && "overflow-visible", className)}
+      className={cn("flex h-full min-w-0 flex-col overflow-x-clip", className)}
     >
       <div
         className={cn(
@@ -42,7 +44,9 @@ export function ModulePanel({
           "pt-5 sm:pt-6 lg:px-7 lg:pt-7"
         )}
       >
-        {icon}
+        {icon ? (
+          <div className={cn("shrink-0", hideIconOnMobile && "hidden sm:block")}>{icon}</div>
+        ) : null}
         <div className="min-w-0 flex-1">
           {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
           <H2 className={cn(eyebrow && "mt-2")}>{title}</H2>

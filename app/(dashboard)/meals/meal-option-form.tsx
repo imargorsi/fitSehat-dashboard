@@ -74,7 +74,7 @@ export function MealOptionForm({
     <form ref={formRef} action={formAction} className="flex w-full min-w-0 flex-col gap-5">
       {isEdit ? <HiddenInput name="id" value={initial!.id} /> : null}
 
-      <div className="grid w-full min-w-0 grid-cols-2 gap-3 sm:gap-4">
+      <div className="grid w-full min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
         <FormField label="Meal name" htmlFor="name">
           <TextInput id="name" name="name" required placeholder={PLACE.mealName} defaultValue={initial?.name} />
         </FormField>

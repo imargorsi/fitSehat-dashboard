@@ -37,6 +37,7 @@ export default async function WalkPage() {
       <StatGrid>
         <StatCard
           scene
+          tone="neon"
           icon={<SceneIcon src="/icons/running-woman.png" delay={0} />}
           label="Today"
           countTo={steps}
@@ -46,6 +47,7 @@ export default async function WalkPage() {
         />
         <StatCard
           scene
+          tone="rose"
           icon={<SceneIcon src="/icons/3dicons-fire-front-color.png" delay={0.12} />}
           label="Burn"
           countTo={burn}
@@ -54,6 +56,7 @@ export default async function WalkPage() {
         />
         <StatCard
           scene
+          tone="gold"
           icon={<SceneIcon src="/icons/3dicons-calendar-front-color.png" delay={0.24} />}
           label="Days met"
           countTo={metDays}
@@ -61,6 +64,7 @@ export default async function WalkPage() {
         />
         <StatCard
           scene
+          tone="violet"
           icon={<SceneIcon src="/icons/bullseye.png" delay={0.36} />}
           label="Goal"
           countTo={goal}

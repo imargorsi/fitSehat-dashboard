@@ -44,7 +44,7 @@ function SavedMealRow({
     <form
       ref={formRef}
       action={formAction}
-      className="flex items-center gap-3 rounded-2xl border border-border bg-muted/20 px-3.5 py-3"
+      className="flex min-w-0 items-start gap-3 rounded-2xl border border-border bg-muted/20 px-3.5 py-3 sm:items-center"
     >
       <HiddenInput name="mealOptionId" value={meal.id} />
       <HiddenInput name="loggedOn" value={loggedOn} />
