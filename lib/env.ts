@@ -36,4 +36,10 @@ export const env = {
   get fatSecretClientSecret() {
     return optional("FATSECRET_CLIENT_SECRET");
   },
+  get geminiApiKey() {
+    return optional("GEMINI_API_KEY");
+  },
+  get geminiModel() {
+    return optional("GEMINI_MODEL") ?? "gemini-3.5-flash-lite";
+  },
 };

@@ -5,30 +5,30 @@ import { useCallback, useEffect, useState } from "react";
 import { createCalorieLog, updateCalorieLog } from "@/app/(dashboard)/calories/actions";
 import { CalorieEnergyFields } from "@/components/calories/calorie-energy-fields";
 import { FoodSearchPanel } from "@/components/calories/food-search";
+import { MealWhenRow } from "@/components/calories/meal-when-row";
 import { ActionButton } from "@/components/layout/action-button";
-import { FormChunk, FormErrorRow, FormField, FormGrid, FormStack, FormSubmitRow, IconField } from "@/components/layout/form-field";
+import { FormChunk, FormErrorRow, FormField, FormGrid, FormStack, FormSubmitRow } from "@/components/layout/form-field";
 import { FormError } from "@/components/layout/form-error";
-import { UiIcon } from "@/components/icons/ui-icon";
-import type { TAppIconName } from "@/components/icons/app-icons";
 import {
-  ChoiceChip,
-  ChoiceChipGroup,
   DateInput,
   HiddenInput,
   NumberInput,
   SelectField,
   TextInput,
 } from "@/components/ui/form-controls";
+import { Caption } from "@/components/ui/typography";
 import { type TNutritionPrefill, useFoodSearch } from "@/hooks/useFoodSearch.hook";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
-import { ACTIONS, PLACE } from "@/lib/app-copy";
-import { CALORIE_MEALS } from "@/lib/constants";
+import { ACTIONS, LOOKUP, PLACE } from "@/lib/app-copy";
+import { CALORIE_MEALS, type TCalorieMeal } from "@/lib/constants";
+import { dialogDockActionClass, dialogPanelClass, dialogScrollClass } from "@/lib/layout";
+import { suggestedMealNow } from "@/lib/meals.utils";
 
 export type TCalorieLogFormInitial = {
   id: string;
   item: string;
   loggedOn: string;
-  meal: (typeof CALORIE_MEALS)[number];
+  meal: TCalorieMeal;
   calories: number;
   proteinG?: string | null;
   carbsG?: string | null;
@@ -41,10 +41,6 @@ function fieldString(value: string | number | null | undefined): string {
     return "";
   }
   return String(value);
-}
-
-function FieldIcon({ name }: { name: TAppIconName }) {
-  return <UiIcon name={name} size={16} className="text-muted-foreground" />;
 }
 
 export function CalorieLogForm({
@@ -63,7 +59,8 @@ export function CalorieLogForm({
   const celebrate = isEdit ? "updated" : "meal";
   const submitLabel = isEdit ? ACTIONS.saveChanges : ACTIONS.logMeal;
   const { formRef, state, formAction, isPending } = useResettingForm(action, celebrate, onSuccess, !isEdit);
-  const [meal, setMeal] = useState<(typeof CALORIE_MEALS)[number]>(initial?.meal ?? "Breakfast");
+  const [meal, setMeal] = useState<TCalorieMeal>(initial?.meal ?? suggestedMealNow());
+  const [loggedOn, setLoggedOn] = useState(initial?.loggedOn ?? today);
   const [item, setItem] = useState(initial?.item ?? "");
   const [calories, setCalories] = useState(fieldString(initial?.calories));
   const [proteinG, setProteinG] = useState(fieldString(initial?.proteinG));
@@ -87,7 +84,8 @@ export function CalorieLogForm({
       return;
     }
     const onReset = () => {
-      setMeal("Breakfast");
+      setMeal(suggestedMealNow());
+      setLoggedOn(today);
       setItem("");
       setCalories("");
       setProteinG("");
@@ -97,7 +95,7 @@ export function CalorieLogForm({
     };
     form.addEventListener("reset", onReset);
     return () => form.removeEventListener("reset", onReset);
-  }, [formRef, resetLookup]);
+  }, [formRef, resetLookup, today]);
 
   if (!compact) {
     return (
@@ -112,10 +110,10 @@ export function CalorieLogForm({
           </FormField>
           <FormField label="Meal" htmlFor="meal">
             <SelectField
-              key={initial?.meal ?? "Breakfast"}
+              key={initial?.meal ?? "new"}
               id="meal"
               name="meal"
-              defaultValue={initial?.meal ?? "Breakfast"}
+              defaultValue={initial?.meal ?? suggestedMealNow()}
               required
               options={CALORIE_MEALS}
             />
@@ -146,66 +144,59 @@ export function CalorieLogForm({
   }
 
   return (
-    <form ref={formRef} action={formAction}>
+    <form ref={formRef} action={formAction} className={dialogPanelClass}>
       {isEdit ? <HiddenInput name="id" value={initial!.id} /> : null}
       <HiddenInput name="meal" value={meal} />
-      <FormStack className="gap-0">
-        <FormChunk>
-          <IconField icon={<FieldIcon name="search" />}>
+      <div className={dialogScrollClass}>
+        <FormStack className="gap-0">
+          <FormChunk>
             <TextInput
               id="item"
               name="item"
               required
+              autoFocus
+              autoComplete="off"
               placeholder={PLACE.mealItem}
-              aria-label="What you ate"
+              aria-label={LOOKUP.prompt}
+              className="h-14"
               value={item}
               onChange={(event) => setItem(event.target.value)}
             />
-          </IconField>
-          {!isEdit ? <FoodSearchPanel {...lookup} /> : null}
-        </FormChunk>
+            {!isEdit ? <FoodSearchPanel {...lookup} /> : null}
+          </FormChunk>
 
-        <FormChunk>
-          <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2 sm:items-center">
-            <IconField icon={<FieldIcon name="calendar" />}>
-              <DateInput
-                id="loggedOn"
-                name="loggedOn"
-                required
-                aria-label="Date"
-                defaultValue={initial?.loggedOn ?? today}
-              />
-            </IconField>
-            <ChoiceChipGroup className="w-full" aria-label="Meal">
-              {CALORIE_MEALS.map((option) => (
-                <ChoiceChip key={option} compact selected={meal === option} onClick={() => setMeal(option)}>
-                  {option}
-                </ChoiceChip>
-              ))}
-            </ChoiceChipGroup>
-          </div>
-        </FormChunk>
+          <FormChunk>
+            <MealWhenRow
+              meal={meal}
+              onMeal={setMeal}
+              dateId="loggedOn"
+              dateName="loggedOn"
+              loggedOn={loggedOn}
+              onLoggedOn={setLoggedOn}
+            />
+          </FormChunk>
 
-        <FormChunk>
-          <CalorieEnergyFields
-            calories={calories}
-            proteinG={proteinG}
-            carbsG={carbsG}
-            fatsG={fatsG}
-            onCalories={setCalories}
-            onProtein={setProteinG}
-            onCarbs={setCarbsG}
-            onFats={setFatsG}
-          />
-        </FormChunk>
-
-        <FormChunk>
-          <ActionButton type="submit" size="lg" icon="flame" pending={isPending} className="w-full rounded-full">
-            {submitLabel}
-          </ActionButton>
-          <FormError error={state && "error" in state ? state.error : undefined} />
-        </FormChunk>
-      </FormStack>
+          <FormChunk>
+            <Caption>{LOOKUP.macros}</Caption>
+            <CalorieEnergyFields
+              calories={calories}
+              proteinG={proteinG}
+              carbsG={carbsG}
+              fatsG={fatsG}
+              onCalories={setCalories}
+              onProtein={setProteinG}
+              onCarbs={setCarbsG}
+              onFats={setFatsG}
+            />
+          </FormChunk>
+        </FormStack>
+      </div>
+      <div className={dialogDockActionClass}>
+        <ActionButton type="submit" size="lg" icon="flame" pending={isPending} className="w-full rounded-full">
+          {submitLabel}
+        </ActionButton>
+        <FormError error={state && "error" in state ? state.error : undefined} />
+      </div>
     </form>
   );
 }

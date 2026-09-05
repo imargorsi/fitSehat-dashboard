@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 import { CountUp } from "@/components/motion/count-up";
-import { Caption, Metric, MetricCompact, Percent, StatHint, Unit } from "@/components/ui/typography";
+import { Caption, MetricCompact, Percent, StatHint, Unit } from "@/components/ui/typography";
 import { GlassCard } from "@/components/layout/glass-card";
 import { cn } from "@/lib/utils";
 import { clampPercent } from "@/lib/number.utils";
@@ -84,63 +84,38 @@ export function StatCard({
   compact?: boolean;
   scene?: boolean;
 }) {
-  const MetricTag = compact ? MetricCompact : Metric;
-  const metric = (
-    <MetricTag>
-      {countTo != null ? <CountUp value={countTo} /> : value}
-      {suffix ? <Unit>{suffix}</Unit> : null}
-      {unit ? <Unit className="ml-1 sm:ml-1.5">{unit}</Unit> : null}
-    </MetricTag>
+  const mark = scene ? (
+    <div className="stat-float flex size-12 shrink-0 items-center justify-center sm:size-14 lg:size-16">
+      {icon}
+    </div>
+  ) : (
+    <GlowIcon tone={tone}>{icon}</GlowIcon>
   );
 
   return (
     <GlassCard
-      magic={!scene}
+      magic={false}
+      filled
       className={cn(
-        "flex h-full min-w-0 flex-col",
-        compact && "gap-3 p-4",
-        !compact && !scene && "gap-3 p-4 sm:gap-4 sm:p-6",
-        scene && !compact && "min-h-[9.5rem] justify-between gap-3 overflow-visible p-3.5 sm:min-h-[12.75rem] sm:gap-4 sm:p-6"
+        "flex h-full min-w-0 flex-row items-center gap-3 overflow-visible",
+        compact ? "p-3.5" : "p-4 sm:gap-4 sm:p-5"
       )}
     >
-      {scene ? (
-        <div className="flex items-center justify-between gap-3">
-          <div className="min-w-0 space-y-1.5">
-            <div className="flex flex-wrap items-center gap-2">
-              <Caption>{label}</Caption>
-              {meter ? <Percent>{clampPercent(meter.value, meter.max)}%</Percent> : null}
-            </div>
-            {metric}
-            {footer}
-          </div>
-          <div className="-mr-1 shrink-0">{icon}</div>
+      {mark}
+      <div className="flex min-w-0 flex-1 flex-col gap-1">
+        <div className="flex items-center justify-between gap-2">
+          <Caption>{label}</Caption>
+          {meter ? <Percent>{clampPercent(meter.value, meter.max)}%</Percent> : null}
         </div>
-      ) : (
-        <>
-          <div className="flex items-start justify-between gap-3">
-            <GlowIcon tone={tone}>{icon}</GlowIcon>
-            {meter ? <Percent>{clampPercent(meter.value, meter.max)}%</Percent> : null}
-          </div>
-          <div className="space-y-1">
-            <Caption>{label}</Caption>
-            {metric}
-          </div>
-          {footer}
-        </>
-      )}
-      {scene && !compact ? (
-        <div className="space-y-3">
-          <div className="h-1.5">{meter ? <NeonMeter value={meter.value} max={meter.max} tone={tone} /> : null}</div>
-          <StatHint className="line-clamp-2 min-h-10 sm:min-h-12">{hint ?? "\u00a0"}</StatHint>
-        </div>
-      ) : (
-        <>
-          {meter ? <NeonMeter value={meter.value} max={meter.max} tone={tone} /> : null}
-          {hint ? (
-            <StatHint className={compact ? "line-clamp-1" : "line-clamp-2 sm:line-clamp-3"}>{hint}</StatHint>
-          ) : null}
-        </>
-      )}
+        <MetricCompact>
+          {countTo != null ? <CountUp value={countTo} /> : value}
+          {suffix ? <Unit>{suffix}</Unit> : null}
+          {unit ? <Unit className="ml-1">{unit}</Unit> : null}
+        </MetricCompact>
+        {footer}
+        {meter ? <div className="pt-1"><NeonMeter value={meter.value} max={meter.max} tone={tone} /></div> : null}
+        {hint ? <StatHint className="line-clamp-2">{hint}</StatHint> : null}
+      </div>
     </GlassCard>
   );
 }

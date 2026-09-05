@@ -29,7 +29,7 @@ export function FoodSearchPanel({
   }
 
   return (
-    <div className="grid gap-3">
+    <div className="grid min-w-0 gap-3">
       {isSearching ? (
         <Muted className="flex items-center gap-2">
           <UiIcon name="loader" size={14} spin className="text-muted-foreground" />
@@ -38,9 +38,9 @@ export function FoodSearchPanel({
       ) : null}
 
       {!isSearching && foods.length > 0 && !selected ? (
-        <ul className="grid max-h-56 gap-1.5 overflow-y-auto">
+        <ul className="grid max-h-64 min-w-0 gap-1.5 overflow-x-hidden overflow-y-auto">
           {foods.map((food) => (
-            <li key={food.foodId}>
+            <li key={food.foodId} className="min-w-0">
               <button
                 type="button"
                 onClick={() => void selectFood(food)}
@@ -50,8 +50,8 @@ export function FoodSearchPanel({
                 )}
               >
                 <div className="min-w-0 flex-1">
-                  <RowTitle>{food.name}</RowTitle>
-                  <RowSubtitle>{food.brand ?? food.description}</RowSubtitle>
+                  <RowTitle className="whitespace-normal break-words">{food.name}</RowTitle>
+                  <RowSubtitle className="whitespace-normal break-words">{food.brand ?? food.description}</RowSubtitle>
                 </div>
                 {food.calories != null ? (
                   <RowValue className="shrink-0">{formatInt(food.calories)} kcal</RowValue>
@@ -70,7 +70,7 @@ export function FoodSearchPanel({
       ) : null}
 
       {selected && servings.length > 0 ? (
-        <div className="grid gap-2">
+        <div className="grid min-w-0 gap-2 rounded-2xl bg-muted/25 px-3.5 py-3">
           <Caption>Serving</Caption>
           <ChoiceChipGroup>
             {servings.map((serving) => (
@@ -91,7 +91,7 @@ export function FoodSearchPanel({
       {message ? <Muted>{message}</Muted> : null}
 
       {(message || selected || (!isSearching && foods.length > 0)) && (
-        <Button type="button" variant="outline" size="sm" className="w-fit rounded-full" onClick={enterManually}>
+        <Button type="button" variant="ghost" size="sm" className="w-fit rounded-full" onClick={enterManually}>
           {LOOKUP.enterManually}
         </Button>
       )}

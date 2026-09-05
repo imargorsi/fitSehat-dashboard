@@ -28,7 +28,7 @@ export const listStackClass = "space-y-2.5";
 
 export const listFlushClass = "divide-y divide-border/50";
 
-export const sceneIconClass = "size-16 shrink-0 sm:size-24 lg:size-28";
+export const sceneIconClass = "size-12 shrink-0 sm:size-14 lg:size-16";
 
 export const sceneHeroIconClass = "-ml-1 size-28 shrink-0 sm:size-36 lg:size-44";
 
@@ -39,8 +39,31 @@ export const sceneBulletIconClass = "size-12 shrink-0 sm:size-14";
 export const optionalMacroSectionClass = "grid gap-3 rounded-[1.35rem] border border-border bg-muted/30 p-4";
 
 export const calorieDialogClass = cn(
-  "glass-panel flex max-h-[min(92dvh,54rem)] w-[calc(100%-0.75rem)] grid-cols-1 flex-col gap-0 overflow-hidden rounded-[1.5rem] border border-border bg-card p-0",
+  "glass-panel flex max-h-[min(92dvh,54rem)] w-[calc(100%-0.75rem)] min-w-0 grid-cols-1 flex-col gap-0 overflow-hidden rounded-[1.5rem] border border-border bg-card p-0",
   "sm:w-full sm:max-w-2xl sm:rounded-[1.75rem]"
+);
+
+/** Segmented pill tabs — keep the active fill inside the track. */
+export const pillTabsListClass = cn(
+  "inline-flex h-10 w-full min-w-0 items-center justify-start gap-0.5 overflow-hidden rounded-full bg-muted/50 p-1",
+  "group-data-horizontal/tabs:h-10"
+);
+
+export const pillTabsTriggerClass = cn(
+  "h-full min-h-0 min-w-0 flex-1 rounded-full border-0 bg-transparent px-2 text-xs font-medium text-muted-foreground shadow-none sm:px-3 sm:text-sm",
+  "after:hidden after:inset-auto after:h-0 after:content-none",
+  "hover:text-foreground data-active:shadow-none dark:data-active:border-transparent"
+);
+
+export const dialogPanelClass = "flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden";
+
+export const dialogScrollClass = cn(
+  widgetBodyClass,
+  "dashboard-scroll min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto"
+);
+
+export const dialogDockActionClass = cn(
+  "shrink-0 grid gap-3 bg-card px-5 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6"
 );
 
 export const navOutlineButtonClass = outlineButtonClass;
