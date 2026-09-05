@@ -4,13 +4,14 @@ import { and, eq } from "drizzle-orm";
 
 import { getActiveMacroTarget } from "@/lib/db/macros";
 import { db } from "@/lib/db";
-import { calorieLogs } from "@/lib/db/schema";
+import { calorieLogs, macroTargets } from "@/lib/db/schema";
 import { captureValidationError, firstZodError, wrapFormAction } from "@/lib/errors";
 import type { TFormState } from "@/lib/form-state.types";
 import { emptyToUndefined } from "@/lib/number.utils";
 import { revalidateTracker } from "@/lib/revalidate.utils";
 import { requireAuthUser } from "@/lib/session";
 import { calorieLogIdSchema, calorieLogSchema, calorieLogUpdateSchema } from "@/lib/validations/calories.utils";
+import { calorieGoalSchema } from "@/lib/validations/macros.utils";
 
 async function createCalorieLogImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
@@ -22,7 +23,6 @@ async function createCalorieLogImpl(_prev: TFormState, formData: FormData): Prom
     proteinG: emptyToUndefined(formData.get("proteinG")),
     carbsG: emptyToUndefined(formData.get("carbsG")),
     fatsG: emptyToUndefined(formData.get("fatsG")),
-    notes: emptyToUndefined(formData.get("notes")),
   });
 
   if (!parsed.success) {
@@ -41,7 +41,6 @@ async function createCalorieLogImpl(_prev: TFormState, formData: FormData): Prom
     proteinG: parsed.data.proteinG != null ? String(parsed.data.proteinG) : null,
     carbsG: parsed.data.carbsG != null ? String(parsed.data.carbsG) : null,
     fatsG: parsed.data.fatsG != null ? String(parsed.data.fatsG) : null,
-    notes: parsed.data.notes ?? null,
   });
 
   revalidateTracker();
@@ -59,7 +58,6 @@ async function updateCalorieLogImpl(_prev: TFormState, formData: FormData): Prom
     proteinG: emptyToUndefined(formData.get("proteinG")),
     carbsG: emptyToUndefined(formData.get("carbsG")),
     fatsG: emptyToUndefined(formData.get("fatsG")),
-    notes: emptyToUndefined(formData.get("notes")),
   });
 
   if (!parsed.success) {
@@ -76,7 +74,6 @@ async function updateCalorieLogImpl(_prev: TFormState, formData: FormData): Prom
       proteinG: parsed.data.proteinG != null ? String(parsed.data.proteinG) : null,
       carbsG: parsed.data.carbsG != null ? String(parsed.data.carbsG) : null,
       fatsG: parsed.data.fatsG != null ? String(parsed.data.fatsG) : null,
-      notes: parsed.data.notes ?? null,
     })
     .where(and(eq(calorieLogs.id, parsed.data.id), eq(calorieLogs.userId, user.id)));
 
@@ -100,6 +97,45 @@ async function deleteCalorieLogImpl(_prev: TFormState, formData: FormData): Prom
   return { ok: true };
 }
 
+async function saveCalorieGoalImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
+  const user = await requireAuthUser();
+  const proteinRaw = emptyToUndefined(formData.get("proteinTargetG"));
+  const parsed = calorieGoalSchema.safeParse({
+    targetCalories: formData.get("targetCalories"),
+    ...(proteinRaw != null ? { proteinTargetG: proteinRaw } : {}),
+  });
+  if (!parsed.success) {
+    return { error: firstZodError(parsed) };
+  }
+
+  const active = await getActiveMacroTarget(user.id);
+  const proteinTargetG = parsed.data.proteinTargetG ?? active?.proteinTargetG ?? 0;
+
+  if (active) {
+    await db
+      .update(macroTargets)
+      .set({
+        targetCalories: parsed.data.targetCalories,
+        proteinTargetG,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(macroTargets.id, active.id), eq(macroTargets.userId, user.id)));
+  } else {
+    await db.insert(macroTargets).values({
+      userId: user.id,
+      name: "Daily Calorie Goal",
+      targetCalories: parsed.data.targetCalories,
+      proteinTargetG,
+      fatsTargetG: 0,
+      carbsTargetG: 0,
+    });
+  }
+
+  revalidateTracker();
+  return { ok: true };
+}
+
 export const createCalorieLog = wrapFormAction("createCalorieLog", createCalorieLogImpl);
 export const updateCalorieLog = wrapFormAction("updateCalorieLog", updateCalorieLogImpl);
 export const deleteCalorieLog = wrapFormAction("deleteCalorieLog", deleteCalorieLogImpl);
+export const saveCalorieGoal = wrapFormAction("saveCalorieGoal", saveCalorieGoalImpl);

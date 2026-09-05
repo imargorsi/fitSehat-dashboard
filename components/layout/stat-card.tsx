@@ -69,6 +69,7 @@ export function StatCard({
   meter,
   footer,
   compact = false,
+  scene = false,
 }: {
   icon: ReactNode;
   tone?: "neon" | "violet";
@@ -77,37 +78,69 @@ export function StatCard({
   countTo?: number;
   suffix?: string;
   unit?: string;
-  hint: string;
+  hint?: string;
   meter?: { value: number; max: number };
   footer?: ReactNode;
   compact?: boolean;
+  scene?: boolean;
 }) {
+  const MetricTag = compact ? MetricCompact : Metric;
+  const metric = (
+    <MetricTag>
+      {countTo != null ? <CountUp value={countTo} /> : value}
+      {suffix ? <Unit>{suffix}</Unit> : null}
+      {unit ? <Unit className="ml-1 sm:ml-1.5">{unit}</Unit> : null}
+    </MetricTag>
+  );
+
   return (
-    <GlassCard className={cn("flex h-full min-w-0 flex-col gap-3", compact ? "p-4" : "gap-3 p-4 sm:gap-4 sm:p-6")}>
-      <div className="flex items-start justify-between gap-3">
-        <GlowIcon tone={tone}>{icon}</GlowIcon>
-        {meter ? (
-          <Percent>{clampPercent(meter.value, meter.max)}%</Percent>
-        ) : null}
-      </div>
-      <div className="space-y-1">
-        <Caption>{label}</Caption>
-        {(() => {
-          const MetricTag = compact ? MetricCompact : Metric;
-          return (
-            <MetricTag>
-              {countTo != null ? <CountUp value={countTo} /> : value}
-              {suffix ? <Unit>{suffix}</Unit> : null}
-              {unit ? <Unit className="ml-1 sm:ml-1.5">{unit}</Unit> : null}
-            </MetricTag>
-          );
-        })()}
-      </div>
-      {meter ? <NeonMeter value={meter.value} max={meter.max} tone={tone} /> : null}
-      {footer}
-      <StatHint className={compact ? "line-clamp-1" : "line-clamp-2 sm:line-clamp-3"}>
-        {hint}
-      </StatHint>
+    <GlassCard
+      magic={!scene}
+      className={cn(
+        "flex h-full min-w-0 flex-col",
+        compact && "gap-3 p-4",
+        !compact && !scene && "gap-3 p-4 sm:gap-4 sm:p-6",
+        scene && !compact && "min-h-[9.5rem] justify-between gap-3 overflow-visible p-3.5 sm:min-h-[12.75rem] sm:gap-4 sm:p-6"
+      )}
+    >
+      {scene ? (
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0 space-y-1.5">
+            <div className="flex flex-wrap items-center gap-2">
+              <Caption>{label}</Caption>
+              {meter ? <Percent>{clampPercent(meter.value, meter.max)}%</Percent> : null}
+            </div>
+            {metric}
+            {footer}
+          </div>
+          <div className="-mr-1 shrink-0">{icon}</div>
+        </div>
+      ) : (
+        <>
+          <div className="flex items-start justify-between gap-3">
+            <GlowIcon tone={tone}>{icon}</GlowIcon>
+            {meter ? <Percent>{clampPercent(meter.value, meter.max)}%</Percent> : null}
+          </div>
+          <div className="space-y-1">
+            <Caption>{label}</Caption>
+            {metric}
+          </div>
+          {footer}
+        </>
+      )}
+      {scene && !compact ? (
+        <div className="space-y-3">
+          <div className="h-1.5">{meter ? <NeonMeter value={meter.value} max={meter.max} tone={tone} /> : null}</div>
+          <StatHint className="line-clamp-2 min-h-10 sm:min-h-12">{hint ?? "\u00a0"}</StatHint>
+        </div>
+      ) : (
+        <>
+          {meter ? <NeonMeter value={meter.value} max={meter.max} tone={tone} /> : null}
+          {hint ? (
+            <StatHint className={compact ? "line-clamp-1" : "line-clamp-2 sm:line-clamp-3"}>{hint}</StatHint>
+          ) : null}
+        </>
+      )}
     </GlassCard>
   );
 }
@@ -116,6 +149,12 @@ export function MealDots({ logged }: { logged: Iterable<string> }) {
   const set = logged instanceof Set ? logged : new Set(logged);
   const meals = ["Breakfast", "Lunch", "Dinner", "Snack"] as const;
   const reduced = useReducedMotion();
+  const onClass = {
+    Breakfast: "bg-neon shadow-glow",
+    Lunch: "bg-rose shadow-glow",
+    Dinner: "bg-gold shadow-glow",
+    Snack: "bg-violet shadow-glow",
+  } as const;
 
   return (
     <div className="flex gap-1.5">
@@ -125,7 +164,7 @@ export function MealDots({ logged }: { logged: Iterable<string> }) {
           <motion.span
             key={meal}
             title={meal}
-            className={cn("size-2.5 rounded-full", isOn ? "bg-neon shadow-glow" : "bg-muted")}
+            className={cn("size-2.5 rounded-full", isOn ? onClass[meal] : "bg-muted")}
             initial={reduced || !isOn ? false : { scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: reduced ? 0 : 0.12 * index, type: "spring", stiffness: 380, damping: 18 }}

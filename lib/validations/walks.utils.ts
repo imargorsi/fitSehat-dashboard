@@ -7,6 +7,10 @@ export const walkDaySchema = z.object({
   steps: z.coerce.number().int().min(MIN_STEPS).max(MAX_STEPS),
 });
 
+export const walkDayIdSchema = z.object({
+  id: z.string().uuid(),
+});
+
 export const stepGoalSchema = z.object({
   stepGoal: z.coerce.number().int().min(1000).max(MAX_STEPS).default(DEFAULT_STEP_GOAL),
 });

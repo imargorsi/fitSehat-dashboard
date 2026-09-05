@@ -1,16 +1,16 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import { db } from "@/lib/db";
 import { ensureProfile } from "@/lib/db/profiles";
 import { profiles, walkDays } from "@/lib/db/schema";
-import { firstZodError, wrapFormAction } from "@/lib/errors";
+import { captureValidationError, firstZodError, wrapFormAction } from "@/lib/errors";
 import type { TFormState } from "@/lib/form-state.types";
 import { todayDateString } from "@/lib/date.utils";
 import { revalidateTracker } from "@/lib/revalidate.utils";
 import { requireAuthUser } from "@/lib/session";
-import { stepGoalSchema, walkDaySchema } from "@/lib/validations/walks.utils";
+import { stepGoalSchema, walkDayIdSchema, walkDaySchema } from "@/lib/validations/walks.utils";
 import { caloriesFromSteps, DEFAULT_STEP_GOAL, snapSteps } from "@/lib/walk.utils";
 
 async function saveWalkDayImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
@@ -72,5 +72,22 @@ async function saveStepGoalImpl(_prev: TFormState, formData: FormData): Promise<
   return { ok: true };
 }
 
+async function deleteWalkDayImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
+  const user = await requireAuthUser();
+  const parsed = walkDayIdSchema.safeParse({ id: formData.get("id") });
+  if (!parsed.success) {
+    captureValidationError("deleteWalkDay", firstZodError(parsed));
+    return { error: firstZodError(parsed) };
+  }
+
+  await db
+    .delete(walkDays)
+    .where(and(eq(walkDays.id, parsed.data.id), eq(walkDays.userId, user.id)));
+
+  revalidateTracker();
+  return { ok: true };
+}
+
 export const saveWalkDay = wrapFormAction("saveWalkDay", saveWalkDayImpl);
 export const saveStepGoal = wrapFormAction("saveStepGoal", saveStepGoalImpl);
+export const deleteWalkDay = wrapFormAction("deleteWalkDay", deleteWalkDayImpl);

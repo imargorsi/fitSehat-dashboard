@@ -20,7 +20,6 @@ async function createMealOptionImpl(_prev: TFormState, formData: FormData): Prom
     proteinG: emptyToUndefined(formData.get("proteinG")),
     carbsG: emptyToUndefined(formData.get("carbsG")),
     fatsG: emptyToUndefined(formData.get("fatsG")),
-    notes: emptyToUndefined(formData.get("notes")),
   });
 
   if (!parsed.success) {
@@ -35,7 +34,6 @@ async function createMealOptionImpl(_prev: TFormState, formData: FormData): Prom
     proteinG: parsed.data.proteinG != null ? String(parsed.data.proteinG) : null,
     carbsG: parsed.data.carbsG != null ? String(parsed.data.carbsG) : null,
     fatsG: parsed.data.fatsG != null ? String(parsed.data.fatsG) : null,
-    notes: parsed.data.notes ?? null,
   });
 
   revalidateTracker();
@@ -52,7 +50,6 @@ async function updateMealOptionImpl(_prev: TFormState, formData: FormData): Prom
     proteinG: emptyToUndefined(formData.get("proteinG")),
     carbsG: emptyToUndefined(formData.get("carbsG")),
     fatsG: emptyToUndefined(formData.get("fatsG")),
-    notes: emptyToUndefined(formData.get("notes")),
   });
 
   if (!parsed.success) {
@@ -68,7 +65,6 @@ async function updateMealOptionImpl(_prev: TFormState, formData: FormData): Prom
       proteinG: parsed.data.proteinG != null ? String(parsed.data.proteinG) : null,
       carbsG: parsed.data.carbsG != null ? String(parsed.data.carbsG) : null,
       fatsG: parsed.data.fatsG != null ? String(parsed.data.fatsG) : null,
-      notes: parsed.data.notes ?? null,
     })
     .where(and(eq(mealOptions.id, parsed.data.id), eq(mealOptions.userId, user.id)));
 

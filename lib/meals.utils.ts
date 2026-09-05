@@ -38,3 +38,57 @@ export function caloriesFromOption(option: { calories: number | null; mealType: 
   }
   return mealBandFromType(option.mealType)?.calories ?? 0;
 }
+
+export type TSavedMealPick = {
+  id: string;
+  name: string;
+  mealType: TCalorieMeal;
+  calories: number;
+  proteinG: string | null;
+  carbsG: string | null;
+  fatsG: string | null;
+};
+
+export function savedMealPickFromOption(option: {
+  id: string;
+  name: string;
+  mealType: string;
+  calories: number | null;
+  proteinG: string | null;
+  carbsG: string | null;
+  fatsG: string | null;
+}): TSavedMealPick {
+  return {
+    id: option.id,
+    name: option.name,
+    mealType: mealKindFromOption(option.mealType),
+    calories: caloriesFromOption(option),
+    proteinG: option.proteinG,
+    carbsG: option.carbsG,
+    fatsG: option.fatsG,
+  };
+}
+
+export function mealLibraryStats(
+  meals: { name: string; mealType: string; calories: number }[]
+) {
+  if (meals.length === 0) {
+    return {
+      saved: 0,
+      types: 0,
+      average: null as number | null,
+      lightest: null as { name: string; calories: number } | null,
+    };
+  }
+
+  const types = new Set(meals.map((meal) => meal.mealType)).size;
+  const average = Math.round(meals.reduce((sum, meal) => sum + meal.calories, 0) / meals.length);
+  const lightest = meals.reduce((min, meal) => (meal.calories < min.calories ? meal : min));
+
+  return {
+    saved: meals.length,
+    types,
+    average,
+    lightest: { name: lightest.name, calories: lightest.calories },
+  };
+}

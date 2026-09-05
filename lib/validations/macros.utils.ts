@@ -13,3 +13,14 @@ export const macroTargetIdSchema = z.object({
 });
 
 export type TMacroTargetInput = z.infer<typeof macroTargetSchema>;
+
+export const calorieGoalSchema = z.object({
+  targetCalories: z.coerce
+    .number()
+    .int()
+    .min(800, "Use at least 800 kcal")
+    .max(8000, "Keep the target at 8,000 kcal or less"),
+  proteinTargetG: z.coerce.number().int().nonnegative("Protein cannot be negative").optional(),
+});
+
+export type TCalorieGoalInput = z.infer<typeof calorieGoalSchema>;

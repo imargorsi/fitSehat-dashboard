@@ -4,6 +4,10 @@ import { AppError } from "@/lib/errors/app-error";
 import { ERROR_CODES } from "@/lib/errors/codes";
 import { log } from "@/lib/errors/logger";
 import {
+  FATSECRET_API_URL,
+  signedFatSecretQuery,
+} from "@/lib/nutrition/fatsecret.oauth";
+import {
   asList,
   isRecord,
   mapSearchHit,
@@ -11,17 +15,8 @@ import {
 } from "@/lib/nutrition/fatsecret.utils";
 import type { TFoodDetail, TFoodSearchHit } from "@/lib/nutrition/nutrition.types";
 
-const TOKEN_URL = "https://oauth.fatsecret.com/connect/token";
-const API_URL = "https://platform.fatsecret.com/rest/server.api";
-const TOKEN_SKEW_MS = 60_000;
 const FETCH_MS = 8_000;
-
-type TCachedToken = {
-  accessToken: string;
-  expiresAt: number;
-};
-
-let cachedToken: TCachedToken | null = null;
+const INVALID_KEY_CODES = new Set(["5", "8"]);
 
 export function hasFatSecretCredentials(): boolean {
   return Boolean(env.fatSecretClientId && env.fatSecretClientSecret);
@@ -48,66 +43,6 @@ async function readJson(response: Response): Promise<unknown> {
   }
 }
 
-async function requestAccessToken(): Promise<string> {
-  const clientId = env.fatSecretClientId;
-  const clientSecret = env.fatSecretClientSecret;
-  if (!clientId || !clientSecret) {
-    throw lookupError();
-  }
-
-  const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
-  let response: Response;
-  try {
-    response = await fetch(TOKEN_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${credentials}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "client_credentials",
-        scope: "basic",
-      }),
-      signal: AbortSignal.timeout(FETCH_MS),
-      cache: "no-store",
-    });
-  } catch (error) {
-    log("warn", "FatSecret token request failed", { error });
-    throw lookupError(error);
-  }
-
-  const payload = await readJson(response);
-  if (!response.ok || !isRecord(payload) || typeof payload.access_token !== "string") {
-    const oauthError = isRecord(payload) ? String(payload.error ?? "") : "";
-    log("warn", "FatSecret token request failed", {
-      status: response.status,
-      payload,
-    });
-    if (oauthError === "invalid_client") {
-      throw new AppError(LOOKUP.invalidClient, {
-        code: ERROR_CODES.EXTERNAL,
-        exposeMessage: true,
-        status: 502,
-      });
-    }
-    throw lookupError();
-  }
-
-  const expiresIn = Number(payload.expires_in);
-  cachedToken = {
-    accessToken: payload.access_token,
-    expiresAt: Date.now() + (Number.isFinite(expiresIn) ? expiresIn * 1000 : 86_400_000) - TOKEN_SKEW_MS,
-  };
-  return cachedToken.accessToken;
-}
-
-async function getAccessToken(forceRefresh = false): Promise<string> {
-  if (!forceRefresh && cachedToken && cachedToken.expiresAt > Date.now()) {
-    return cachedToken.accessToken;
-  }
-  return requestAccessToken();
-}
-
 function fatSecretApiError(payload: unknown): { code: string; message: string } | null {
   if (!isRecord(payload) || !isRecord(payload.error)) {
     return null;
@@ -118,17 +53,24 @@ function fatSecretApiError(payload: unknown): { code: string; message: string } 
   };
 }
 
-async function fatSecretRequest(params: Record<string, string>, retried = false): Promise<unknown> {
-  const token = await getAccessToken(retried);
+async function fatSecretRequest(params: Record<string, string>): Promise<unknown> {
+  const consumerKey = env.fatSecretClientId;
+  const consumerSecret = env.fatSecretClientSecret;
+  if (!consumerKey || !consumerSecret) {
+    throw lookupError();
+  }
+
+  const query = signedFatSecretQuery("POST", consumerKey, consumerSecret, {
+    ...params,
+    format: "json",
+  });
+
   let response: Response;
   try {
-    response = await fetch(API_URL, {
+    response = await fetch(FATSECRET_API_URL, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({ ...params, format: "json" }),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: query,
       signal: AbortSignal.timeout(FETCH_MS),
       cache: "no-store",
     });
@@ -140,11 +82,6 @@ async function fatSecretRequest(params: Record<string, string>, retried = false)
   const payload = await readJson(response);
   const apiError = fatSecretApiError(payload);
 
-  if (apiError?.code === "13" && !retried) {
-    cachedToken = null;
-    return fatSecretRequest(params, true);
-  }
-
   if (!response.ok || apiError) {
     log("warn", "FatSecret API request failed", {
       method: params.method,
@@ -152,6 +89,13 @@ async function fatSecretRequest(params: Record<string, string>, retried = false)
       code: apiError?.code,
       message: apiError?.message,
     });
+    if (apiError && INVALID_KEY_CODES.has(apiError.code)) {
+      throw new AppError(LOOKUP.invalidClient, {
+        code: ERROR_CODES.EXTERNAL,
+        exposeMessage: true,
+        status: 502,
+      });
+    }
     throw lookupError();
   }
 

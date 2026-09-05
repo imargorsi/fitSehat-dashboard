@@ -40,7 +40,7 @@ export function AppDock() {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           className={cn(
-            "pointer-events-auto mx-auto flex max-w-md items-stretch gap-0.5 rounded-[1.75rem] border border-border p-1.5 isolate transition-[background-color,box-shadow,backdrop-filter] duration-300",
+            "pointer-events-auto mx-auto flex max-w-lg items-stretch gap-0 rounded-[1.75rem] border border-border p-1 isolate transition-[background-color,box-shadow,backdrop-filter] duration-300",
             scrolled
               ? "bg-background/90 shadow-glow backdrop-blur-xl"
               : "glass-panel"

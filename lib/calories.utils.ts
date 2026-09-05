@@ -1,6 +1,8 @@
 import type { TCalorieLog, TMacroTarget } from "@/lib/db/schema";
 import { toNumber } from "@/lib/number.utils";
 
+export const CALORIE_GOAL_PRESETS = [1600, 1800, 2000, 2200, 2500] as const;
+
 export type TMacroTotals = {
   calories: number;
   protein: number;

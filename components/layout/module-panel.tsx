@@ -10,25 +10,49 @@ export function ModulePanel({
   title,
   description,
   action,
+  icon,
+  magic = true,
+  bordered = true,
   children,
+  className,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   action?: ReactNode;
+  icon?: ReactNode;
+  magic?: boolean;
+  bordered?: boolean;
   children: ReactNode;
+  className?: string;
 }) {
   return (
-    <GlassCard className="flex flex-col">
-      <div className={cn("flex flex-col gap-4 pb-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4 lg:pt-7", widgetInsetClass, "pt-5 sm:pt-6 lg:px-7")}>
-        <div className="min-w-0">
+    <GlassCard
+      magic={magic}
+      bordered={bordered}
+      className={cn("flex h-full min-w-0 flex-col", icon && "overflow-visible", className)}
+    >
+      <div
+        className={cn(
+          "flex pb-4",
+          icon
+            ? "flex-wrap items-center gap-3 overflow-visible sm:gap-5"
+            : "flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4",
+          widgetInsetClass,
+          "pt-5 sm:pt-6 lg:px-7 lg:pt-7"
+        )}
+      >
+        {icon}
+        <div className="min-w-0 flex-1">
           {eyebrow ? <Eyebrow>{eyebrow}</Eyebrow> : null}
           <H2 className={cn(eyebrow && "mt-2")}>{title}</H2>
           {description ? <Muted className="mt-1.5 max-w-xl">{description}</Muted> : null}
         </div>
-        {action ? <div className="w-full shrink-0 sm:w-auto sm:self-start">{action}</div> : null}
+        {action ? <div className="w-full shrink-0 lg:w-auto lg:self-start">{action}</div> : null}
       </div>
-      <div className={cn(widgetInsetClass, "pb-5 sm:pb-6 lg:px-7 lg:pb-7")}>{children}</div>
+      <div className={cn("flex min-h-0 flex-1 flex-col", widgetInsetClass, "pb-5 sm:pb-6 lg:px-7 lg:pb-7")}>
+        {children}
+      </div>
     </GlassCard>
   );
 }

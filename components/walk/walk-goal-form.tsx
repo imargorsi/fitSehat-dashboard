@@ -9,11 +9,12 @@ import { ActionButton } from "@/components/layout/action-button";
 import { FormLabel, NumberInput } from "@/components/ui/form-controls";
 import { Muted } from "@/components/ui/typography";
 import { ACTIONS, CELEBRATIONS, PLACE } from "@/lib/app-copy";
+import { formatInt } from "@/lib/number.utils";
 import { pickRandom } from "@/lib/random.utils";
 import type { TFormState } from "@/lib/form-state.types";
 import { STEP_PRESETS } from "@/lib/walk.utils";
 
-export function WalkGoalForm({ goal }: { goal: number }) {
+export function WalkGoalForm({ goal, onSuccess }: { goal: number; onSuccess?: () => void }) {
   const notified = useRef<TFormState>(null);
   const [state, formAction, isPending] = useActionState(saveStepGoal, null);
 
@@ -24,12 +25,13 @@ export function WalkGoalForm({ goal }: { goal: number }) {
     notified.current = state;
     if ("ok" in state && state.ok) {
       toast.success(pickRandom(CELEBRATIONS.goal));
+      onSuccess?.();
       return;
     }
     if ("error" in state && state.error) {
       toast.error(state.error);
     }
-  }, [state]);
+  }, [state, onSuccess]);
 
   return (
     <form action={formAction} className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
@@ -51,7 +53,7 @@ export function WalkGoalForm({ goal }: { goal: number }) {
         {ACTIONS.updateGoal}
       </ActionButton>
       <Muted className="sm:col-span-2">
-        Common goals: {STEP_PRESETS.map((value) => value.toLocaleString()).join(", ")}.
+        Common goals: {STEP_PRESETS.map((value) => formatInt(value)).join(", ")}.
       </Muted>
       <div className="sm:col-span-2">
         <FormError error={state && "error" in state ? state.error : undefined} />

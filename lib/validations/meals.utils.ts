@@ -22,6 +22,10 @@ export const mealOptionUpdateSchema = mealOptionSchema.extend({
 
 export const mealOptionQuickAddSchema = z.object({
   mealOptionId: z.string().uuid("Select a valid meal"),
+  loggedOn: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Pick a valid date")
+    .optional(),
 });
 
 export type TMealOptionInput = z.infer<typeof mealOptionSchema>;

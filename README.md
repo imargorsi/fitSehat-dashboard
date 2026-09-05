@@ -18,10 +18,10 @@ cp .env.example .env.local
 | `DATABASE_URL` | Neon **pooled** connection string (`sslmode=require`) |
 | `NEON_AUTH_BASE_URL` | Neon Console → Auth → Auth URL |
 | `NEON_AUTH_COOKIE_SECRET` | `openssl rand -base64 32` (32+ characters) |
-| `FATSECRET_CLIENT_ID` | Optional. FatSecret Client ID (consumer key) |
-| `FATSECRET_CLIENT_SECRET` | Optional. FatSecret Client Secret |
+| `FATSECRET_CLIENT_ID` | Optional. FatSecret Consumer Key |
+| `FATSECRET_CLIENT_SECRET` | Optional. FatSecret Consumer Secret |
 
-Food lookup is optional. Meal logging still works without FatSecret keys (manual calories/macros). Do not prefix FatSecret vars with `NEXT_PUBLIC_`. In FatSecret → Manage API Keys, whitelist this machine’s public IP (`x.x.x.x/32`); a miss returns `invalid_client`.
+Food lookup is optional. Meal logging still works without FatSecret keys (manual calories/macros). Do not prefix FatSecret vars with `NEXT_PUBLIC_`. Lookup uses OAuth 1.0 signed REST calls — no IP whitelist.
 
 Dev server uses the Next.js default: **http://localhost:3000**. Add that origin in Neon Console → Auth → Domains so local sign-in works (Neon pre-approves `http://localhost:*` in many setups; if you see an allowlist message, add `http://localhost:3000` explicitly).
 
@@ -67,9 +67,9 @@ Missing env or a short cookie secret fails the build on purpose.
 ## Features
 
 - Email/password auth
-- Overview dashboard with health score, fuel, protein, meals, walking
+- Fuel, Meals, Move, Check-in, and a Dashboard home in the dock
 - Calorie logs with FatSecret search (optional) and always-available manual entry
-- Saved meals with quick add
+- Saved meals with one-tap add to today
 - Walking tracker with calendar backdating
-- Weight and waist measurements with trends
+- Weight and waist check-ins with trends
 - Macro targets and weekly reports (routes redirect; data model retained)

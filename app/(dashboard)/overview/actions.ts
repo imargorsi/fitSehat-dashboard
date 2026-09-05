@@ -16,6 +16,7 @@ async function quickAddMealOptionImpl(_prev: TFormState, formData: FormData): Pr
   const user = await requireAuthUser();
   const parsed = mealOptionQuickAddSchema.safeParse({
     mealOptionId: formData.get("mealOptionId"),
+    loggedOn: formData.get("loggedOn") || undefined,
   });
 
   if (!parsed.success) {
@@ -37,14 +38,13 @@ async function quickAddMealOptionImpl(_prev: TFormState, formData: FormData): Pr
   await db.insert(calorieLogs).values({
     userId: user.id,
     macroTargetId: activeTarget?.id ?? null,
-    loggedOn: todayDateString(),
+    loggedOn: parsed.data.loggedOn ?? todayDateString(),
     item: option.name,
     meal: mealKindFromOption(option.mealType),
     calories,
     proteinG: option.proteinG,
     carbsG: option.carbsG,
     fatsG: option.fatsG,
-    notes: option.notes,
   });
 
   revalidateTracker();

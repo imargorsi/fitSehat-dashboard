@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: [{ url: "/logo.png", type: "image/png" }],
-    apple: [{ url: "/logo.png", type: "image/png" }],
-    shortcut: "/logo.png",
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+    apple: [{ url: "/favicon.png", type: "image/png" }],
+    shortcut: "/favicon.png",
   },
   appleWebApp: {
     capable: true,
@@ -40,6 +40,8 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  colorScheme: "dark",
+  themeColor: "#111317",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -1,6 +1,6 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 
 import { db } from "@/lib/db";
 import { ensureProfile } from "@/lib/db/profiles";
@@ -19,6 +19,7 @@ import {
 async function saveMeasurementImpl(_prev: TFormState, formData: FormData): Promise<TFormState> {
   const user = await requireAuthUser();
   const parsed = measurementSchema.safeParse({
+    id: emptyToUndefined(formData.get("id")),
     measuredOn: formData.get("measuredOn"),
     weightKg: formData.get("weightKg"),
     waistCm: emptyToUndefined(formData.get("waistCm")),
@@ -28,21 +29,53 @@ async function saveMeasurementImpl(_prev: TFormState, formData: FormData): Promi
     return { error: firstZodError(parsed) };
   }
 
-  await db
-    .insert(weeklyMeasurements)
-    .values({
-      userId: user.id,
-      measuredOn: parsed.data.measuredOn,
-      weightKg: String(parsed.data.weightKg),
-      waistCm: parsed.data.waistCm != null ? String(parsed.data.waistCm) : null,
-    })
-    .onConflictDoUpdate({
-      target: [weeklyMeasurements.userId, weeklyMeasurements.measuredOn],
-      set: {
-        weightKg: String(parsed.data.weightKg),
-        waistCm: parsed.data.waistCm != null ? String(parsed.data.waistCm) : null,
-      },
-    });
+  const weightKg = String(parsed.data.weightKg);
+  const waistCm = parsed.data.waistCm != null ? String(parsed.data.waistCm) : null;
+
+  if (parsed.data.id) {
+    const clash = await db
+      .select({ id: weeklyMeasurements.id })
+      .from(weeklyMeasurements)
+      .where(
+        and(
+          eq(weeklyMeasurements.userId, user.id),
+          eq(weeklyMeasurements.measuredOn, parsed.data.measuredOn),
+          ne(weeklyMeasurements.id, parsed.data.id)
+        )
+      )
+      .limit(1);
+
+    if (clash[0]) {
+      return { error: "A check-in already exists for that date." };
+    }
+
+    const updated = await db
+      .update(weeklyMeasurements)
+      .set({
+        measuredOn: parsed.data.measuredOn,
+        weightKg,
+        waistCm,
+      })
+      .where(and(eq(weeklyMeasurements.id, parsed.data.id), eq(weeklyMeasurements.userId, user.id)))
+      .returning({ id: weeklyMeasurements.id });
+
+    if (!updated[0]) {
+      return { error: "This check-in is no longer in your history." };
+    }
+  } else {
+    await db
+      .insert(weeklyMeasurements)
+      .values({
+        userId: user.id,
+        measuredOn: parsed.data.measuredOn,
+        weightKg,
+        waistCm,
+      })
+      .onConflictDoUpdate({
+        target: [weeklyMeasurements.userId, weeklyMeasurements.measuredOn],
+        set: { weightKg, waistCm },
+      });
+  }
 
   revalidateTracker();
   return { ok: true };

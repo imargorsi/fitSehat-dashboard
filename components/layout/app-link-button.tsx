@@ -32,29 +32,37 @@ export function AppLinkButton({
   icon,
   className,
   iconTone = "rose",
+  variant = "outline",
 }: {
   href: string;
   label: string;
   icon: TAppIconName;
   className?: string;
   iconTone?: keyof typeof iconToneClass;
+  variant?: "outline" | "filled";
 }) {
   const { ref, animate, stop } = useIconHover();
   const Icon = appIcons[icon];
+  const isFilled = variant === "filled";
 
   return (
     <Button
-      variant="outline"
+      variant={isFilled ? "filled" : "outline"}
       size="sm"
       nativeButton={false}
       render={<Link href={href} />}
-      className={cn(navOutlineButtonClass, className)}
+      className={cn(isFilled ? "w-full rounded-full" : navOutlineButtonClass, className)}
       onMouseEnter={animate}
       onMouseLeave={stop}
       onFocus={animate}
       onBlur={stop}
     >
-      <Icon ref={ref} size={16} duration={0.85} className={iconToneClass[iconTone]} />
+      <Icon
+        ref={ref}
+        size={16}
+        duration={0.85}
+        className={isFilled ? "text-neon-foreground" : iconToneClass[iconTone]}
+      />
       {label}
     </Button>
   );

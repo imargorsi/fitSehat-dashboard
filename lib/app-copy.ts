@@ -1,4 +1,4 @@
-import { formatInt } from "@/lib/number.utils";
+import { formatInt, formatNumber } from "@/lib/number.utils";
 
 export const CELEBRATIONS = {
   meal: [
@@ -16,9 +16,17 @@ export const CELEBRATIONS = {
     "Measurement recorded.",
     "Weight and waist updated.",
   ],
+  baselines: [
+    "Starting values saved.",
+    "Baselines updated.",
+  ],
   macros: [
     "Macro target saved.",
     "Targets updated.",
+  ],
+  calorieTarget: [
+    "Calorie target saved.",
+    "Daily fuel goal updated.",
   ],
   mealIdea: [
     "Meal saved to your library.",
@@ -99,6 +107,16 @@ export function proteinCaption(
   return "Protein logged for today.";
 }
 
+export function libraryCaption(count: number): string {
+  if (count === 0) {
+    return "Save meals you eat often.";
+  }
+  if (count === 1) {
+    return "One meal ready to add from Fuel.";
+  }
+  return `${formatInt(count)} meals ready to add from Fuel.`;
+}
+
 export function mealsCaption(coreCount: number, logCount: number): string {
   if (logCount === 0) {
     return "No meals logged yet today.";
@@ -110,6 +128,87 @@ export function mealsCaption(coreCount: number, logCount: number): string {
     return "Three of four core meals logged.";
   }
   return `${logCount} meal${logCount === 1 ? "" : "s"} logged today.`;
+}
+
+export function stepsCaption(value: number, goal: number, left: number | null): string {
+  if (value === 0) {
+    return "No steps logged yet today.";
+  }
+  if (left === 0) {
+    return "Daily step target met.";
+  }
+  if (left != null) {
+    return `${formatInt(left)} steps remaining today.`;
+  }
+  return `${formatInt(value)} steps toward ${formatInt(goal)}.`;
+}
+
+export function burnCaption(kcal: number): string {
+  if (kcal === 0) {
+    return "Walk to estimate calories burned.";
+  }
+  return "Estimated from today's walk.";
+}
+
+export function daysMetCaption(metDays: number): string {
+  if (metDays === 0) {
+    return "No goal days this month yet.";
+  }
+  if (metDays === 1) {
+    return "One day at your step goal this month.";
+  }
+  return `${formatInt(metDays)} days at your step goal this month.`;
+}
+
+export function calorieGoalCaption(hasTarget: boolean): string {
+  return hasTarget ? "Your daily calorie target." : "Set a daily target to track remaining.";
+}
+
+export function stepGoalCaption(goal: number): string {
+  return `${formatInt(goal)} steps each day.`;
+}
+
+export function progressCaption(delta: number | null, unit: string): string {
+  if (delta == null) {
+    return "Set a starting value to track progress.";
+  }
+  if (Math.abs(delta) < 0.05) {
+    return "Steady compared to your start.";
+  }
+  if (delta > 0) {
+    return `Down ${formatNumber(delta)} ${unit} from your start.`;
+  }
+  return `Up ${formatNumber(Math.abs(delta))} ${unit} from your start.`;
+}
+
+export function progressShort(delta: number | null, unit: string): string {
+  if (delta == null) {
+    return "";
+  }
+  if (Math.abs(delta) < 0.05) {
+    return "steady";
+  }
+  if (delta > 0) {
+    return `↓ ${formatNumber(delta)} ${unit}`;
+  }
+  return `↑ ${formatNumber(Math.abs(delta))} ${unit}`;
+}
+
+export function formatSignedChange(delta: number | null): string {
+  if (delta == null) {
+    return "—";
+  }
+  if (Math.abs(delta) < 0.05) {
+    return "0";
+  }
+  if (delta > 0) {
+    return `−${formatNumber(delta)}`;
+  }
+  return `+${formatNumber(Math.abs(delta))}`;
+}
+
+export function targetWeightCaption(hasTarget: boolean): string {
+  return hasTarget ? "Your target weight." : "Set a target in Baselines.";
 }
 
 export function weightCaption(hasLatest: boolean, delta: number | null): string {
@@ -143,8 +242,8 @@ export function streakCaption(streak: number): string {
 
 export const EMPTY = {
   calories: {
-    title: "No calorie logs yet",
-    body: "Log your first meal to start building your history.",
+    title: "No meals logged yet",
+    body: "Log your first meal to start the journal.",
   },
   mealsToday: {
     title: "No meals logged today",
@@ -155,24 +254,28 @@ export const EMPTY = {
     body: "Save meals you eat often for one-tap logging.",
   },
   weight: {
-    title: "No weigh-ins yet",
+    title: "No weight check-ins yet",
     body: "Add a check-in to see your weight trend.",
+  },
+  waist: {
+    title: "No waist check-ins yet",
+    body: "Log waist on your next check-in to see the trend.",
   },
   macros: {
     title: "No macro targets yet",
     body: "Set calorie and protein targets when you are ready.",
   },
   measurements: {
-    title: "No measurements yet",
-    body: "Record weight and waist to track progress over time.",
+    title: "No check-ins yet",
+    body: "Record weight and waist to see your trend.",
   },
   mealBand: {
     title: "No meals in this category",
-    body: "Save a meal to use it from quick add.",
+    body: "Save a meal here, then add it from Fuel in one tap.",
   },
   walk: {
-    title: "No walks this month",
-    body: "Log steps on any day from the calendar.",
+    title: "No walks yet",
+    body: "Tap a day or use Log walk to save your steps.",
   },
   reports: {
     title: "No reports yet",
@@ -182,6 +285,7 @@ export const EMPTY = {
 
 export const LOOKUP = {
   hint: "Search a food or enter calories manually.",
+  saved: "Tap a saved meal to add it to this day.",
   suggested: "Suggested macros — edit if your portion differed.",
   none: "No match — enter calories manually.",
   failed: "Lookup is unavailable. Enter calories manually.",
@@ -195,6 +299,7 @@ export const LOOKUP = {
 export const PLACE = {
   mealItem: "Search or type what you ate",
   mealName: "Meal name",
+  calorieGoal: "Daily calorie target",
   calories: "Calories",
   protein: "Protein",
   carbs: "Carbs",
@@ -220,12 +325,18 @@ export const CONFIRM = {
 
 export const ACTIONS = {
   logMeal: "Log meal",
+  fromSaved: "From saved meals",
   addMeal: "Save meal",
   saveChanges: "Save changes",
   edit: "Edit",
   delete: "Delete",
   saveWalk: "Save walk",
+  logWalk: "Log walk",
+  dailyGoal: "Goal",
+  calorieTarget: "Target",
   saveWeighIn: "Save check-in",
+  checkIn: "Check-in",
+  baselines: "Baselines",
   saveCompact: "Save",
   saveBaselines: "Save baselines",
   updateGoal: "Update goal",

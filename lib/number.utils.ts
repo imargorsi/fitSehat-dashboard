@@ -18,6 +18,15 @@ export function formatInt(value: number): string {
   return new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(value);
 }
 
+export function formatCompactSteps(steps: number): string {
+  if (steps < 1000) {
+    return formatInt(steps);
+  }
+  const thousands = steps / 1000;
+  const label = Number.isInteger(thousands) ? String(thousands) : thousands.toFixed(1);
+  return `${label}k`;
+}
+
 export function clampPercent(value: number, max: number): number {
   if (max <= 0) {
     return 0;

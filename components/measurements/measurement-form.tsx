@@ -9,18 +9,37 @@ import {
 } from "@/components/layout/form-field";
 import { FormError } from "@/components/layout/form-error";
 import { ActionButton } from "@/components/layout/action-button";
-import { DateInput, NumberInput } from "@/components/ui/form-controls";
+import { DateInput, HiddenInput, NumberInput } from "@/components/ui/form-controls";
 import { ACTIONS, PLACE } from "@/lib/app-copy";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
+
+export type TMeasurementFormInitial = {
+  id: string;
+  measuredOn: string;
+  weightKg: string | number;
+  waistCm?: string | number | null;
+};
 
 export function MeasurementForm({
   defaultDate,
   compact = false,
+  initial,
+  onSuccess,
 }: {
   defaultDate: string;
   compact?: boolean;
+  initial?: TMeasurementFormInitial;
+  onSuccess?: () => void;
 }) {
-  const { formRef, state, formAction, isPending } = useResettingForm(saveMeasurement, "weighIn");
+  const isEdit = Boolean(initial?.id);
+  const { formRef, state, formAction, isPending } = useResettingForm(
+    saveMeasurement,
+    isEdit ? "updated" : "weighIn",
+    onSuccess,
+    !isEdit
+  );
+  const measuredOn = initial?.measuredOn ?? defaultDate;
+  const submitLabel = isEdit ? ACTIONS.saveChanges : compact ? ACTIONS.saveCompact : ACTIONS.saveWeighIn;
 
   return (
     <form
@@ -28,10 +47,11 @@ export function MeasurementForm({
       action={formAction}
       className={compact ? "grid grid-cols-1 gap-3 sm:grid-cols-2" : undefined}
     >
+      {isEdit ? <HiddenInput name="id" value={initial!.id} /> : null}
       {compact ? (
         <>
           <FormField label="Date" htmlFor="measuredOn">
-            <DateInput id="measuredOn" name="measuredOn" required defaultValue={defaultDate} />
+            <DateInput id="measuredOn" name="measuredOn" required defaultValue={measuredOn} />
           </FormField>
           <FormField label="Weight (kg)" htmlFor="weightKg">
             <NumberInput
@@ -41,6 +61,7 @@ export function MeasurementForm({
               step={0.1}
               required
               placeholder={PLACE.weight}
+              defaultValue={initial?.weightKg != null ? String(initial.weightKg) : undefined}
             />
           </FormField>
           <FormField label="Waist (cm)" htmlFor="waistCm">
@@ -50,11 +71,12 @@ export function MeasurementForm({
               min={0.1}
               step={0.1}
               placeholder={PLACE.waist}
+              defaultValue={initial?.waistCm != null ? String(initial.waistCm) : undefined}
             />
           </FormField>
           <div className="flex items-end">
             <ActionButton type="submit" icon="activity" pending={isPending} className="w-full min-w-0 rounded-full">
-              Save
+              {submitLabel}
             </ActionButton>
           </div>
           <div className="sm:col-span-2">
@@ -62,9 +84,9 @@ export function MeasurementForm({
           </div>
         </>
       ) : (
-        <FormGrid>
+        <FormGrid className="lg:grid-cols-2">
           <FormField label="Date" htmlFor="measuredOn">
-            <DateInput id="measuredOn" name="measuredOn" required defaultValue={defaultDate} />
+            <DateInput id="measuredOn" name="measuredOn" required defaultValue={measuredOn} />
           </FormField>
           <FormField label="Weight (kg)" htmlFor="weightKg">
             <NumberInput
@@ -74,17 +96,25 @@ export function MeasurementForm({
               step={0.1}
               required
               placeholder={PLACE.weight}
+              defaultValue={initial?.weightKg != null ? String(initial.weightKg) : undefined}
             />
           </FormField>
-          <FormField label="Waist (cm)" htmlFor="waistCm">
-            <NumberInput id="waistCm" name="waistCm" min={0.1} step={0.1} placeholder={PLACE.waist} />
+          <FormField label="Waist (cm)" htmlFor="waistCm" className="sm:col-span-2">
+            <NumberInput
+              id="waistCm"
+              name="waistCm"
+              min={0.1}
+              step={0.1}
+              placeholder={PLACE.waist}
+              defaultValue={initial?.waistCm != null ? String(initial.waistCm) : undefined}
+            />
           </FormField>
-          <FormSubmitRow>
+          <FormSubmitRow className="lg:col-span-2">
             <ActionButton type="submit" size="lg" icon="activity" pending={isPending} className="w-full min-w-0 rounded-full">
-              {ACTIONS.saveWeighIn}
+              {submitLabel}
             </ActionButton>
           </FormSubmitRow>
-          <FormErrorRow>
+          <FormErrorRow className="lg:col-span-2">
             <FormError error={state && "error" in state ? state.error : undefined} />
           </FormErrorRow>
         </FormGrid>
@@ -97,16 +127,23 @@ export function ProfileBaselinesForm({
   startWeightKg,
   targetWeightKg,
   startWaistCm,
+  onSuccess,
 }: {
   startWeightKg: string | null;
   targetWeightKg: string | null;
   startWaistCm: string | null;
+  onSuccess?: () => void;
 }) {
-  const { formRef, state, formAction, isPending } = useResettingForm(saveProfileBaselines, "macros");
+  const { formRef, state, formAction, isPending } = useResettingForm(
+    saveProfileBaselines,
+    "baselines",
+    onSuccess,
+    false
+  );
 
   return (
     <form ref={formRef} action={formAction}>
-      <FormGrid>
+      <FormGrid className="lg:grid-cols-2">
         <FormField label="Start weight (kg)" htmlFor="startWeightKg">
           <NumberInput
             id="startWeightKg"
@@ -127,7 +164,7 @@ export function ProfileBaselinesForm({
             defaultValue={targetWeightKg ?? undefined}
           />
         </FormField>
-        <FormField label="Start waist (cm)" htmlFor="startWaistCm">
+        <FormField label="Start waist (cm)" htmlFor="startWaistCm" className="sm:col-span-2">
           <NumberInput
             id="startWaistCm"
             name="startWaistCm"
@@ -137,12 +174,12 @@ export function ProfileBaselinesForm({
             defaultValue={startWaistCm ?? undefined}
           />
         </FormField>
-        <FormSubmitRow>
-          <ActionButton type="submit" size="lg" icon="settings" pending={isPending} className="w-full min-w-36 rounded-full sm:w-auto">
+        <FormSubmitRow className="lg:col-span-2">
+          <ActionButton type="submit" size="lg" icon="settings" pending={isPending} className="w-full min-w-0 rounded-full">
             {ACTIONS.saveBaselines}
           </ActionButton>
         </FormSubmitRow>
-        <FormErrorRow>
+        <FormErrorRow className="lg:col-span-2">
           <FormError error={state && "error" in state ? state.error : undefined} />
         </FormErrorRow>
       </FormGrid>

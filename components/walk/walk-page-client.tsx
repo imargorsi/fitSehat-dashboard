@@ -1,76 +1,75 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 
 import { ModulePanel } from "@/components/layout/module-panel";
 import { SectionGrid } from "@/components/layout/page-grids";
+import { PageShell } from "@/components/layout/page-shell";
 import { WalkCalendar, type TWalkStamp } from "@/components/walk/walk-calendar";
-import { WalkGoalForm } from "@/components/walk/walk-goal-form";
-import { WalkSlider } from "@/components/walk/walk-slider";
-import { Button } from "@/components/ui/button";
-import { Muted } from "@/components/ui/typography";
-import { formatMediumDate } from "@/lib/date.utils";
+import { WalkGoalDialog } from "@/components/walk/walk-goal-dialog";
+import { WalkHistoryList } from "@/components/walk/walk-history-list";
+import { WalkLogDialog } from "@/components/walk/walk-log-dialog";
 
 export function WalkPageClient({
   today,
   goal,
   stamps,
   monthStart,
+  children,
 }: {
   today: string;
   goal: number;
   stamps: TWalkStamp[];
   monthStart: string;
+  children: ReactNode;
 }) {
   const [selectedDate, setSelectedDate] = useState(today);
+  const [logOpen, setLogOpen] = useState(false);
   const byDate = useMemo(() => new Map(stamps.map((row) => [row.date, row])), [stamps]);
   const selected = byDate.get(selectedDate);
   const steps = selected?.steps ?? 0;
-  const isToday = selectedDate === today;
-  const title = isToday ? "Log today's walk" : `Log walk for ${formatMediumDate(selectedDate)}`;
+
+  function openLog(date: string) {
+    setSelectedDate(date);
+    setLogOpen(true);
+  }
 
   return (
-    <>
-      <ModulePanel
-        eyebrow={isToday ? "Today" : "Past day"}
-        title={title}
-        description={
-          isToday
-            ? "Slide to the steps you took. We estimate calories burned beside it."
-            : "Tap a day on the calendar to switch dates. Future days cannot be logged."
-        }
-      >
-        <WalkSlider key={`${selectedDate}-${steps}-${goal}`} walkedOn={selectedDate} today={today} goal={goal} initialSteps={steps} />
-        {!isToday ? (
-          <Button type="button" variant="ghost" size="sm" className="mt-2" onClick={() => setSelectedDate(today)}>
-            Back to today
-          </Button>
-        ) : null}
-      </ModulePanel>
-
-      <SectionGrid className="lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)]">
+    <PageShell
+      action={
+        <>
+          <WalkGoalDialog goal={goal} />
+          <WalkLogDialog
+            today={today}
+            walkedOn={selectedDate}
+            goal={goal}
+            initialSteps={steps}
+            open={logOpen}
+            onOpenChange={setLogOpen}
+            onTrigger={() => setSelectedDate(today)}
+          />
+        </>
+      }
+    >
+      {children}
+      <SectionGrid className="lg:grid-cols-[minmax(0,1.35fr)_minmax(20rem,0.9fr)] lg:items-stretch">
         <ModulePanel
-          eyebrow="Rhythm"
-          title="Activity calendar"
-          description="Tap a day to log or edit steps. Highlighted days met the goal."
+          eyebrow="Move"
+          title="Walking calendar"
+          description="Tap a day to log or edit. Logged days show your step count."
         >
           <WalkCalendar
             today={today}
             monthStart={monthStart}
             stamps={stamps}
             selectedDate={selectedDate}
-            onSelectDate={setSelectedDate}
+            onSelectDate={openLog}
           />
-          {!isToday ? (
-            <Muted className="mt-3 block">
-              Logging {formatMediumDate(selectedDate)} · {steps > 0 ? `${steps} steps saved` : "not logged yet"}
-            </Muted>
-          ) : null}
         </ModulePanel>
-        <ModulePanel eyebrow="Pace" title="Daily step goal" description="Update your daily step target anytime.">
-          <WalkGoalForm goal={goal} />
+        <ModulePanel eyebrow="Move" title="History" description="Newest walks first.">
+          <WalkHistoryList logs={stamps} onEdit={openLog} />
         </ModulePanel>
       </SectionGrid>
-    </>
+    </PageShell>
   );
 }

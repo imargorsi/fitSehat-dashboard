@@ -3,20 +3,51 @@
 import { useMemo, useState } from "react";
 
 import { AnimateIcon } from "@/components/icons/animate-icon";
-import { CalendarCell, CalendarTitle, CalendarWeekday, Legend } from "@/components/ui/typography";
+import { CalendarCell, CalendarTitle, CalendarWeekday, Legend, Meta } from "@/components/ui/typography";
 import { formatMonthTitle, monthCells, shiftMonth, startOfMonth } from "@/lib/date.utils";
 import { iconButtonClass } from "@/lib/field-control";
-import { formatInt } from "@/lib/number.utils";
+import { formatCompactSteps, formatInt } from "@/lib/number.utils";
 import { cn } from "@/lib/utils";
 import { walkAchieved } from "@/lib/walk.utils";
 
 export type TWalkStamp = {
+  id: string;
   date: string;
   steps: number;
   goalSteps: number;
+  caloriesBurned: number;
 };
 
 const WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
+
+function DayFace({
+  date,
+  steps,
+  achieved,
+}: {
+  date: string;
+  steps?: number;
+  achieved: boolean;
+}) {
+  const hasSteps = (steps ?? 0) > 0;
+  return (
+    <>
+      <CalendarCell>{Number(date.slice(8, 10))}</CalendarCell>
+      {hasSteps ? (
+        <Meta
+          className={cn(
+            "max-w-full truncate leading-none tabular-nums",
+            achieved ? "text-neon-foreground/80" : "text-current"
+          )}
+        >
+          {formatCompactSteps(steps ?? 0)}
+        </Meta>
+      ) : (
+        <span className="h-3" aria-hidden />
+      )}
+    </>
+  );
+}
 
 export function WalkCalendar({
   today,
@@ -36,7 +67,7 @@ export function WalkCalendar({
   const cells = monthCells(cursor);
 
   return (
-    <div className="grid gap-4">
+    <div className="grid gap-4 sm:gap-5">
       <div className="flex items-center justify-between gap-3">
         <button
           type="button"
@@ -56,12 +87,12 @@ export function WalkCalendar({
           <AnimateIcon name="chevronRight" size={18} tone="muted" />
         </button>
       </div>
-      <div className="grid grid-cols-7 gap-1 text-center sm:gap-1.5">
+      <div className="grid grid-cols-7 gap-1.5 border-b border-border/50 pb-2 text-center sm:gap-2">
         {WEEKDAYS.map((day) => (
           <CalendarWeekday key={day}>{day}</CalendarWeekday>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
+      <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
         {cells.map((cell) => {
           const stamp = byDate.get(cell.date);
           const achieved = stamp ? walkAchieved(stamp.steps, stamp.goalSteps) : false;
@@ -71,15 +102,17 @@ export function WalkCalendar({
           const canSelect = onSelectDate && cell.inMonth && !isFuture;
 
           const className = cn(
-            "flex aspect-square flex-col items-center justify-center rounded-xl sm:rounded-2xl transition-colors",
+            "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 py-1.5 sm:min-h-[4.75rem] sm:rounded-2xl sm:py-2",
+            "transition-colors",
             !cell.inMonth && "opacity-30",
             isFuture && "text-muted-foreground",
-            cell.inMonth && !stamp && !isFuture && "bg-muted/35 text-muted-foreground",
+            cell.inMonth && !stamp && !isFuture && "bg-muted/40 text-muted-foreground",
             stamp && !achieved && "bg-gold/15 text-gold",
             achieved && "bg-brand text-neon-foreground shadow-glow",
             isToday && !achieved && "ring-1 ring-rose/50",
             isSelected && "ring-2 ring-violet/70",
-            canSelect && "cursor-pointer hover:ring-1 hover:ring-rose/40"
+            canSelect && "cursor-pointer hover:ring-1 hover:ring-rose/40",
+            canSelect && !achieved && "hover:bg-muted/55"
           );
 
           const title = stamp
@@ -87,6 +120,8 @@ export function WalkCalendar({
             : isFuture
               ? `${cell.date}: future`
               : `${cell.date}: tap to log`;
+
+          const face = <DayFace date={cell.date} steps={stamp?.steps} achieved={achieved} />;
 
           if (canSelect) {
             return (
@@ -99,14 +134,14 @@ export function WalkCalendar({
                 onClick={() => onSelectDate(cell.date)}
                 className={className}
               >
-                <CalendarCell>{Number(cell.date.slice(8, 10))}</CalendarCell>
+                {face}
               </button>
             );
           }
 
           return (
             <div key={cell.date} title={title} className={className}>
-              <CalendarCell>{Number(cell.date.slice(8, 10))}</CalendarCell>
+              {face}
             </div>
           );
         })}

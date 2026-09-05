@@ -78,7 +78,7 @@ export function todayGlow(input: TGlowInput): TGlow {
 
 function glowCaption(score: number, input: TGlowInput): string {
   if (input.logCount === 0) {
-    return "Log a meal or activity to start your health score.";
+    return "Open Fuel or Move to start your health score.";
   }
   if (input.coreMeals >= 4) {
     return "All core meals logged today.";

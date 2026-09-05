@@ -2,6 +2,7 @@ export type TNavItem = {
   href: string;
   label: string;
   shortLabel: string;
+  heading: string;
   description: string;
   phase: "ready" | "planned";
 };
@@ -9,37 +10,42 @@ export type TNavItem = {
 export const dashboardNav: TNavItem[] = [
   {
     href: "/overview",
-    label: "Overview",
-    shortLabel: "Today",
-    description: "Your daily dashboard for fuel, movement, and progress.",
+    label: "Dashboard",
+    shortLabel: "Dashboard",
+    heading: "Dashboard",
+    description: "A snapshot of today. Open a module to log.",
     phase: "ready",
   },
   {
     href: "/calories",
-    label: "Calorie Logs",
+    label: "Fuel",
     shortLabel: "Fuel",
-    description: "Log meals and track daily calorie intake.",
+    heading: "Today's intake",
+    description: "Search foods, log plates, and see the week behind them.",
     phase: "ready",
   },
   {
     href: "/meals",
-    label: "Meal Options",
+    label: "Meals",
     shortLabel: "Meals",
-    description: "Save meals you eat often for quick one-tap logging.",
+    heading: "Your library",
+    description: "Save meals you eat often, then add them in one tap.",
     phase: "ready",
   },
   {
     href: "/workouts",
-    label: "Walk",
+    label: "Move",
     shortLabel: "Move",
-    description: "Track daily steps and walking goals.",
+    heading: "Daily walking",
+    description: "Log steps, watch the calendar, and keep a gentle daily goal.",
     phase: "ready",
   },
   {
     href: "/measurements",
-    label: "Measurements",
+    label: "Check-in",
     shortLabel: "Check-in",
-    description: "Record weight and waist measurements over time.",
+    heading: "Weight & waist",
+    description: "Record a check-in and watch the trend from your starting point.",
     phase: "ready",
   },
 ];

@@ -6,15 +6,7 @@ import { createCalorieLog, updateCalorieLog } from "@/app/(dashboard)/calories/a
 import { CalorieEnergyFields } from "@/components/calories/calorie-energy-fields";
 import { FoodSearchPanel } from "@/components/calories/food-search";
 import { ActionButton } from "@/components/layout/action-button";
-import {
-  FormChunk,
-  FormErrorRow,
-  FormField,
-  FormGrid,
-  FormStack,
-  FormSubmitRow,
-  IconField,
-} from "@/components/layout/form-field";
+import { FormChunk, FormErrorRow, FormField, FormGrid, FormStack, FormSubmitRow, IconField } from "@/components/layout/form-field";
 import { FormError } from "@/components/layout/form-error";
 import { UiIcon } from "@/components/icons/ui-icon";
 import type { TAppIconName } from "@/components/icons/app-icons";
@@ -26,7 +18,6 @@ import {
   NumberInput,
   SelectField,
   TextInput,
-  Textarea,
 } from "@/components/ui/form-controls";
 import { type TNutritionPrefill, useFoodSearch } from "@/hooks/useFoodSearch.hook";
 import { useResettingForm } from "@/hooks/useResettingForm.hook";
@@ -141,9 +132,6 @@ export function CalorieLogForm({
           <FormField label="Fats (g)" htmlFor="fatsG">
             <NumberInput id="fatsG" name="fatsG" min={0} step={0.1} placeholder={PLACE.fats} value={fatsG} onChange={(event) => setFatsG(event.target.value)} />
           </FormField>
-          <FormField label="Note" htmlFor="notes" className="sm:col-span-2 lg:col-span-4">
-            <Textarea id="notes" name="notes" placeholder={PLACE.notes} defaultValue={initial?.notes ?? undefined} />
-          </FormField>
           <FormSubmitRow>
             <ActionButton type="submit" size="lg" icon="flame" pending={isPending} className="w-full min-w-40 rounded-full sm:w-auto">
               {submitLabel}
@@ -209,18 +197,6 @@ export function CalorieLogForm({
             onCarbs={setCarbsG}
             onFats={setFatsG}
           />
-        </FormChunk>
-
-        <FormChunk>
-          <IconField icon={<FieldIcon name="list" />} align="start">
-            <Textarea
-              id="notes"
-              name="notes"
-              placeholder={PLACE.notes}
-              aria-label="Note"
-              defaultValue={initial?.notes ?? undefined}
-            />
-          </IconField>
         </FormChunk>
 
         <FormChunk>

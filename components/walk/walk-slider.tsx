@@ -33,7 +33,6 @@ import {
   MIN_STEPS,
   snapSteps,
   STEP_PRESETS,
-  walkAchieved,
 } from "@/lib/walk.utils";
 
 export function WalkSlider({
@@ -42,12 +41,14 @@ export function WalkSlider({
   goal,
   initialSteps,
   compact = false,
+  onSuccess,
 }: {
   walkedOn: string;
   today: string;
   goal: number;
   initialSteps: number;
   compact?: boolean;
+  onSuccess?: () => void;
 }) {
   const reduced = useReducedMotion();
   const sliderId = useId();
@@ -55,7 +56,6 @@ export function WalkSlider({
   const [steps, setSteps] = useState(initialSteps);
   const [state, formAction, isPending] = useActionState(saveWalkDay, null);
   const burned = caloriesFromSteps(steps);
-  const met = walkAchieved(steps, goal);
   const isToday = walkedOn === today;
   const fill = Math.min(100, (steps / MAX_STEPS) * 100);
   const goalMark = Math.min(96, Math.max(4, (goal / MAX_STEPS) * 100));
@@ -69,12 +69,13 @@ export function WalkSlider({
     toasted.current = state;
     if ("ok" in state && state.ok) {
       toast.success(pickRandom(CELEBRATIONS.workout));
+      onSuccess?.();
       return;
     }
     if ("error" in state && state.error) {
       toast.error(state.error);
     }
-  }, [state]);
+  }, [state, onSuccess]);
 
   return (
     <form action={formAction} className={cn("grid", compact ? "gap-3" : "gap-4")}>
@@ -97,39 +98,46 @@ export function WalkSlider({
         </div>
       </div>
 
-      <div className="relative h-8">
-        <div className="absolute inset-x-0 top-1/2 h-3 -translate-y-1/2 overflow-hidden rounded-full bg-muted">
+      <div className={cn(compact ? "px-1 py-1" : "px-1 py-2")}>
+        <div className={cn("relative", compact ? "h-9" : "h-11")}>
+          <div className="absolute inset-x-0 top-1/2 h-3.5 -translate-y-1/2 overflow-hidden rounded-full border border-border bg-background sm:h-4">
+            <motion.div
+              className="h-full rounded-full bg-brand shadow-glow"
+              initial={false}
+              animate={{ width: `${fill}%` }}
+              transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 220, damping: 28 }}
+            />
+          </div>
+          <div
+            aria-hidden
+            title={`Goal ${formatInt(goal)}`}
+            className="pointer-events-none absolute top-1/2 h-6 w-0.5 -translate-y-1/2 rounded-full bg-rose"
+            style={{ left: `${goalMark}%` }}
+          />
           <motion.div
-            className="h-full rounded-full bg-brand shadow-glow"
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 size-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-background bg-rose shadow-glow sm:size-7"
             initial={false}
-            animate={{ width: `${fill}%` }}
-            transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 220, damping: 28 }}
+            animate={{ left: `${fill}%` }}
+            transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 260, damping: 26 }}
+          />
+          <label htmlFor={sliderId} className="sr-only">
+            Steps
+          </label>
+          <RangeInput
+            id={sliderId}
+            min={MIN_STEPS}
+            max={MAX_STEPS}
+            step={100}
+            value={steps}
+            onChange={(event) => setSteps(snapSteps(Number(event.target.value)))}
           />
         </div>
-        <div
-          aria-hidden
-          title={`Goal ${formatInt(goal)}`}
-          className="pointer-events-none absolute top-1/2 h-5 w-px -translate-y-1/2 bg-rose/55"
-          style={{ left: `${goalMark}%` }}
-        />
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute top-1/2 size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-card bg-rose shadow-glow"
-          initial={false}
-          animate={{ left: `${fill}%` }}
-          transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 260, damping: 26 }}
-        />
-        <label htmlFor={sliderId} className="sr-only">
-          Steps
-        </label>
-        <RangeInput
-          id={sliderId}
-          min={MIN_STEPS}
-          max={MAX_STEPS}
-          step={100}
-          value={steps}
-          onChange={(event) => setSteps(snapSteps(Number(event.target.value)))}
-        />
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <Caption>0</Caption>
+          <Caption className="text-rose">Goal {formatInt(goal)}</Caption>
+          <Caption>{formatInt(MAX_STEPS)}</Caption>
+        </div>
       </div>
 
       <ChoiceChipGroup className="gap-2">
@@ -144,12 +152,6 @@ export function WalkSlider({
           </ChoiceChip>
         ))}
       </ChoiceChipGroup>
-
-      {compact ? null : (
-        <Muted>
-          Goal {formatInt(goal)}. {met ? "Daily step goal met." : "Every step counts toward your goal."}
-        </Muted>
-      )}
 
       <div className="flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
         <ActionButton
