@@ -1,4 +1,4 @@
-import { CALORIE_MEALS, MEAL_OPTION_TYPES, type TCalorieMeal, type TMealOptionType } from "@/lib/constants";
+import { APP_TIME_ZONE, CALORIE_MEALS, MEAL_OPTION_TYPES, type TCalorieMeal, type TMealOptionType } from "@/lib/constants";
 
 export const CORE_MEALS = CALORIE_MEALS;
 export type TCoreMeal = TCalorieMeal;
@@ -15,6 +15,29 @@ export function mealBandFromType(mealType: string): { meal: TCalorieMeal; calori
     return MEAL_BANDS[mealType as TMealOptionType];
   }
   return null;
+}
+
+export function suggestedMealNow(timeZone = APP_TIME_ZONE, date = new Date()): TCalorieMeal {
+  const hour = Number(
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone,
+      hour: "numeric",
+      hourCycle: "h23",
+    })
+      .formatToParts(date)
+      .find((part) => part.type === "hour")?.value ?? "12"
+  );
+
+  if (hour < 11) {
+    return "Breakfast";
+  }
+  if (hour < 16) {
+    return "Lunch";
+  }
+  if (hour < 21) {
+    return "Dinner";
+  }
+  return "Snack";
 }
 
 export function isCalorieMeal(value: string): value is TCalorieMeal {

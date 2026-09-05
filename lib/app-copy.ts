@@ -283,21 +283,53 @@ export const EMPTY = {
   },
 } as const;
 
+export const AI = {
+  name: "FitSehat AI",
+  hint: "Just tell us — we'll estimate.",
+  placeholder: "2 roti, half a plate of daal, and a glass of lassi",
+  analyze: "Analyze meal",
+  analyzing: "Analyzing your meal…",
+  identifying: "Identifying foods",
+  portions: "Estimating portions",
+  nutrition: "Calculating nutrition",
+  understood: "Here's what I understood:",
+  estimateNote: "Estimated nutrition based on your description.",
+  confirm: "Does this look right?",
+  looksRight: "Looks right",
+  adjust: "Adjust",
+  adjustHint: "What would you like to change?",
+  adjustPlaceholder: "Example: It was only half a roti",
+  recalculate: "Recalculate",
+  chooserTitle: "FitSehat AI",
+  chooserBody: "Just tell us what you ate",
+  searchTitle: "Search food",
+  searchBody: "Search our food database",
+  savedTitle: "Saved meals",
+  savedBody: "Log something you've saved",
+  unavailable: "We couldn't analyze your meal right now. Please try again or use Search Food.",
+  malformed: "We couldn't understand that meal. Please try describing it another way.",
+  rateLimited: "FitSehat AI is busy right now. Wait a moment and try again.",
+  empty: "Tell us what you ate first.",
+} as const;
+
 export const LOOKUP = {
-  hint: "Search a food or enter calories manually.",
-  saved: "Tap a saved meal to add it to this day.",
-  suggested: "Suggested macros — edit if your portion differed.",
-  none: "No match — enter calories manually.",
-  failed: "Lookup is unavailable. Enter calories manually.",
-  invalidClient: "Lookup is unavailable. Enter calories manually.",
-  unavailable: "Search is unavailable. Enter calories manually.",
+  prompt: "What did you eat?",
+  hint: "Search, pick a serving, then log. You can type calories yourself.",
+  saved: "Tap a meal you already know.",
+  when: "When",
+  macros: "Calories & macros",
+  suggested: "Suggested from search — change anything that looks off.",
+  none: "No match — enter calories yourself.",
+  failed: "Lookup is unavailable. Enter calories yourself.",
+  invalidClient: "Lookup is unavailable. Enter calories yourself.",
+  unavailable: "Search is unavailable. Enter calories yourself.",
   loading: "Searching foods…",
   servingsLoading: "Loading servings…",
-  enterManually: "Enter calories manually",
+  enterManually: "Enter calories myself",
 } as const;
 
 export const PLACE = {
-  mealItem: "Search or type what you ate",
+  mealItem: "Chicken karahi, 2 roti…",
   mealName: "Meal name",
   calorieGoal: "Daily calorie target",
   calories: "Calories",
@@ -347,6 +379,7 @@ export const ACTIONS = {
   alreadyHaveKey: "Sign in",
   tryAgain: "Try again",
   home: "Back to home",
+  back: "Back",
 } as const;
 
 export const APP_TAGLINE =

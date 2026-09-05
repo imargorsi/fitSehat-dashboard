@@ -61,7 +61,7 @@ export function FormChunk({
   className?: string;
 }) {
   return (
-    <div className={cn("grid gap-4 border-t border-border py-6 first:border-t-0 first:pt-0 last:pb-0", className)}>
+    <div className={cn("grid gap-4 py-5 first:pt-0 last:pb-0", className)}>
       {children}
     </div>
   );

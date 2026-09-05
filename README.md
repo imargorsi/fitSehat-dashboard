@@ -21,8 +21,10 @@ cp .env.example .env.local
 | `FATSECRET_CLIENT_ID` | Optional. FatSecret Consumer Key |
 | `FATSECRET_CLIENT_SECRET` | Optional. FatSecret Consumer Secret |
 | `NEXT_PUBLIC_SITE_URL` | Optional. Public origin for sitemap, robots, and Open Graph |
+| `GEMINI_API_KEY` | Optional. Gemini key for FitSehat AI meal logging |
+| `GEMINI_MODEL` | Optional. Defaults to `gemini-3.5-flash-lite` |
 
-Food lookup is optional. Meal logging still works without FatSecret keys (manual calories/macros). Do not prefix FatSecret vars with `NEXT_PUBLIC_`. Lookup uses OAuth 1.0 signed REST calls — no IP whitelist.
+Food lookup is optional. Meal logging still works without FatSecret keys (manual calories/macros). Do not prefix FatSecret or Gemini vars with `NEXT_PUBLIC_`. FatSecret lookup uses OAuth 1.0 signed REST calls — no IP whitelist. FitSehat AI is optional; without `GEMINI_API_KEY` the AI path asks you to use Search Food instead.
 
 Dev server uses the Next.js default: **http://localhost:3000**. Add that origin in Neon Console → Auth → Domains so local sign-in works (Neon pre-approves `http://localhost:*` in many setups; if you see an allowlist message, add `http://localhost:3000` explicitly).
 
@@ -43,6 +45,7 @@ The app is a standard Next.js project (`vercel.json` sets `framework: nextjs`). 
    - `NEON_AUTH_COOKIE_SECRET` — a **new** 32+ character secret, not the local one
    - `NEXT_PUBLIC_SITE_URL` — optional. Canonical origin (`https://YOUR-APP.vercel.app` or your custom domain). Used for sitemap, robots, and Open Graph.
    - `FATSECRET_CLIENT_ID` and `FATSECRET_CLIENT_SECRET` — optional; meal logging works without them
+   - `GEMINI_API_KEY` and `GEMINI_MODEL` — optional; FitSehat AI degrades to Search Food if missing. Never prefix with `NEXT_PUBLIC_`.
 
    Do not prefix FatSecret keys with `NEXT_PUBLIC_`. `NEXT_PUBLIC_SITE_URL` is public on purpose.
 
@@ -71,7 +74,7 @@ Missing env or a short cookie secret fails the build on purpose.
 
 - Email/password auth
 - Fuel, Meals, Move, Check-in, and a Dashboard home in the dock
-- Calorie logs with FatSecret search (optional) and always-available manual entry
+- Calorie logs with FitSehat AI, FatSecret search (optional), and always-available manual entry
 - Saved meals with one-tap add to today
 - Walking tracker with calendar backdating
 - Weight and waist check-ins with trends

@@ -72,7 +72,7 @@ export function FoodSearchPanel({
       ) : null}
 
       {selected && servings.length > 0 ? (
-        <div className="grid gap-2">
+        <div className="grid min-w-0 gap-2 rounded-2xl bg-muted/25 px-3.5 py-3">
           <Caption>Serving</Caption>
           <ChoiceChipGroup>
             {servings.map((serving) => (
